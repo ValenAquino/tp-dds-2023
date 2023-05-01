@@ -1,0 +1,49 @@
+@startuml TPA1
+
+class ServicioPublico {
+  nombre
+}
+
+class Transporte {
+  tipo
+  estacionOrigen: Estacion
+  estacionDestino: Estacion
+  estaciones: List<Estaciones>
+}
+
+enum TipoDeTransporte {
+
+}
+
+class Estacion {
+  nombre
+  ubicacion
+}
+
+ServicioPublico <|-- Transporte
+Estacion "*"<-- Transporte
+Tipo "*"<-- Transporte
+
+' Comunidad, Miembro, Usuario
+
+class Comunidad {
+  miembros: List<Miembro>
+  administradores: List<Miembro>
+}
+
+class Miembro {
+  nombre
+  apellido
+  correoElectronico
+  comunidades: List<Comunidad>
+}
+
+class Usuario {
+  usuario
+  contraseña
+}
+
+Usuario <|-- Miembro
+Comunidad "1..*" <--> "0..*" Miembro
+
+@enduml
