@@ -1,0 +1,54 @@
+@startuml TPA1
+skinparam linetype ortho
+class ServicioPublico{
+    nombre: String
+}
+class LineaDeTransporte {
+  estaciones: List<Estaciones>
+  tipoDeTransporte: TipoDeTransporte
+  --
+  Estacion estacionOrigen()
+  Estacion estacionDestino()
+}
+enum TipoDeTransporte {
+    SUBTERRANEO
+    FERROCARRIL
+}
+class Estacion {
+  nombre: String
+  ubicacion: String ??
+  servicios: List<Servicio>
+  --
+  agregarServicio(Servicio)
+  removerServicio(Servicio)
+}
+class Comunidad {
+  miembros: List<Miembro>
+  administradores: List<Miembro>
+  --
+  crearServicio()
+}
+
+class Miembro {
+  nombre: String
+  apellido: String
+  correoElectronico: String
+  comunidades: List<Comunidad>
+}
+
+class Usuario {
+  usuario: String
+  contraseña: String
+}
+class Servicio{
+    servicios: List<Servicio>
+    nombre: String
+}
+ServicioPublico <|-- LineaDeTransporte
+Miembro --|> Usuario
+Miembro "*"<-->"*" Comunidad
+LineaDeTransporte -->"*" Estacion
+TipoDeTransporte <-- LineaDeTransporte
+Estacion ->"*" Servicio
+Comunidad ..> Servicio
+@enduml
