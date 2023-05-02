@@ -1,0 +1,16 @@
+@startuml TPA1-CU
+
+left to right direction
+
+actor UnActor
+actor OtroActor
+
+rectangle "Sistema Monitoreo de Servicios Públicos" {
+  usecase Uso
+  usecase OtroUso
+}
+
+UnActor --> Uso
+OtroActor --> OtroUso
+
+@enduml
