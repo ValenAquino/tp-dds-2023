@@ -1,4 +1,4 @@
-@startuml TPA1
+@startuml TPA1-Clases
 skinparam linetype ortho
 class ServicioPublico{
     nombre: String
@@ -24,29 +24,33 @@ class Estacion {
 }
 class Comunidad {
   miembros: List<Miembro>
-  administradores: List<Miembro>
   --
   crearServicio()
-}
-
-class Miembro {
-  nombre: String
-  apellido: String
-  correoElectronico: String
-  comunidades: List<Comunidad>
 }
 
 class Usuario {
   usuario: String
   contraseña: String
+  nombre: String
+  apellido: String
+  correoElectronico: String
+  comunidades: List<Miembro>
 }
+
+class Miembro {
+  usuario: Usuario
+  comunidad: Comunidad
+  esAdministrador: Boolean
+}
+
 class Servicio{
     servicios: List<Servicio>
     nombre: String
 }
+
 ServicioPublico <|-- LineaDeTransporte
-Miembro --|> Usuario
-Miembro "*"<-->"*" Comunidad
+Usuario "*"<--> Miembro
+Comunidad "*"<-> Miembro
 LineaDeTransporte -->"*" Estacion
 TipoDeTransporte <-- LineaDeTransporte
 Estacion ->"*" Servicio
