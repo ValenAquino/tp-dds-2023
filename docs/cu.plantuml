@@ -1,0 +1,29 @@
+@startuml TPA1-CU
+
+left to right direction
+
+actor Usuario
+actor "Miembro Administrador" as MiembroAdministrador
+actor Administrador
+
+rectangle "Sistema Monitoreo de Servicios Públicos" {
+  (Registrar Usuario) as RegistrarUsuario
+  (Unirse a Comunidad) as UnirseAComunidad
+  
+  (Administrar Prestación de Servicio en Comunidad) as AdmPrestacionDeServicio
+
+  (Administrar Servicios Públicos) as AdmServicioPublico
+  (Administrar Servicios) as AdmServicios
+  (Administrar Comunidades) as AdmComunidades
+}
+
+Usuario --> RegistrarUsuario
+Usuario --> UnirseAComunidad
+
+MiembroAdministrador --> AdmPrestacionDeServicio
+
+Administrador --> AdmServicioPublico
+Administrador --> AdmServicios
+Administrador --> AdmComunidades
+
+@enduml
