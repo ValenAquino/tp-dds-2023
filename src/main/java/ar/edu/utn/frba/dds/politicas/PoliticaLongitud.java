@@ -21,7 +21,6 @@ public class PoliticaLongitud implements PoliticaContrasena {
 
   @Override
   public String getMensajeError() {
-    return "La contraseña debe tener entre "
-        + longitudMinima + " y " + longitudMaxima + " caracteres.";
+    return String.format("La contraseña debe tener entre %d y %d caracteres.", longitudMinima, longitudMaxima);
   }
 }
