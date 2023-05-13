@@ -23,7 +23,6 @@ class Estacion {
 }
 
 class Comunidad {
-  miembros: List<Miembro>
   --
   crearServicio()
 }
@@ -34,11 +33,10 @@ class Usuario {
   nombre: String
   apellido: String
   correoElectronico: String
-  comunidades: List<Miembro>
+  membresias: List<Membresia>
 }
 
-class Miembro {
-  usuario: Usuario
+class Membresia {
   comunidad: Comunidad
   esAdministrador: Boolean
 }
@@ -56,8 +54,8 @@ enum TipoDeServicio {
 Estacion ->"*" Servicio
 TipoDeServicio <-- Servicio
 Comunidad ..> Servicio
-Usuario "*"<--> Miembro
-Comunidad "*"<-> Miembro
 LineaDeTransporte -->"*" Estacion
+Usuario --> Membresia
+Comunidad <- Membresia
 TipoDeTransporte <-- LineaDeTransporte
 @enduml
