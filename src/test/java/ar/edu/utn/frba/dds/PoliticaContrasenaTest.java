@@ -11,48 +11,45 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class PoliticaContrasenaTest {
+
   @Test
   public void testPoliticaLongitudValida() {
     PoliticaLongitud politica = new PoliticaLongitud(8, 16);
 
-    try {
-      politica.validar("contraseña");
-      // Si llega hasta acá, la contraseña es válida
-    } catch (ValidacionContrasenaException e) {
-      fail("La contraseña debería ser válida");
-    }
+    assertDoesNotThrow(() -> politica.validar("contraseña"));
   }
 
-  @Test(expected = ValidacionContrasenaException.class)
+  @Test
   public void testPoliticaLongitudInvalida() {
     PoliticaLongitud politica = new PoliticaLongitud(8, 16);
-    politica.validar("corta");
+
+    assertThrows(ValidacionContrasenaException.class, () -> politica.validar("corta"));
   }
 
   @Test
   public void testPoliticaRegexValida() {
-    PoliticaRegex politica = new PoliticaRegex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[-+_!@#$%^&*.,?]).+$", "La contraseña no cumple con los requisitos de seguridad");
+    PoliticaRegex politica = new PoliticaRegex(
+        "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[-+_!@#$%^&*.,?]).+$",
+        "La contraseña no cumple con los requisitos de seguridad"
+    );
 
-    try {
-      politica.validar("Contraseña1!");
-      // Si llega hasta acá, la contraseña es válida
-    } catch (ValidacionContrasenaException e) {
-      fail("La contraseña debería ser válida");
-    }
+    assertDoesNotThrow(() -> politica.validar("Contraseña1!"));
   }
 
-  @Test(expected = ValidacionContrasenaException.class)
+  @Test
   public void testPoliticaRegexInvalida() {
     PoliticaRegex politica = new PoliticaRegex(
         "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[-+_!@#$%^&*.,?]).+$",
         "La contraseña debe tener menos un carácter en minúscula, uno en mayúscula, un número y un carácter especial"
     );
-    politica.validar("contraseña");
+
+    assertThrows(ValidacionContrasenaException.class, () -> politica.validar("contraseña"));
   }
 
   @Test
@@ -61,20 +58,16 @@ public class PoliticaContrasenaTest {
     contrasenasExcluidas.add("contraseña");
     PoliticaContrasenasExcluidas politica = new PoliticaContrasenasExcluidas(contrasenasExcluidas);
 
-    try {
-      politica.validar("otraContraseña");
-      // Si llega hasta acá, la contraseña es válida
-    } catch (ValidacionContrasenaException e) {
-      fail("La contraseña debería ser válida");
-    }
+    assertDoesNotThrow(() -> politica.validar("otraContraseña"));
   }
 
-  @Test(expected = ValidacionContrasenaException.class)
+  @Test
   public void testPoliticaContrasenasExcluidasInvalida() {
     Set<String> contrasenasExcluidas = new HashSet<>();
     contrasenasExcluidas.add("contraseña");
     PoliticaContrasenasExcluidas politica = new PoliticaContrasenasExcluidas(contrasenasExcluidas);
-    politica.validar("contraseña");
+
+    assertThrows(ValidacionContrasenaException.class, () -> politica.validar("contraseña"));
   }
 
   @Test
@@ -88,15 +81,10 @@ public class PoliticaContrasenaTest {
 
     ValidadorContrasena validador = new ValidadorContrasena(politicas);
 
-    try {
-      validador.validar("Contraseña1!");
-      // Si llega hasta acá, la contraseña es válida
-    } catch (ValidacionContrasenaException e) {
-      fail("La contraseña debería ser válida");
-    }
+    assertDoesNotThrow(() -> validador.validar("Contraseña1!"));
   }
 
-  @Test(expected = ValidacionContrasenaException.class)
+  @Test
   public void testValidadorContrasenaInvalida() {
     Set<String> contrasenasExcluidas = Collections.singleton("contraseña");
 
@@ -107,6 +95,6 @@ public class PoliticaContrasenaTest {
 
     ValidadorContrasena validador = new ValidadorContrasena(politicas);
 
-    validador.validar("contraseña");
+    assertThrows(ValidacionContrasenaException.class, () -> validador.validar("contraseña"));
   }
 }
