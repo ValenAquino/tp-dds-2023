@@ -8,6 +8,7 @@ class LineaDeTransporte {
   Estacion estacionOrigen()
   Estacion estacionDestino()
 }
+
 enum TipoDeTransporte {
   SUBTERRANEO
   FERROCARRIL
@@ -41,21 +42,22 @@ class Membresia {
   esAdministrador: Boolean
 }
 
-class Servicio{
+class Servicio {
   descripcion: String
   tipoDeServicio: TipoDeServicio
 }
+
 enum TipoDeServicio {
   ESCALERAS_MECANICAS
   ASCENSORES
   BAÑOS
 }
 
-Estacion ->"*" Servicio
-TipoDeServicio <-- Servicio
+Estacion -> Servicio
+Servicio -> TipoDeServicio
 Comunidad ..> Servicio
-LineaDeTransporte -->"*" Estacion
 Usuario --> Membresia
 Comunidad <- Membresia
+LineaDeTransporte --> Estacion
 TipoDeTransporte <-- LineaDeTransporte
 @enduml
