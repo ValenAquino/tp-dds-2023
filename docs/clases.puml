@@ -1,8 +1,5 @@
 @startuml TPA1-Clases
 skinparam linetype ortho
-class ServicioPublico{
-  nombre: String
-}
 
 class LineaDeTransporte {
   estaciones: List<Estaciones>
@@ -11,6 +8,7 @@ class LineaDeTransporte {
   Estacion estacionOrigen()
   Estacion estacionDestino()
 }
+
 enum TipoDeTransporte {
   SUBTERRANEO
   FERROCARRIL
@@ -26,7 +24,6 @@ class Estacion {
 }
 
 class Comunidad {
-  miembros: List<Miembro>
   --
   crearServicio()
 }
@@ -37,31 +34,30 @@ class Usuario {
   nombre: String
   apellido: String
   correoElectronico: String
-  comunidades: List<Miembro>
+  membresias: List<Membresia>
 }
 
-class Miembro {
-  usuario: Usuario
+class Membresia {
   comunidad: Comunidad
   esAdministrador: Boolean
 }
 
-class Servicio{
+class Servicio {
   descripcion: String
   tipoDeServicio: TipoDeServicio
 }
+
 enum TipoDeServicio {
   ESCALERAS_MECANICAS
   ASCENSORES
   BAÑOS
 }
 
-Estacion ->"*" Servicio
-TipoDeServicio <-- Servicio
+Estacion -> Servicio
+Servicio -> TipoDeServicio
 Comunidad ..> Servicio
-ServicioPublico <|-- LineaDeTransporte
-Usuario "*"<--> Miembro
-Comunidad "*"<-> Miembro
-LineaDeTransporte -->"*" Estacion
+Usuario --> Membresia
+Comunidad <- Membresia
+LineaDeTransporte --> Estacion
 TipoDeTransporte <-- LineaDeTransporte
 @enduml
