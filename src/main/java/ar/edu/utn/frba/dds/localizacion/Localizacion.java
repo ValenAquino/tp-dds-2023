@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.localizacion;
 
 public abstract class Localizacion {
-  String nombre;
+  private String nombre;
 
   public Localizacion(String nombre) {
     this.nombre = nombre;

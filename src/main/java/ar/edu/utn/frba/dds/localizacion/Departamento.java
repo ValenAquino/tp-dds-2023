@@ -9,6 +9,6 @@ public class Departamento extends Localizacion {
   }
 
   public String getProvinciaNombre() {
-    return provincia.nombre;
+    return provincia.getNombre();
   }
 }
