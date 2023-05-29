@@ -1,0 +1,76 @@
+@startuml TPA2-Clases
+skinparam linetype ortho
+
+' Supermercado, Centro Comunal, Banco, ...
+class Entidad {
+  nombre: String
+  establecimientos: List<Establecimiento>
+}
+
+' Sucursal, Estacion, ...
+class Establecimiento {
+  nombre: String
+  ubicacion: String
+  servicios: List<Servicio>
+  --
+  agregarServicio(Servicio)
+  removerServicio(Servicio)
+}
+
+class Servicio {
+  descripcion: String
+  tipoDeServicio: TipoDeServicio
+}
+
+enum TipoDeServicio {
+  ESCALERAS_MECANICAS
+  ASCENSORES
+  BAÑOS
+}
+
+class LineaDeTransporte {
+  tipoDeTransporte: TipoDeTransporte
+  --
+  Establecimiento estacionOrigen()
+  Establecimiento estacionDestino()
+}
+
+enum TipoDeTransporte {
+  SUBTERRANEO
+  FERROCARRIL
+}
+
+Entidad -> Establecimiento
+Establecimiento -> Servicio
+Servicio -> TipoDeServicio
+Entidad <|-- LineaDeTransporte
+LineaDeTransporte -> TipoDeTransporte
+
+/'
+
+class Usuario {
+  usuario: String
+  contraseña: String
+  nombre: String
+  apellido: String
+  correoElectronico: String
+  membresias: List<Membresia>
+}
+
+class Comunidad {
+  --
+  crearServicio()
+}
+
+class Membresia {
+  comunidad: Comunidad
+  esAdministrador: Boolean
+}
+
+Comunidad ..> Servicio
+Usuario --> Membresia
+Comunidad <- Membresia
+
+'/
+
+@enduml
