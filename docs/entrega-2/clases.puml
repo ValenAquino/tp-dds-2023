@@ -4,6 +4,7 @@ skinparam linetype ortho
 ' Supermercado, Centro Comunal, Banco, ...
 class Entidad {
   nombre: String
+  localizacion: Localizacion
   establecimientos: List<Establecimiento>
 }
 
@@ -40,22 +41,33 @@ enum TipoDeTransporte {
   FERROCARRIL
 }
 
-Entidad -> Establecimiento
-Establecimiento -> Servicio
-Servicio -> TipoDeServicio
-Entidad <|-- LineaDeTransporte
-LineaDeTransporte -> TipoDeTransporte
-
-/'
-
 class Usuario {
   usuario: String
   contraseña: String
   nombre: String
   apellido: String
   correoElectronico: String
-  membresias: List<Membresia>
+  entidadesDeInteres: List<Entidad>
+  localizacion: Localizacion
+  ' membresias: List<Membresia>
 }
+
+class Localizacion {
+  nombre: String
+  latitud: Double
+  longitud: Double
+}
+
+Entidad -> Establecimiento
+Establecimiento -> Servicio
+Servicio -> TipoDeServicio
+Entidad <|-- LineaDeTransporte
+LineaDeTransporte -> TipoDeTransporte
+Usuario --> Entidad
+Usuario -> Localizacion
+Localizacion <- Entidad
+
+/'
 
 class Comunidad {
   --
