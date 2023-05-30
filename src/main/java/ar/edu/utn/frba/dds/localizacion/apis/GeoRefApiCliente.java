@@ -13,13 +13,14 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 
 public class GeoRefApiCliente {
+  private String baseUrl = "https://apis.datos.gob.ar/georef/api";
   private Client client = ClientBuilder.newClient();
 
   public List<Provincia> getProvincias() {
     var provincias = new ArrayList<Provincia>();
 
     try {
-      var respuesta = consultarApi("https://apis.datos.gob.ar/georef/api/provincias");
+      var respuesta = consultarApi("provincias");
 
       var array = (ArrayList) respuesta.get("provincias");
 
@@ -42,7 +43,7 @@ public class GeoRefApiCliente {
     try {
       var municipios = new ArrayList<Municipio>();
 
-      var respuesta = consultarApi("https://apis.datos.gob.ar/georef/api/municipios.json");
+      var respuesta = consultarApi("municipios.json");
 
       var array = (ArrayList) respuesta.get("municipios");
 
@@ -69,7 +70,7 @@ public class GeoRefApiCliente {
     try {
       var departamentos = new ArrayList<Departamento>();
 
-      var respuesta = consultarApi("https://apis.datos.gob.ar/georef/api/departamentos.json");
+      var respuesta = consultarApi("departamentos.json");
 
       var array = (ArrayList) respuesta.get("departamentos");
 
@@ -92,10 +93,11 @@ public class GeoRefApiCliente {
     }
   }
 
-  public Map<String, Object> consultarApi(String url) {
-    return this.client.target(url)
-        .request(MediaType.APPLICATION_JSON)
-        .get(Map.class);
+  public Map<String, Object> consultarApi(String path) {
+    return this.client.target(baseUrl)
+            .path(path)
+            .request(MediaType.APPLICATION_JSON)
+            .get(Map.class);
   }
 
   private Provincia getProvincia(List<Provincia> provincias, String nombreProvincia) {
