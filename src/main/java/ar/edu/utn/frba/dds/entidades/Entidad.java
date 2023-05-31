@@ -22,16 +22,14 @@ public class Entidad {
     List<Entidad> entidades = new ArrayList<>();
 
     try (Reader reader = new FileReader(path);
-         CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withHeader("nombre", "nombreLocalizacion", "latitud", "longitud"))) {
-
-      for (CSVRecord csvRecord : csvParser) {
+      CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withHeader("nombre", "nombreLocalizacion", "latitud", "longitud"))) {
+      csvParser.forEach(csvRecord -> {
         String nombre = csvRecord.get("nombre");
         String nombreLocalizacion = csvRecord.get("nombreLocalizacion");
         String latitud = csvRecord.get("latitud");
         String longitud = csvRecord.get("longitud");
         entidades.add(new Entidad(nombre,new Localizacion(nombreLocalizacion)));
-      }
-
+      });
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
