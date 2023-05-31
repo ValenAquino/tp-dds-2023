@@ -1,9 +1,9 @@
 package ar.edu.utn.frba.dds.localizacion;
 
 public interface ServicioLocalizacion {
-  Provincia getProvincia(String nombre);
+  Localizacion getProvincia(String nombre);
 
-  Municipio getMunicipio(String nombre, String provinciaNombre);
+  Localizacion getMunicipio(String nombre, String provinciaNombre);
 
-  Departamento getDepartamento(String nombre, String provinciaNombre);
+  Localizacion getDepartamento(String nombre, String provinciaNombre);
 }

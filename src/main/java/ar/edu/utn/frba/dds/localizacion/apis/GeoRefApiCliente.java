@@ -1,9 +1,6 @@
 package ar.edu.utn.frba.dds.localizacion.apis;
 
-import ar.edu.utn.frba.dds.localizacion.Departamento;
 import ar.edu.utn.frba.dds.localizacion.LocalizacionApiException;
-import ar.edu.utn.frba.dds.localizacion.Municipio;
-import ar.edu.utn.frba.dds.localizacion.Provincia;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,94 +13,45 @@ public class GeoRefApiCliente {
   private String baseUrl = "https://apis.datos.gob.ar/georef/api";
   private Client client = ClientBuilder.newClient();
 
-  public List<Provincia> getProvincias() {
-    var provincias = new ArrayList<Provincia>();
-
+  public Map<String, Object> getProvinciaFromApi(String nombre) {
     try {
-      var respuesta = consultarApi("provincias");
-
-      var array = (ArrayList) respuesta.get("provincias");
-
-      for (var elemento : array) {
-        var nombre = ((HashMap) elemento).get("nombre").toString();
-
-        var provincia = new Provincia(nombre);
-
-        provincias.add(provincia);
-      }
-
-      return provincias;
+      return consultarApi("provincias", nombre, null);
 
     } catch (LocalizacionApiException e) {
       throw new LocalizacionApiException("Error al intentar obtener las provincias");
     }
   }
 
-  public List<Municipio> getMunicipios(List<Provincia> provincias) {
+  public Map<String, Object> getMunicipioFromApi(String nombre, String provinciaNombre) {
     try {
-      var municipios = new ArrayList<Municipio>();
-
-      var respuesta = consultarApi("municipios.json");
-
-      var array = (ArrayList) respuesta.get("municipios");
-
-      for (var elemento : array) {
-        var obj = (HashMap) elemento;
-        var nombre = obj.get("nombre").toString();
-        var nombreProvincia = ((HashMap) obj.get("provincia")).get("nombre").toString();
-
-        var provincia = this.getProvincia(provincias, nombreProvincia);
-
-        var municipio = new Municipio(nombre, provincia);
-
-        municipios.add(municipio);
-      }
-
-      return municipios;
+      return consultarApi("municipios", nombre, provinciaNombre);
 
     } catch (LocalizacionApiException e) {
       throw new LocalizacionApiException("Error al intentar obtener los municipios");
     }
   }
 
-  public List<Departamento> getDepartamentos(List<Provincia> provincias) {
+  public Map<String, Object> getDepartamentoFromApi(String nombre, String provinciaNombre) {
     try {
-      var departamentos = new ArrayList<Departamento>();
-
-      var respuesta = consultarApi("departamentos.json");
-
-      var array = (ArrayList) respuesta.get("departamentos");
-
-      for (var elemento : array) {
-        var obj = (HashMap) elemento;
-        var nombre = obj.get("nombre").toString();
-        var nombreProvincia = ((HashMap) obj.get("provincia")).get("nombre").toString();
-
-        var provincia = this.getProvincia(provincias, nombreProvincia);
-
-        var departamento = new Departamento(nombre, provincia);
-
-        departamentos.add(departamento);
-      }
-
-      return departamentos;
+      return consultarApi("departamentos", nombre, provinciaNombre);
 
     } catch (LocalizacionApiException e) {
       throw new LocalizacionApiException("Error al intentar obtener los departamentos");
     }
   }
 
-  public Map<String, Object> consultarApi(String path) {
-    return this.client.target(baseUrl)
+  public Map<String, Object> consultarApi(String path, String nombre, String provinciaNombre) {
+    var requestBody = this.client.target(baseUrl)
             .path(path)
+            .queryParam("nombre", nombre)
+            .queryParam("aplanar", "");
+
+    if (provinciaNombre != null) {
+      requestBody = requestBody.queryParam("provincia", provinciaNombre);
+    }
+
+    return requestBody
             .request(MediaType.APPLICATION_JSON)
             .get(Map.class);
-  }
-
-  private Provincia getProvincia(List<Provincia> provincias, String nombreProvincia) {
-    return provincias.stream()
-        .filter(prov -> nombreProvincia.equals(prov.getNombre()))
-        .findAny()
-        .orElse(null);
   }
 }

@@ -1,59 +1,64 @@
 package ar.edu.utn.frba.dds.localizacion;
 
 import ar.edu.utn.frba.dds.localizacion.apis.GeoRefApiCliente;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ServicioLocalizacionGeoRef implements ServicioLocalizacion {
   private GeoRefApiCliente apiCliente;
-  private List<Departamento> departamentos;
-  private List<Municipio> municipios;
-  private List<Provincia> provincias;
 
   public ServicioLocalizacionGeoRef(GeoRefApiCliente apiCliente) {
     this.apiCliente = apiCliente;
-    this.provincias = this.apiCliente.getProvincias();
-    this.municipios = this.apiCliente.getMunicipios(this.provincias);
-    this.departamentos = this.apiCliente.getDepartamentos(this.provincias);
   }
 
-  public Provincia getProvincia(String nombre) {
-    var provincia = provincias.stream()
-        .filter(prov -> nombre.equals(prov.getNombre()))
-        .findAny()
-        .orElse(null);
+  public Localizacion getProvincia(String nombre) {
+    var respuesta = this.apiCliente.getProvinciaFromApi(nombre);
 
-    if (provincia == null) {
+    var array = (ArrayList) respuesta.get("provincias");
+
+    if (array.size() == 0) {
       throw new LocalizacionNoExistenteException("Provincia inexistente");
     }
 
-    return provincia;
+    var provinciaObj = (HashMap) array.get(0);
+
+    var lat = (double) provinciaObj.get("centroide_lat");
+    var lon = (double) provinciaObj.get("centroide_lon");
+
+    return new Localizacion(nombre, lat, lon);
   }
 
-  public Departamento getDepartamento(String nombre, String provinciaNombre) {
-    var departamento = departamentos.stream()
-        .filter(dep -> nombre.equals(dep.getNombre())
-            && provinciaNombre.equals(dep.getProvinciaNombre()))
-        .findAny()
-        .orElse(null);
+  public Localizacion getDepartamento(String nombre, String provinciaNombre) {
+    var respuesta = this.apiCliente.getDepartamentoFromApi(nombre, provinciaNombre);
 
-    if (departamento == null) {
+    var array = (ArrayList) respuesta.get("departamentos");
+
+    if (array.size() == 0) {
       throw new LocalizacionNoExistenteException("Departamento inexistente");
     }
 
-    return departamento;
+    var departamentoObj = (HashMap) array.get(0);
+
+    var lat = (double) departamentoObj.get("centroide_lat");
+    var lon = (double) departamentoObj.get("centroide_lon");
+
+    return new Localizacion(nombre, lat, lon);
   }
 
-  public Municipio getMunicipio(String nombre, String provinciaNombre) {
-    var municipio = municipios.stream()
-        .filter(mun -> nombre.equals(mun.getNombre())
-            && provinciaNombre.equals(mun.getProvinciaNombre()))
-        .findAny()
-        .orElse(null);
+  public Localizacion getMunicipio(String nombre, String provinciaNombre) {
+    var respuesta = this.apiCliente.getMunicipioFromApi(nombre, provinciaNombre);
 
-    if (municipio == null) {
+    var array = (ArrayList) respuesta.get("municipios");
+
+    if (array.size() == 0) {
       throw new LocalizacionNoExistenteException("Municipio inexistente");
     }
 
-    return municipio;
+    var municipioObj = (HashMap) array.get(0);
+
+    var lat = (double) municipioObj.get("centroide_lat");
+    var lon = (double) municipioObj.get("centroide_lon");
+
+    return new Localizacion(nombre, lat, lon);
   }
 }

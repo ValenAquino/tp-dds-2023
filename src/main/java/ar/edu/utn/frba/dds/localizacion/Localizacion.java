@@ -1,13 +1,13 @@
 package ar.edu.utn.frba.dds.localizacion;
 
-public abstract class Localizacion {
+public class Localizacion {
   private String nombre;
+  private double lat;
+  private double lon;
 
-  public Localizacion(String nombre) {
+  public Localizacion(String nombre, Double lat, Double lon) {
     this.nombre = nombre;
-  }
-
-  public String getNombre() {
-    return this.nombre;
+    this.lat = lat;
+    this.lon = lon;
   }
 }
