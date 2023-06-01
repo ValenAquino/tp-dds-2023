@@ -7,48 +7,37 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 
 public class GeoRefApiCliente {
-  private String baseUrl = "https://apis.datos.gob.ar/georef/api";
-  private Client client = ClientBuilder.newClient();
+  private final Client client = ClientBuilder.newClient();
 
   public Map<String, Object> getProvinciaFromApi(String nombre) {
-    try {
-      return consultarApi("provincias", nombre, null);
-
-    } catch (LocalizacionApiException e) {
-      throw new LocalizacionApiException("Error al intentar obtener las provincias");
-    }
+    return consultarApi("provincias", nombre, null, "Error al intentar obtener las provincias");
   }
 
   public Map<String, Object> getMunicipioFromApi(String nombre, String provinciaNombre) {
-    try {
-      return consultarApi("municipios", nombre, provinciaNombre);
-
-    } catch (LocalizacionApiException e) {
-      throw new LocalizacionApiException("Error al intentar obtener los municipios");
-    }
+    return consultarApi("municipios", nombre, provinciaNombre, "Error al intentar obtener los municipios");
   }
 
   public Map<String, Object> getDepartamentoFromApi(String nombre, String provinciaNombre) {
-    try {
-      return consultarApi("departamentos", nombre, provinciaNombre);
-
-    } catch (LocalizacionApiException e) {
-      throw new LocalizacionApiException("Error al intentar obtener los departamentos");
-    }
+    return consultarApi("departamentos", nombre, provinciaNombre, "Error al intentar obtener los departamentos");
   }
 
-  public Map<String, Object> consultarApi(String path, String nombre, String provinciaNombre) {
-    var requestBody = this.client.target(baseUrl)
-            .path(path)
-            .queryParam("nombre", nombre)
-            .queryParam("aplanar", "");
+  public Map<String, Object> consultarApi(String path, String nombre, String provinciaNombre, String errorMessage) {
+    try {
+      var requestBody = this.client.target("https://apis.datos.gob.ar/georef/api")
+          .path(path)
+          .queryParam("nombre", nombre)
+          .queryParam("aplanar", "");
 
-    if (provinciaNombre != null) {
-      requestBody = requestBody.queryParam("provincia", provinciaNombre);
+      if (provinciaNombre != null) {
+        requestBody = requestBody.queryParam("provincia", provinciaNombre);
+      }
+
+      return requestBody
+          .request(MediaType.APPLICATION_JSON)
+          .get(Map.class);
+
+    } catch (LocalizacionApiException e) {
+      throw new LocalizacionApiException(errorMessage);
     }
-
-    return requestBody
-            .request(MediaType.APPLICATION_JSON)
-            .get(Map.class);
   }
 }
