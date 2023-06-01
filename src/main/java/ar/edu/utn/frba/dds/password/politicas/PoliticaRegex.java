@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.password.politicas;
 
-import ar.edu.utn.frba.dds.password.validacion.PoliticaContrasena;
 import ar.edu.utn.frba.dds.excepciones.ValidacionContrasenaException;
+import ar.edu.utn.frba.dds.password.validacion.PoliticaContrasena;
 import java.util.regex.Pattern;
 
 public class PoliticaRegex implements PoliticaContrasena {

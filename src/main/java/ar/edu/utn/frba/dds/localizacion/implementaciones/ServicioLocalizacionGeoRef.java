@@ -1,8 +1,8 @@
 package ar.edu.utn.frba.dds.localizacion.implementaciones;
 
 import ar.edu.utn.frba.dds.entidades.Localizacion;
-import ar.edu.utn.frba.dds.localizacion.ServicioLocalizacion;
 import ar.edu.utn.frba.dds.entidades.TipoDeLocalizacion;
+import ar.edu.utn.frba.dds.localizacion.ServicioLocalizacion;
 import ar.edu.utn.frba.dds.localizacion.apis.GeoRefApiCliente;
 import java.util.Map;
 
@@ -34,11 +34,11 @@ public class ServicioLocalizacionGeoRef implements ServicioLocalizacion {
     );
   }
 
-  private Localizacion getLocalizacion(Map<String, Object> localizacionObj, TipoDeLocalizacion type) {
+  private Localizacion getLocalizacion(Map<String, Object> respuestaApi, TipoDeLocalizacion type) {
     return new Localizacion(
-        (String) localizacionObj.get("nombre"),
-        (double) localizacionObj.get("centroide_lat"),
-        (double) localizacionObj.get("centroide_lon"),
+        (String) respuestaApi.get("nombre"),
+        (double) respuestaApi.get("centroide_lat"),
+        (double) respuestaApi.get("centroide_lon"),
         type
     );
   }

@@ -16,4 +16,8 @@ public class Localizacion {
   public String getNombre() {
     return this.nombre;
   }
+
+  public TipoDeLocalizacion getTipo() {
+    return this.tipo;
+  }
 }

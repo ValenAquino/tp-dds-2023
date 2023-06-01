@@ -12,7 +12,8 @@ public class Usuario {
   private List<Entidad> entidadesDeInteres;
   private Localizacion localizacion;
 
-  public Usuario(String usuario, String contrasenia, String nombre, String apellido, String correoElectronico, Localizacion localizacion){
+  public Usuario(String usuario, String contrasenia, String nombre, String apellido,
+                 String correoElectronico, Localizacion localizacion) {
     this.usuario = usuario;
     this.contrasenia = contrasenia;
     this.nombre = nombre;

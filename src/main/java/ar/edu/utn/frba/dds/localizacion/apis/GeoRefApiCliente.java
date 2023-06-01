@@ -4,12 +4,11 @@ import ar.edu.utn.frba.dds.excepciones.LocalizacionApiException;
 import ar.edu.utn.frba.dds.excepciones.LocalizacionNoExistenteException;
 import java.util.ArrayList;
 import java.util.Map;
-import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 
 public class GeoRefApiCliente {
-  private final Client client = ClientBuilder.newClient();
 
   public Map<String, Object> getProvinciaFromApi(String nombre) {
     return consultarApi("provincias", nombre, null);
@@ -23,17 +22,17 @@ public class GeoRefApiCliente {
     return consultarApi("departamentos", nombre, provinciaNombre);
   }
 
-  public Map<String, Object> consultarApi(String path, String nombre, String provinciaNombre) {
+  private static Map<String, Object> consultarApi(String path, String nombre, String provincia) {
     ArrayList responseBody;
 
     try {
-      var requestBody = this.client.target("https://apis.datos.gob.ar/georef/api")
+      var requestBody = ClientBuilder.newClient().target("https://apis.datos.gob.ar/georef/api")
           .path(path)
           .queryParam("nombre", nombre)
           .queryParam("aplanar", "");
 
-      if (provinciaNombre != null) {
-        requestBody = requestBody.queryParam("provincia", provinciaNombre);
+      if (provincia != null) {
+        requestBody = requestBody.queryParam("provincia", provincia);
       }
 
       responseBody = (ArrayList) requestBody

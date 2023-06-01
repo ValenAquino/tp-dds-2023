@@ -12,17 +12,20 @@ import org.apache.commons.csv.CSVRecord;
 
 public class OrganismoDeControlImportador {
 
-  private final String pathCSV;
+  private final String pathCsv;
 
   public OrganismoDeControlImportador(String path)  {
-    this.pathCSV = path;
+    this.pathCsv = path;
   }
 
   public List<OrganismoDeControl> getOrganismosDeControl() {
     List<OrganismoDeControl> organismos = new ArrayList<>();
 
-    try (Reader reader = new FileReader(pathCSV);
-         CSVParser csvParser = CSVParser.parse(reader, CSVFormat.DEFAULT.withHeader("nombre", "correo"))) {
+    try (Reader reader = new FileReader(pathCsv);
+         CSVParser csvParser = CSVParser.parse(
+             reader,
+             CSVFormat.DEFAULT.withHeader("nombre", "correo"))
+    ) {
 
       for (CSVRecord csvRecord : csvParser) {
         String nombre = csvRecord.get("nombre");
