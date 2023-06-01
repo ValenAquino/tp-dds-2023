@@ -1,5 +1,4 @@
-package ar.edu.utn.frba.dds.localizacion;
-
+package ar.edu.utn.frba.dds.entidades;
 
 public enum TipoDeLocalizacion {
   DEPARTAMENTO("Departamento"),

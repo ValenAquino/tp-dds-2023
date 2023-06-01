@@ -1,7 +1,5 @@
 package ar.edu.utn.frba.dds.entidades;
 
-import ar.edu.utn.frba.dds.localizacion.TipoDeLocalizacion;
-
 public class Localizacion {
   private String nombre;
   private double lat;
