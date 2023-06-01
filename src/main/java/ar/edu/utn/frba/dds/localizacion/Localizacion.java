@@ -10,5 +10,6 @@ public class Localizacion {
     this.nombre = nombre;
     this.lat = lat;
     this.lon = lon;
+    this.tipo = tipo;
   }
 }
