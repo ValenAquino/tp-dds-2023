@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.validacion;
+package ar.edu.utn.frba.dds.password.validacion;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,11 +1,11 @@
 package ar.edu.utn.frba.dds;
 
-import ar.edu.utn.frba.dds.politicas.PoliticaContrasenasExcluidas;
-import ar.edu.utn.frba.dds.politicas.PoliticaLongitud;
-import ar.edu.utn.frba.dds.politicas.PoliticaRegex;
-import ar.edu.utn.frba.dds.validacion.PoliticaContrasena;
-import ar.edu.utn.frba.dds.validacion.ValidacionContrasenaException;
-import ar.edu.utn.frba.dds.validacion.ValidadorContrasena;
+import ar.edu.utn.frba.dds.password.politicas.PoliticaContrasenasExcluidas;
+import ar.edu.utn.frba.dds.password.politicas.PoliticaLongitud;
+import ar.edu.utn.frba.dds.password.politicas.PoliticaRegex;
+import ar.edu.utn.frba.dds.password.validacion.PoliticaContrasena;
+import ar.edu.utn.frba.dds.excepciones.ValidacionContrasenaException;
+import ar.edu.utn.frba.dds.password.validacion.ValidadorContrasena;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;

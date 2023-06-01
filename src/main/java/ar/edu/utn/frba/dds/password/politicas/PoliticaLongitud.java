@@ -1,7 +1,7 @@
-package ar.edu.utn.frba.dds.politicas;
+package ar.edu.utn.frba.dds.password.politicas;
 
-import ar.edu.utn.frba.dds.validacion.PoliticaContrasena;
-import ar.edu.utn.frba.dds.validacion.ValidacionContrasenaException;
+import ar.edu.utn.frba.dds.excepciones.ValidacionContrasenaException;
+import ar.edu.utn.frba.dds.password.validacion.PoliticaContrasena;
 
 public class PoliticaLongitud implements PoliticaContrasena {
   private final int longitudMinima;
