@@ -8,10 +8,13 @@ public class OrganismoDeControl {
   private Usuario responsableDeInformes;
   private List<Servicio> servicios;
 
-  public OrganismoDeControl(String nombre, String correoElectronico, Usuario responsableDeInformes) {
+  public OrganismoDeControl(String nombre, String correoElectronico) {
     this.nombre = nombre;
     this.correoElectronico = correoElectronico;
-    this.responsableDeInformes = responsableDeInformes;
+  }
+
+  public String getNombre() {
+    return nombre;
   }
 
   public void asignarResponsable(Usuario nuevoResponsable) {
