@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.entidades;
 
-import ar.edu.utn.frba.dds.localizacion.Localizacion;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +18,7 @@ public class Usuario {
     this.nombre = nombre;
     this.apellido = apellido;
     this.correoElectronico = correoElectronico;
-    this.localizacion = localizacion; // Quizas verificacion de que la localizacion sea valida
+    this.localizacion = localizacion;
     this.entidadesDeInteres = new ArrayList<>();
   }
 

@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.localizacion;
+package ar.edu.utn.frba.dds.excepciones;
 
 public class LocalizacionNoExistenteException extends RuntimeException {
   public LocalizacionNoExistenteException(String message) {

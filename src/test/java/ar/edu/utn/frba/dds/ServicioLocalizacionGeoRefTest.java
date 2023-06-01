@@ -3,8 +3,8 @@ package ar.edu.utn.frba.dds;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import ar.edu.utn.frba.dds.localizacion.LocalizacionNoExistenteException;
-import ar.edu.utn.frba.dds.localizacion.ServicioLocalizacionGeoRef;
+import ar.edu.utn.frba.dds.excepciones.LocalizacionNoExistenteException;
+import ar.edu.utn.frba.dds.localizacion.implementaciones.ServicioLocalizacionGeoRef;
 import ar.edu.utn.frba.dds.localizacion.apis.GeoRefApiCliente;
 import org.junit.jupiter.api.Test;
 

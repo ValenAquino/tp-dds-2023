@@ -1,5 +1,9 @@
-package ar.edu.utn.frba.dds.localizacion;
+package ar.edu.utn.frba.dds.localizacion.implementaciones;
 
+import ar.edu.utn.frba.dds.entidades.Localizacion;
+import ar.edu.utn.frba.dds.excepciones.LocalizacionNoExistenteException;
+import ar.edu.utn.frba.dds.localizacion.ServicioLocalizacion;
+import ar.edu.utn.frba.dds.localizacion.TipoDeLocalizacion;
 import ar.edu.utn.frba.dds.localizacion.apis.GeoRefApiCliente;
 import java.util.ArrayList;
 import java.util.HashMap;

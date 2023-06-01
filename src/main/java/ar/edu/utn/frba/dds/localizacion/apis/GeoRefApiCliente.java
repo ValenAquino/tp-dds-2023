@@ -1,9 +1,6 @@
 package ar.edu.utn.frba.dds.localizacion.apis;
 
-import ar.edu.utn.frba.dds.localizacion.LocalizacionApiException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import ar.edu.utn.frba.dds.excepciones.LocalizacionApiException;
 import java.util.Map;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;

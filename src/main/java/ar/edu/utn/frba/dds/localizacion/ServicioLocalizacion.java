@@ -1,5 +1,7 @@
 package ar.edu.utn.frba.dds.localizacion;
 
+import ar.edu.utn.frba.dds.entidades.Localizacion;
+
 public interface ServicioLocalizacion {
   Localizacion getProvincia(String nombre);
 
