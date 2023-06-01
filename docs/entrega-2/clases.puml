@@ -56,6 +56,15 @@ class Localizacion {
   nombre: String
   latitud: Double
   longitud: Double
+  tipoDeLocalizacion: TipoDeLocalizacion
+}
+
+enum TipoDeLocalizacion {
+  DEPARTAMENTO
+  MUNICIPIO
+  PROVINCIA
+}
+
 }
 
 Entidad -> Establecimiento
@@ -66,6 +75,7 @@ LineaDeTransporte -> TipoDeTransporte
 Usuario --> Entidad
 Usuario -> Localizacion
 Localizacion <- Entidad
+Localizacion -> TipoDeLocalizacion
 
 /'
 
