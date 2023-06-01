@@ -25,7 +25,7 @@ public class ServicioLocalizacionGeoRef implements ServicioLocalizacion {
     var lat = (double) provinciaObj.get("centroide_lat");
     var lon = (double) provinciaObj.get("centroide_lon");
 
-    return new Localizacion(nombre, lat, lon);
+    return new Localizacion(nombre, lat, lon, TipoDeLocalizacion.PROVINCIA);
   }
 
   public Localizacion getDepartamento(String nombre, String provinciaNombre) {
@@ -42,7 +42,7 @@ public class ServicioLocalizacionGeoRef implements ServicioLocalizacion {
     var lat = (double) departamentoObj.get("centroide_lat");
     var lon = (double) departamentoObj.get("centroide_lon");
 
-    return new Localizacion(nombre, lat, lon);
+    return new Localizacion(nombre, lat, lon, TipoDeLocalizacion.DEPARTAMENTO);
   }
 
   public Localizacion getMunicipio(String nombre, String provinciaNombre) {
@@ -59,6 +59,6 @@ public class ServicioLocalizacionGeoRef implements ServicioLocalizacion {
     var lat = (double) municipioObj.get("centroide_lat");
     var lon = (double) municipioObj.get("centroide_lon");
 
-    return new Localizacion(nombre, lat, lon);
+    return new Localizacion(nombre, lat, lon, TipoDeLocalizacion.MUNICIPIO);
   }
 }
