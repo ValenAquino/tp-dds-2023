@@ -65,6 +65,13 @@ enum TipoDeLocalizacion {
   PROVINCIA
 }
 
+class OrganismoDeControl {
+  nombre: String
+  correoElectronico: String
+  responsableDeInformes: Usuario
+  servicios: List<Servicio>
+  --
+  asignarResponsable()
 }
 
 Entidad -> Establecimiento
@@ -76,6 +83,7 @@ Usuario --> Entidad
 Usuario -> Localizacion
 Localizacion <- Entidad
 Localizacion -> TipoDeLocalizacion
+Servicio <-- OrganismoDeControl
 
 /'
 
