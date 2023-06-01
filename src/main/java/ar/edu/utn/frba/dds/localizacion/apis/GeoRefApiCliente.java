@@ -10,18 +10,18 @@ public class GeoRefApiCliente {
   private final Client client = ClientBuilder.newClient();
 
   public Map<String, Object> getProvinciaFromApi(String nombre) {
-    return consultarApi("provincias", nombre, null, "Error al intentar obtener las provincias");
+    return consultarApi("provincias", nombre, null);
   }
 
   public Map<String, Object> getMunicipioFromApi(String nombre, String provinciaNombre) {
-    return consultarApi("municipios", nombre, provinciaNombre, "Error al intentar obtener los municipios");
+    return consultarApi("municipios", nombre, provinciaNombre);
   }
 
   public Map<String, Object> getDepartamentoFromApi(String nombre, String provinciaNombre) {
-    return consultarApi("departamentos", nombre, provinciaNombre, "Error al intentar obtener los departamentos");
+    return consultarApi("departamentos", nombre, provinciaNombre);
   }
 
-  public Map<String, Object> consultarApi(String path, String nombre, String provinciaNombre, String errorMessage) {
+  public Map<String, Object> consultarApi(String path, String nombre, String provinciaNombre) {
     try {
       var requestBody = this.client.target("https://apis.datos.gob.ar/georef/api")
           .path(path)
@@ -36,8 +36,8 @@ public class GeoRefApiCliente {
           .request(MediaType.APPLICATION_JSON)
           .get(Map.class);
 
-    } catch (LocalizacionApiException e) {
-      throw new LocalizacionApiException(errorMessage);
+    } catch (Exception e) {
+      throw new LocalizacionApiException(e.getMessage());
     }
   }
 }
