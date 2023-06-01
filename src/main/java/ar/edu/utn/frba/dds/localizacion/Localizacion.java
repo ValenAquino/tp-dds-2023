@@ -16,8 +16,4 @@ public class Localizacion {
   public String getNombre() {
     return this.nombre;
   }
-
-  public boolean esMismaLocalizacion(Localizacion localizacion){
-    return localizacion.nombre == this.nombre;
-  }
 }
