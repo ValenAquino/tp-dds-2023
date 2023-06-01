@@ -12,4 +12,8 @@ public class Localizacion {
     this.lon = lon;
     this.tipo = tipo;
   }
+
+  public String getNombre() {
+    return this.nombre;
+  }
 }
