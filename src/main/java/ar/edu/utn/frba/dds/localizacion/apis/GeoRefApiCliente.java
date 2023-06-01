@@ -1,6 +1,8 @@
 package ar.edu.utn.frba.dds.localizacion.apis;
 
 import ar.edu.utn.frba.dds.excepciones.LocalizacionApiException;
+import ar.edu.utn.frba.dds.excepciones.LocalizacionNoExistenteException;
+import java.util.ArrayList;
 import java.util.Map;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -22,6 +24,8 @@ public class GeoRefApiCliente {
   }
 
   public Map<String, Object> consultarApi(String path, String nombre, String provinciaNombre) {
+    ArrayList responseBody;
+
     try {
       var requestBody = this.client.target("https://apis.datos.gob.ar/georef/api")
           .path(path)
@@ -32,12 +36,19 @@ public class GeoRefApiCliente {
         requestBody = requestBody.queryParam("provincia", provinciaNombre);
       }
 
-      return requestBody
+      responseBody = (ArrayList) requestBody
           .request(MediaType.APPLICATION_JSON)
-          .get(Map.class);
+          .get(Map.class)
+          .get(path);
 
     } catch (Exception e) {
       throw new LocalizacionApiException(e.getMessage());
     }
+
+    if (responseBody.isEmpty()) {
+      throw new LocalizacionNoExistenteException(String.format("No se encontraron %s", path));
+    }
+
+    return (Map<String, Object>) responseBody.get(0);
   }
 }
