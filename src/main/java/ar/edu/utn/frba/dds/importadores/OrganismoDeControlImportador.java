@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
 
 public class OrganismoDeControlImportador {
 
@@ -26,14 +25,11 @@ public class OrganismoDeControlImportador {
              reader,
              CSVFormat.DEFAULT.withHeader("nombre", "correo"))
     ) {
-
-      for (CSVRecord csvRecord : csvParser) {
+      csvParser.forEach(csvRecord -> {
         String nombre = csvRecord.get("nombre");
         String correo = csvRecord.get("correo");
-
         organismos.add(new OrganismoDeControl(nombre, correo));
-      }
-
+      });
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
