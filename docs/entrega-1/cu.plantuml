@@ -4,10 +4,10 @@ left to right direction
 
 actor Usuario
 actor "Miembro Administrador" as MiembroAdministrador
-actor Administrador
+actor "Administrador del Sistema " as Administrador
 
 rectangle "Sistema Monitoreo de Servicios Públicos" {
-  (Registrar Usuario) as RegistrarUsuario
+  (Registrarse) as RegistrarUsuario
   (Unirse a Comunidad) as UnirseAComunidad
   
   (Administrar Prestación de Servicio en Comunidad) as AdmPrestacionDeServicio
