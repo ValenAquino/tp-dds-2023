@@ -1,10 +1,10 @@
-@startuml
+@startuml TPA2-CU
 
 left to right direction
 
 actor "Administrador del sistema" as admin_sistema
 actor "Usuario" as usuario
-actor "Entidad/Organismo" as entidad
+actor "Organismo de control" as organismo_de_control
 
 rectangle "Sistema" as system {
     usecase "Administración de entidades" as admin_entidades
@@ -12,14 +12,14 @@ rectangle "Sistema" as system {
     usecase "Asignación de entidades de interés" as asignacion_intereses
     usecase "Asociación de localizaciones" as asociacion_localizaciones
     usecase "Asociación de localizaciones" as asociacion_localizaciones
-    usecase "Administración de entidades prestadoras y organismos de control" as admin_entidades_organismos
+    usecase "Importar organismos de control" as admin_organismos
 
-    admin_sistema -- admin_entidades_organismos
+    admin_sistema -- admin_organismos
     admin_sistema -- admin_entidades
     admin_sistema -- admin_establecimientos
     usuario -- asignacion_intereses
     usuario -- asociacion_localizaciones
-    entidad -- asociacion_localizaciones
+    organismo_de_control -- asociacion_localizaciones
 }
 
 @enduml
