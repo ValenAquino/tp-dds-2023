@@ -71,6 +71,7 @@ class OrganismoDeControl {
   servicios: List<Servicio>
   --
   asignarResponsable()
+  agregarServicio()
 }
 
 Entidad -> Establecimiento

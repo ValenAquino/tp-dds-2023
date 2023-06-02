@@ -20,4 +20,8 @@ public class OrganismoDeControl {
   public void asignarResponsable(Usuario nuevoResponsable) {
     this.responsableDeInformes = nuevoResponsable;
   }
+
+  public void agregarServicio(Servicio nuevoServicio) {
+    servicios.add(nuevoServicio);
+  }
 }
