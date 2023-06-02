@@ -1,0 +1,105 @@
+@startuml TPA2-Clases
+skinparam linetype ortho
+
+' Supermercado, Centro Comunal, Banco, ...
+class Entidad {
+  nombre: String
+  localizacion: Localizacion
+  establecimientos: List<Establecimiento>
+}
+
+' Sucursal, Estacion, ...
+class Establecimiento {
+  nombre: String
+  servicios: List<Servicio>
+  --
+  agregarServicio(Servicio)
+  removerServicio(Servicio)
+}
+
+class Servicio {
+  descripcion: String
+  tipoDeServicio: TipoDeServicio
+}
+
+enum TipoDeServicio {
+  ESCALERAS_MECANICAS
+  ASCENSORES
+  BAÑOS
+}
+
+class LineaDeTransporte {
+  tipoDeTransporte: TipoDeTransporte
+  --
+  Establecimiento estacionOrigen()
+  Establecimiento estacionDestino()
+}
+
+enum TipoDeTransporte {
+  SUBTERRANEO
+  FERROCARRIL
+}
+
+class Usuario {
+  usuario: String
+  contraseña: String
+  nombre: String
+  apellido: String
+  correoElectronico: String
+  entidadesDeInteres: List<Entidad>
+  localizacion: Localizacion
+  ' membresias: List<Membresia>
+}
+
+class Localizacion {
+  nombre: String
+  latitud: Double
+  longitud: Double
+  tipoDeLocalizacion: TipoDeLocalizacion
+}
+
+enum TipoDeLocalizacion {
+  DEPARTAMENTO
+  MUNICIPIO
+  PROVINCIA
+}
+
+class OrganismoDeControl {
+  nombre: String
+  correoElectronico: String
+  responsableDeInformes: Usuario
+  servicios: List<Servicio>
+  --
+  asignarResponsable()
+}
+
+Entidad -> Establecimiento
+Establecimiento -> Servicio
+Servicio -> TipoDeServicio
+Entidad <|-- LineaDeTransporte
+LineaDeTransporte -> TipoDeTransporte
+Usuario --> Entidad
+Usuario -> Localizacion
+Localizacion <- Entidad
+Localizacion -> TipoDeLocalizacion
+Servicio <-- OrganismoDeControl
+
+/'
+
+class Comunidad {
+  --
+  crearServicio()
+}
+
+class Membresia {
+  comunidad: Comunidad
+  esAdministrador: Boolean
+}
+
+Comunidad ..> Servicio
+Usuario --> Membresia
+Comunidad <- Membresia
+
+'/
+
+@enduml
