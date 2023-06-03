@@ -28,13 +28,6 @@ enum TipoDeServicio {
   BAÑOS
 }
 
-class LineaDeTransporte {
-  tipoDeTransporte: TipoDeTransporte
-  --
-  Establecimiento estacionOrigen()
-  Establecimiento estacionDestino()
-}
-
 enum TipoDeTransporte {
   SUBTERRANEO
   FERROCARRIL
@@ -77,8 +70,6 @@ class OrganismoDeControl {
 Entidad ->"*" Establecimiento
 Establecimiento ->"*" Servicio
 Servicio -> TipoDeServicio
-Entidad <|-- LineaDeTransporte
-LineaDeTransporte -> TipoDeTransporte
 Usuario -->"entidadesDeInteres *" Entidad
 Usuario -> Localizacion
 Localizacion <- Entidad
