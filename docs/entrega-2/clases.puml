@@ -74,12 +74,12 @@ class OrganismoDeControl {
   agregarServicio()
 }
 
-Entidad -> Establecimiento
-Establecimiento -> Servicio
+Entidad ->"*" Establecimiento
+Establecimiento ->"*" Servicio
 Servicio -> TipoDeServicio
 Entidad <|-- LineaDeTransporte
 LineaDeTransporte -> TipoDeTransporte
-Usuario --> Entidad
+Usuario -->"entidadesDeInteres *" Entidad
 Usuario -> Localizacion
 Localizacion <- Entidad
 Localizacion -> TipoDeLocalizacion
