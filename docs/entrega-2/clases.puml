@@ -67,7 +67,7 @@ class OrganismoDeControl {
   entidadesControladas: List<Entidad>
   --
   asignarResponsable()
-  agregarServicio()
+  agregarEntidad()
 }
 
 Entidad ->"*" Establecimiento
