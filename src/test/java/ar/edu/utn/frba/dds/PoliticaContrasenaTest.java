@@ -13,8 +13,7 @@ import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PoliticaContrasenaTest {
 
@@ -22,14 +21,14 @@ public class PoliticaContrasenaTest {
   public void testPoliticaLongitudValida() {
     PoliticaLongitud politica = new PoliticaLongitud(8, 16);
 
-    assertDoesNotThrow(() -> politica.validar("contraseña"));
+    assertTrue(politica.esValida("contraseña"));
   }
 
   @Test
   public void testPoliticaLongitudInvalida() {
     PoliticaLongitud politica = new PoliticaLongitud(8, 16);
 
-    assertThrows(ValidacionContrasenaException.class, () -> politica.validar("corta"));
+    assertFalse(politica.esValida("corta"));
   }
 
   @Test
@@ -39,7 +38,7 @@ public class PoliticaContrasenaTest {
         "La contraseña no cumple con los requisitos de seguridad"
     );
 
-    assertDoesNotThrow(() -> politica.validar("Contraseña1!"));
+    assertTrue(politica.esValida("Contraseña1!"));
   }
 
   @Test
@@ -49,7 +48,7 @@ public class PoliticaContrasenaTest {
         "La contraseña debe tener menos un carácter en minúscula, uno en mayúscula, un número y un carácter especial"
     );
 
-    assertThrows(ValidacionContrasenaException.class, () -> politica.validar("contraseña"));
+    assertFalse(politica.esValida("contraseña"));
   }
 
   @Test
@@ -58,7 +57,7 @@ public class PoliticaContrasenaTest {
     contrasenasExcluidas.add("contraseña");
     PoliticaContrasenasExcluidas politica = new PoliticaContrasenasExcluidas(contrasenasExcluidas);
 
-    assertDoesNotThrow(() -> politica.validar("otraContraseña"));
+    assertTrue(politica.esValida("otraContraseña"));
   }
 
   @Test
@@ -67,7 +66,7 @@ public class PoliticaContrasenaTest {
     contrasenasExcluidas.add("contraseña");
     PoliticaContrasenasExcluidas politica = new PoliticaContrasenasExcluidas(contrasenasExcluidas);
 
-    assertThrows(ValidacionContrasenaException.class, () -> politica.validar("contraseña"));
+    assertFalse(politica.esValida("contraseña"));
   }
 
   @Test
