@@ -6,6 +6,7 @@ import java.util.List;
 public class Entidad {
   private String nombre;
   private Localizacion localizacion;
+  private TipoDeEntidad tipoDeEntidad;
   private List<Establecimiento> establecimientos;
 
   public Entidad(String nombre, Localizacion localizacion) {

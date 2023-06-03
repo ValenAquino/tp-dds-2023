@@ -5,6 +5,7 @@ skinparam linetype ortho
 class Entidad {
   nombre: String
   localizacion: Localizacion
+  tipoDeEntidad: TipoDeEntidad
   establecimientos: List<Establecimiento>
 }
 
@@ -28,9 +29,11 @@ enum TipoDeServicio {
   BAÑOS
 }
 
-enum TipoDeTransporte {
+enum TipoDeEntidad {
   SUBTERRANEO
   FERROCARRIL
+  SUPERMERADO
+  BANCO
 }
 
 class Usuario {
@@ -68,6 +71,7 @@ class OrganismoDeControl {
 }
 
 Entidad ->"*" Establecimiento
+Entidad --> TipoDeEntidad
 Establecimiento ->"*" Servicio
 Servicio -> TipoDeServicio
 Usuario -->"entidadesDeInteres *" Entidad
