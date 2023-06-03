@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.password.validacion;
 
+import ar.edu.utn.frba.dds.excepciones.ValidacionContrasenaException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,9 @@ public class ValidadorContrasena {
 
   public void validar(String contrasena) {
     for (PoliticaContrasena politica : politicas) {
-      politica.validar(contrasena);
+      if (!politica.esValida(contrasena)) {
+        throw new ValidacionContrasenaException(politica.getMensajeError());
+      }
     }
   }
 }

@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.password.politicas;
 
-import ar.edu.utn.frba.dds.excepciones.ValidacionContrasenaException;
 import ar.edu.utn.frba.dds.password.validacion.PoliticaContrasena;
 
 public class PoliticaLongitud implements PoliticaContrasena {
@@ -13,10 +12,8 @@ public class PoliticaLongitud implements PoliticaContrasena {
   }
 
   @Override
-  public void validar(String contrasena) {
-    if (contrasena.length() < longitudMinima || contrasena.length() > longitudMaxima) {
-      throw new ValidacionContrasenaException(getMensajeError());
-    }
+  public boolean esValida(String contrasena) {
+    return contrasena.length() >= longitudMinima && contrasena.length() <= longitudMaxima;
   }
 
   @Override
