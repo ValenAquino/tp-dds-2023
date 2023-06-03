@@ -6,7 +6,7 @@ public class OrganismoDeControl {
   private String nombre;
   private String correoElectronico;
   private Usuario responsableDeInformes;
-  private List<Servicio> servicios;
+  private List<Entidad> entidadesControladas;
 
   public OrganismoDeControl(String nombre, String correoElectronico) {
     this.nombre = nombre;
@@ -21,7 +21,7 @@ public class OrganismoDeControl {
     this.responsableDeInformes = nuevoResponsable;
   }
 
-  public void agregarServicio(Servicio nuevoServicio) {
-    servicios.add(nuevoServicio);
+  public void agregarEntidad(Entidad nuevaEntidad) {
+    entidadesControladas.add(nuevaEntidad);
   }
 }

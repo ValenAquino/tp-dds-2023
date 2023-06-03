@@ -68,7 +68,7 @@ class OrganismoDeControl {
   nombre: String
   correoElectronico: String
   responsableDeInformes: Usuario
-  servicios: List<Servicio>
+  entidadesControladas: List<Entidad>
   --
   asignarResponsable()
   agregarServicio()
@@ -83,7 +83,7 @@ Usuario -->"entidadesDeInteres *" Entidad
 Usuario -> Localizacion
 Localizacion <- Entidad
 Localizacion -> TipoDeLocalizacion
-Servicio <-- OrganismoDeControl
+Entidad "entidadesControladas *"<-- OrganismoDeControl
 
 /'
 
