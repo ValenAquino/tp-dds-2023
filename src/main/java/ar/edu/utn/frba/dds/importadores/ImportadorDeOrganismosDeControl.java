@@ -2,49 +2,31 @@ package ar.edu.utn.frba.dds.importadores;
 
 import ar.edu.utn.frba.dds.entidades.OrganismoDeControl;
 import ar.edu.utn.frba.dds.excepciones.ArchivoCSVException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 public class ImportadorDeOrganismosDeControl {
-  private final String pathCsv;
+  ArchivoParseableCSV archivoParseableCSV;
+  List<OrganismoDeControl> organismos = new ArrayList<>();
 
-  public ImportadorDeOrganismosDeControl(String path) {
-    validarPath(path);
-    this.pathCsv = path;
-  }
-
-  private void validarPath(String path) {
-    Path ruta = Paths.get(path);
-
-    // Checkea que el path sea un archivo existente
-    // que sea accesible, no sea un directorio, ni un enlace simbólico
-    if (!Files.isRegularFile(ruta)) {
-      throw new ArchivoCSVException("El path proporcionado no es valido");
-    }
-
-    if (!path.toLowerCase().endsWith(".csv")) {
-      throw new ArchivoCSVException("El archivo no es un archivo CSV valido");
-    }
+  public ImportadorDeOrganismosDeControl(ArchivoParseableCSV archivoParseableCSV) {
+    this.archivoParseableCSV = archivoParseableCSV;
   }
 
   public List<OrganismoDeControl> getOrganismosDeControl() {
-    List<OrganismoDeControl> organismos = new ArrayList<>();
+    if (organismos.isEmpty()) {
+      parsear();
+    }
 
+    return organismos;
+  }
+
+  public void parsear() {
     try {
-      CSVParser csvParser = getCsvParser();
-      List<CSVRecord> csvRecords = getCSVRecordsValidadas(csvParser);
+      List<CSVRecord> csvRecords = archivoParseableCSV.getRecordsValidas();
 
-      // Buscar los índices de las columnas "nombre" y "correo"
       CSVRecord headerRecord = csvRecords.remove(0);
       int nombreIndex = headerRecord.toList().indexOf("nombre");
       int correoIndex = headerRecord.toList().indexOf("correo");
@@ -53,55 +35,38 @@ public class ImportadorDeOrganismosDeControl {
         String nombre = csvRecord.get(nombreIndex);
         String correo = csvRecord.get(correoIndex);
 
-        organismos.add(organismoDeControl(nombre, correo));
+        organismos.add(organismoDeControlValido(nombre, correo));
       }
 
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-
-    return organismos;
   }
 
-  public OrganismoDeControl organismoDeControl(String nombre, String correo) {
-    if (nombre.isEmpty() || correo.isEmpty()) {
-      throw new ArchivoCSVException("El archivo contiene campos vacios");
-    }
-
+  public OrganismoDeControl organismoDeControlValido(String nombre, String correo) {
+    nombreValido(nombre);
+    correoValido(correo);
     return new OrganismoDeControl(nombre, correo);
   }
 
-  public List<CSVRecord> getCSVRecordsValidadas(CSVParser csvParser) {
-    List<CSVRecord> csvRecords = csvParser.getRecords();
-
-    if (csvRecords.size() == 0) {
-      throw new ArchivoCSVException("El archivo esta vacio");
+  public void nombreValido(String nombre) {
+    if (nombre == null || nombre.isEmpty()) {
+      throw new ArchivoCSVException("El nombre no puede ser vacio");
     }
 
-    String header = Arrays.toString(csvRecords.get(0).values());
-
-    if (csvRecords.size() == 1) {
-      throw new ArchivoCSVException("El archivo no contiene organismos de control");
+    if (nombre.contains("@")) {
+      throw new ArchivoCSVException("El archivo contiene un nombre invalido");
     }
-
-    if (!header.contains("nombre")) {
-      throw new ArchivoCSVException("El archivo no contiene la columna nombre");
-    }
-
-    if (!header.contains("correo")) {
-      throw new ArchivoCSVException("El archivo no contiene la columna correo");
-    }
-
-    return csvRecords;
   }
 
-  public CSVParser getCsvParser() throws IOException {
-    Reader reader = new FileReader(pathCsv);
-    CSVFormat csvFormat = CSVFormat.Builder.create()
-        .setHeader("nombre", "correo")
-        .build();
+  public void correoValido(String correo) {
+    if (correo.isEmpty()) {
+      throw new ArchivoCSVException("El correo no puede ser vacio");
+    }
 
-    return new CSVParser(reader, csvFormat);
+    if (!correo.contains("@")) {
+      throw new ArchivoCSVException("El archivo contiene un correo invalido");
+    }
   }
 
 }
