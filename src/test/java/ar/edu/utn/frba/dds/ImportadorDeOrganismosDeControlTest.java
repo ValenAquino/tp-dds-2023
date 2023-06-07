@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ar.edu.utn.frba.dds.entidades.OrganismoDeControl;
-import ar.edu.utn.frba.dds.excepciones.ArchivoCSVException;
-import ar.edu.utn.frba.dds.importadores.ArchivoParseableCSV;
+import ar.edu.utn.frba.dds.excepciones.ArchivoCsvException;
+import ar.edu.utn.frba.dds.importadores.ArchivoParseableCsv;
 import ar.edu.utn.frba.dds.importadores.ImportadorDeOrganismosDeControl;
 import java.nio.file.Paths;
 import java.util.List;
@@ -17,21 +17,21 @@ public class ImportadorDeOrganismosDeControlTest {
   @Test
   public void puedoObtener20OrganismosDeControl() {
     String path = obtenerPathAbsoluto("20organismos.csv");
-    ArchivoParseableCSV archivo = new ArchivoParseableCSV(path);
+    ArchivoParseableCsv archivo = new ArchivoParseableCsv(path);
     assert20OrganismosLeidos(archivo);
   }
 
   @Test
   public void sePuedeLeerSiLasColumnasEstanEnOtroOrden() {
     String path = obtenerPathAbsoluto("20organismosColumnasAlReves.csv");
-    ArchivoParseableCSV archivo = new ArchivoParseableCSV(path);
+    ArchivoParseableCsv archivo = new ArchivoParseableCsv(path);
     assert20OrganismosLeidos(archivo);
   }
 
   @Test
   public void sePuedeLeerSiHayMasColumnas() {
     String path = obtenerPathAbsoluto("20OrganismosMasColumnas.csv");
-    ArchivoParseableCSV archivo = new ArchivoParseableCSV(path);
+    ArchivoParseableCsv archivo = new ArchivoParseableCsv(path);
     assert20OrganismosLeidos(archivo);
   }
 
@@ -43,8 +43,8 @@ public class ImportadorDeOrganismosDeControlTest {
     String path1 = obtenerPathAbsoluto("correoVacio.csv");
     String path2 = obtenerPathAbsoluto("nombreVacio.csv");
 
-    ArchivoParseableCSV archivoSinCampoCorreo = new ArchivoParseableCSV(path1);
-    ArchivoParseableCSV archivoSinCampoNombre = new ArchivoParseableCSV(path2);
+    ArchivoParseableCsv archivoSinCampoCorreo = new ArchivoParseableCsv(path1);
+    ArchivoParseableCsv archivoSinCampoNombre = new ArchivoParseableCsv(path2);
 
     getOrganismosFalla(archivoSinCampoCorreo, mensajeEsperadoCorreo);
     getOrganismosFalla(archivoSinCampoNombre, mensajeEsperadoNombre);
@@ -60,7 +60,7 @@ public class ImportadorDeOrganismosDeControlTest {
     String mensajeEsperado = "El archivo contiene un correo invalido";
     String path = obtenerPathAbsoluto("correoInvalido.csv");
 
-    ArchivoParseableCSV archivo = new ArchivoParseableCSV(path);
+    ArchivoParseableCsv archivo = new ArchivoParseableCsv(path);
     getOrganismosFalla(archivo, mensajeEsperado);
   }
 
@@ -69,22 +69,22 @@ public class ImportadorDeOrganismosDeControlTest {
     String mensajeEsperado = "El archivo contiene un nombre invalido";
     String path = obtenerPathAbsoluto("nombreInvalido.csv");
 
-    ArchivoParseableCSV archivo = new ArchivoParseableCSV(path);
+    ArchivoParseableCsv archivo = new ArchivoParseableCsv(path);
     getOrganismosFalla(archivo, mensajeEsperado);
   }
 
-  public void getOrganismosFalla(ArchivoParseableCSV archivo, String msg) {
+  public void getOrganismosFalla(ArchivoParseableCsv archivo, String msg) {
     ImportadorDeOrganismosDeControl importador = new ImportadorDeOrganismosDeControl(archivo);
 
     Exception exception = assertThrows(
-        ArchivoCSVException.class,
+        ArchivoCsvException.class,
         importador::getOrganismosDeControl
     );
 
     assertEquals(msg, exception.getMessage());
   }
 
-  public void assert20OrganismosLeidos(ArchivoParseableCSV archivo) {
+  public void assert20OrganismosLeidos(ArchivoParseableCsv archivo) {
     ImportadorDeOrganismosDeControl importador = new ImportadorDeOrganismosDeControl(archivo);
 
     List<OrganismoDeControl> organismosDeControl = importador.getOrganismosDeControl();

@@ -3,12 +3,12 @@ package ar.edu.utn.frba.dds;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import ar.edu.utn.frba.dds.excepciones.ArchivoCSVException;
-import ar.edu.utn.frba.dds.importadores.ArchivoParseableCSV;
+import ar.edu.utn.frba.dds.excepciones.ArchivoCsvException;
+import ar.edu.utn.frba.dds.importadores.ArchivoParseableCsv;
 import java.nio.file.Paths;
 import org.junit.jupiter.api.Test;
 
-public class ArchivoParseableCSVTest {
+public class ArchivoParseableCsvTest {
   @Test
   public void unPathInexistenteLanzaUnaExcepcion() {
     String mensajeEsperado = "El path proporcionado no es valido";
@@ -25,8 +25,8 @@ public class ArchivoParseableCSVTest {
     String filePath = obtenerPathAbsoluto(fileName);
 
     Exception exception = assertThrows(
-        ArchivoCSVException.class,
-        () -> new ArchivoParseableCSV(filePath)
+        ArchivoCsvException.class,
+        () -> new ArchivoParseableCsv(filePath)
     );
 
     assertEquals(msg, exception.getMessage());

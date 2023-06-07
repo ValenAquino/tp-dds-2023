@@ -1,18 +1,18 @@
 package ar.edu.utn.frba.dds.importadores;
 
 import ar.edu.utn.frba.dds.entidades.OrganismoDeControl;
-import ar.edu.utn.frba.dds.excepciones.ArchivoCSVException;
+import ar.edu.utn.frba.dds.excepciones.ArchivoCsvException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.csv.CSVRecord;
 
 public class ImportadorDeOrganismosDeControl {
-  ArchivoParseableCSV archivoParseableCSV;
+  ArchivoParseableCsv archivoParseableCsv;
   List<OrganismoDeControl> organismos = new ArrayList<>();
 
-  public ImportadorDeOrganismosDeControl(ArchivoParseableCSV archivoParseableCSV) {
-    this.archivoParseableCSV = archivoParseableCSV;
+  public ImportadorDeOrganismosDeControl(ArchivoParseableCsv archivoParseableCsv) {
+    this.archivoParseableCsv = archivoParseableCsv;
   }
 
   public List<OrganismoDeControl> getOrganismosDeControl() {
@@ -25,7 +25,7 @@ public class ImportadorDeOrganismosDeControl {
 
   public void parsear() {
     try {
-      List<CSVRecord> csvRecords = archivoParseableCSV.getRecordsValidas();
+      List<CSVRecord> csvRecords = archivoParseableCsv.getRecordsValidas();
 
       CSVRecord headerRecord = csvRecords.remove(0);
       int nombreIndex = headerRecord.toList().indexOf("nombre");
@@ -51,21 +51,21 @@ public class ImportadorDeOrganismosDeControl {
 
   public void nombreValido(String nombre) {
     if (nombre == null || nombre.isEmpty()) {
-      throw new ArchivoCSVException("El nombre no puede ser vacio");
+      throw new ArchivoCsvException("El nombre no puede ser vacio");
     }
 
     if (nombre.contains("@")) {
-      throw new ArchivoCSVException("El archivo contiene un nombre invalido");
+      throw new ArchivoCsvException("El archivo contiene un nombre invalido");
     }
   }
 
   public void correoValido(String correo) {
     if (correo.isEmpty()) {
-      throw new ArchivoCSVException("El correo no puede ser vacio");
+      throw new ArchivoCsvException("El correo no puede ser vacio");
     }
 
     if (!correo.contains("@")) {
-      throw new ArchivoCSVException("El archivo contiene un correo invalido");
+      throw new ArchivoCsvException("El archivo contiene un correo invalido");
     }
   }
 

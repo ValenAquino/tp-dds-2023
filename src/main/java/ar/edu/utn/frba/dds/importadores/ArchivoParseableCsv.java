@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.importadores;
 
-import ar.edu.utn.frba.dds.excepciones.ArchivoCSVException;
+import ar.edu.utn.frba.dds.excepciones.ArchivoCsvException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -13,30 +13,30 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
-public class ArchivoParseableCSV {
+public class ArchivoParseableCsv {
   private final String path;
   private final String[] header = {"nombre", "correo"};
 
-  public ArchivoParseableCSV(String path) {
+  public ArchivoParseableCsv(String path) {
     validarPath(path);
     this.path = path;
   }
 
   public void validarPath(String path) {
     vaildarArchivoRegular(path);
-    validarExtensionCSV(path);
+    validarExtensionCsv(path);
   }
 
   public void vaildarArchivoRegular(String path) {
     Path ruta = Paths.get(path);
     if (!Files.isRegularFile(ruta)) {
-      throw new ArchivoCSVException("El path proporcionado no es valido");
+      throw new ArchivoCsvException("El path proporcionado no es valido");
     }
   }
 
-  public void validarExtensionCSV(String path) {
+  public void validarExtensionCsv(String path) {
     if (!path.toLowerCase().endsWith(".csv")) {
-      throw new ArchivoCSVException("El archivo no es un archivo CSV valido");
+      throw new ArchivoCsvException("El archivo no es un archivo CSV valido");
     }
   }
 
@@ -61,13 +61,13 @@ public class ArchivoParseableCSV {
 
   public void headerConCampo(String campo, String header) {
     if (!header.contains(campo)) {
-      throw new ArchivoCSVException("El archivo no contiene la columna " + campo);
+      throw new ArchivoCsvException("El archivo no contiene la columna " + campo);
     }
   }
 
   public void archivoNoVacio(List<CSVRecord> csvRecords) {
     if (csvRecords.size() <= 1) {
-      throw new ArchivoCSVException("El archivo esta vacio");
+      throw new ArchivoCsvException("El archivo esta vacio");
     }
   }
 
