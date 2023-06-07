@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ar.edu.utn.frba.dds.entidades.OrganismoDeControl;
 import ar.edu.utn.frba.dds.excepciones.ArchivoCSVException;
+import ar.edu.utn.frba.dds.importadores.ArchivoParseableCSV;
 import ar.edu.utn.frba.dds.importadores.ImportadorDeOrganismosDeControl;
 import java.nio.file.Paths;
 import java.util.List;
@@ -15,77 +16,65 @@ public class ImportadorDeOrganismosDeControlTest {
 
   @Test
   public void puedoObtener20OrganismosDeControl() {
-    assert20OrganismosLeidos("20organismos.csv");
+    String path = obtenerPathAbsoluto("20organismos.csv");
+    ArchivoParseableCSV archivo = new ArchivoParseableCSV(path);
+    assert20OrganismosLeidos(archivo);
   }
 
   @Test
   public void sePuedeLeerSiLasColumnasEstanEnOtroOrden() {
-    assert20OrganismosLeidos("20organismosColumnasAlReves.csv");
+    String path = obtenerPathAbsoluto("20organismosColumnasAlReves.csv");
+    ArchivoParseableCSV archivo = new ArchivoParseableCSV(path);
+    assert20OrganismosLeidos(archivo);
   }
 
   @Test
   public void sePuedeLeerSiHayMasColumnas() {
-    assert20OrganismosLeidos("20OrganismosMasColumnas.csv");
-  }
-
-  @Test
-  public void unPathInexistenteLanzaUnaExcepcion() {
-    String mensajeEsperado = "El path proporcionado no es valido";
-    newImportadorDeOrganismosFalla("unPathInexistente.csv", mensajeEsperado);
-  }
-
-  @Test
-  public void siNoEsCSVLanzaUnaExcepcion() {
-    String mensajeEsperado = "El archivo no es un archivo CSV valido";
-    newImportadorDeOrganismosFalla("archivoEnOtroFormato.txt", mensajeEsperado);
-  }
-
-  @Test
-  public void siNotieneColumnaCorreoFalla() {
-    String mensajeEsperado = "El archivo no contiene la columna correo";
-    getOrganismosFalla("csvSinCampoCorreo.csv", mensajeEsperado);
-  }
-
-  @Test
-  public void siNotieneColumnaNombreFalla() {
-    String mensajeEsperado = "El archivo no contiene la columna nombre";
-    getOrganismosFalla("csvSinCampoNombre.csv", mensajeEsperado);
-  }
-
-  @Test
-  public void unArchivoVacioLanzaUnaExcepcion() {
-    String mensajeEsperado = "El archivo esta vacio";
-    getOrganismosFalla("archivoVacio.csv", mensajeEsperado);
-  }
-
-  @Test
-  public void unArchivoSoloConHeadersLanzaUnaExcepcion() {
-    String mensajeEsperado = "El archivo no contiene organismos de control";
-    getOrganismosFalla("archivoSoloConHeaders.csv", mensajeEsperado);
+    String path = obtenerPathAbsoluto("20OrganismosMasColumnas.csv");
+    ArchivoParseableCSV archivo = new ArchivoParseableCSV(path);
+    assert20OrganismosLeidos(archivo);
   }
 
   @Test
   public void unCampoVacioFalla() {
-    String mensajeEsperado = "El archivo contiene campos vacios";
-    getOrganismosFalla("csvCampoCorreoVacio.csv", mensajeEsperado);
-    getOrganismosFalla("csvCampoNombreVacio.csv", mensajeEsperado);
+    String mensajeEsperadoCorreo = "El correo no puede ser vacio";
+    String mensajeEsperadoNombre = "El nombre no puede ser vacio";
+
+    String path1 = obtenerPathAbsoluto("correoVacio.csv");
+    String path2 = obtenerPathAbsoluto("nombreVacio.csv");
+
+    ArchivoParseableCSV archivoSinCampoCorreo = new ArchivoParseableCSV(path1);
+    ArchivoParseableCSV archivoSinCampoNombre = new ArchivoParseableCSV(path2);
+
+    getOrganismosFalla(archivoSinCampoCorreo, mensajeEsperadoCorreo);
+    getOrganismosFalla(archivoSinCampoNombre, mensajeEsperadoNombre);
   }
 
-  public void newImportadorDeOrganismosFalla(String fileName, String msg) {
-    String filePath = obtenerPathAbsoluto(fileName);
+  @Test
+  public void unCampoInvalidoFalla() {
 
-    Exception exception = assertThrows(
-        ArchivoCSVException.class,
-        () -> new ImportadorDeOrganismosDeControl(filePath)
-    );
-
-    assertEquals(msg, exception.getMessage());
   }
 
-  public void getOrganismosFalla(String fileName, String msg) {
-    String filePath = obtenerPathAbsoluto(fileName);
+  @Test
+  public void unCorreoInvalidoFalla() {
+    String mensajeEsperado = "El archivo contiene un correo invalido";
+    String path = obtenerPathAbsoluto("correoInvalido.csv");
 
-    ImportadorDeOrganismosDeControl importador = new ImportadorDeOrganismosDeControl(filePath);
+    ArchivoParseableCSV archivo = new ArchivoParseableCSV(path);
+    getOrganismosFalla(archivo, mensajeEsperado);
+  }
+
+  @Test
+  public void unNombreInvalidoFalla() {
+    String mensajeEsperado = "El archivo contiene un nombre invalido";
+    String path = obtenerPathAbsoluto("nombreInvalido.csv");
+
+    ArchivoParseableCSV archivo = new ArchivoParseableCSV(path);
+    getOrganismosFalla(archivo, mensajeEsperado);
+  }
+
+  public void getOrganismosFalla(ArchivoParseableCSV archivo, String msg) {
+    ImportadorDeOrganismosDeControl importador = new ImportadorDeOrganismosDeControl(archivo);
 
     Exception exception = assertThrows(
         ArchivoCSVException.class,
@@ -95,9 +84,8 @@ public class ImportadorDeOrganismosDeControlTest {
     assertEquals(msg, exception.getMessage());
   }
 
-  public void assert20OrganismosLeidos(String fileName) {
-    String filePath = obtenerPathAbsoluto(fileName);
-    ImportadorDeOrganismosDeControl importador = new ImportadorDeOrganismosDeControl(filePath);
+  public void assert20OrganismosLeidos(ArchivoParseableCSV archivo) {
+    ImportadorDeOrganismosDeControl importador = new ImportadorDeOrganismosDeControl(archivo);
 
     List<OrganismoDeControl> organismosDeControl = importador.getOrganismosDeControl();
 
@@ -111,7 +99,6 @@ public class ImportadorDeOrganismosDeControlTest {
       assertEquals("organismo" + i + "@example.com", organismo.getCorreoElectronico());
       i++;
     }
-
   }
 
   public String obtenerPathAbsoluto(String nombreArchivo) {
