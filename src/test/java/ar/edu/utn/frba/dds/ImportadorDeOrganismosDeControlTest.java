@@ -51,8 +51,15 @@ public class ImportadorDeOrganismosDeControlTest {
   }
 
   @Test
-  public void unCampoInvalidoFalla() {
+  public void seParseanCaracteresDeUTF8() {
+    String path = obtenerPathAbsoluto("utf8.csv");
+    ArchivoParseableCsv archivo = new ArchivoParseableCsv(path);
 
+    ImportadorDeOrganismosDeControl importador = new ImportadorDeOrganismosDeControl(archivo);
+    List<OrganismoDeControl> organismos = importador.getOrganismosDeControl();
+
+    assertEquals("ñandu", organismos.get(0).getNombre());
+    assertEquals("emáil@dominó.com", organismos.get(0).getCorreoElectronico());
   }
 
   @Test

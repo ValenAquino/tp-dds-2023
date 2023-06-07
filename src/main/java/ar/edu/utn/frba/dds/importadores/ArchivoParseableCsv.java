@@ -1,9 +1,10 @@
 package ar.edu.utn.frba.dds.importadores;
 
 import ar.edu.utn.frba.dds.excepciones.ArchivoCsvException;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.Reader;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -41,9 +42,9 @@ public class ArchivoParseableCsv {
   }
 
   public CSVParser csvParser() throws IOException {
-    Reader reader = new FileReader(path);
+    InputStream inputStream = new FileInputStream(path);
     CSVFormat csvFormat = CSVFormat.Builder.create().setHeader(header).build();
-    return new CSVParser(reader, csvFormat);
+    return CSVParser.parse(inputStream, StandardCharsets.UTF_8, csvFormat);
   }
 
   public List<CSVRecord> getRecordsValidas() throws IOException {
