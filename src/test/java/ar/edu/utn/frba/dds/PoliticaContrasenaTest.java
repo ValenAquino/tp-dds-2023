@@ -35,7 +35,7 @@ public class PoliticaContrasenaTest {
   public void testPoliticaRegexValida() {
     PoliticaRegex politica = new PoliticaRegex(
         "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[-+_!@#$%^&*.,?]).+$",
-        "La contraseña no cumple con los requisitos de seguridad"
+        "La contraseña debe tener al menos una letra minúscula, una mayúscula, un número y un caracter especial."
     );
 
     assertTrue(politica.esValida("Contraseña1!"));
@@ -45,7 +45,7 @@ public class PoliticaContrasenaTest {
   public void testPoliticaRegexInvalida() {
     PoliticaRegex politica = new PoliticaRegex(
         "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[-+_!@#$%^&*.,?]).+$",
-        "La contraseña debe tener menos un carácter en minúscula, uno en mayúscula, un número y un carácter especial"
+        "La contraseña debe tener al menos una letra minúscula, una mayúscula, un número y un caracter especial."
     );
 
     assertFalse(politica.esValida("contraseña"));
@@ -75,7 +75,9 @@ public class PoliticaContrasenaTest {
 
     List<PoliticaContrasena> politicas = new ArrayList<>();
     politicas.add(new PoliticaLongitud(8, 16));
-    politicas.add(new PoliticaRegex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[-+_!@#$%^&*.,?]).+$", "La contraseña no cumple con los requisitos de seguridad"));
+    politicas.add(new PoliticaRegex(
+        "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[-+_!@#$%^&*.,?]).+$",
+        "La contraseña debe tener al menos un carácter en minúscula, uno en mayúscula, un número y un carácter especial"));
     politicas.add(new PoliticaContrasenasExcluidas(contrasenasExcluidas));
 
     ValidadorContrasena validador = new ValidadorContrasena(politicas);
