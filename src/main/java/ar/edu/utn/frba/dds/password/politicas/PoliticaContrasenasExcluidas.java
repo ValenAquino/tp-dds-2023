@@ -21,6 +21,6 @@ public class PoliticaContrasenasExcluidas implements PoliticaContrasena {
   public String getMensajeError() {
     return
         "La contraseña ingresada se encuentra en la lista "
-            + "de contraseñas excluídas. Por favor, ingresá otra.";
+            + "de contraseñas excluidas. Por favor, ingresá otra.";
   }
 }
