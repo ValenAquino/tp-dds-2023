@@ -12,11 +12,22 @@ public class ValidadorContrasena {
   }
 
   public void validar(String contrasena) {
-    for (PoliticaContrasena politica : politicas) {
-      if (!politica.esValida(contrasena)) {
-        throw new ValidacionContrasenaException(politica.getMensajeError());
-      }
+    var politicasAValidar = politicas.stream().filter(p -> !p.esValida(contrasena)).toList();
+
+    if (politicasAValidar.size() > 0) {
+      throw new ValidacionContrasenaException(politicasAValidar,
+          getMensajeError(politicasAValidar));
     }
+  }
+
+  private String getMensajeError(List<PoliticaContrasena> politicasAValidar) {
+    StringBuilder stringBuilder = new StringBuilder();
+
+    for (PoliticaContrasena politica : politicasAValidar) {
+      stringBuilder.append(politica.getMensajeError()).append(System.lineSeparator());
+    }
+
+    return stringBuilder.toString();
   }
 }
 
