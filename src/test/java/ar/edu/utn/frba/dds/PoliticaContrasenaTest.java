@@ -6,6 +6,10 @@ import ar.edu.utn.frba.dds.password.politicas.PoliticaRegex;
 import ar.edu.utn.frba.dds.password.validacion.PoliticaContrasena;
 import ar.edu.utn.frba.dds.excepciones.ValidacionContrasenaException;
 import ar.edu.utn.frba.dds.password.validacion.ValidadorContrasena;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -72,6 +76,22 @@ public class PoliticaContrasenaTest {
         new HashSet<>(Collections.singletonList("contraseña")));
 
     assertFalse(politica.esValida("contraseña"));
+  }
+
+  @Test
+  public void testPoliticaContrasenasExcluidasArchivoValida() throws IOException {
+    PoliticaContrasenasExcluidas politica = new PoliticaContrasenasExcluidas(
+        cargarPeoresContrasenas());
+
+    assertTrue(politica.esValida("contraseñaNoExcluida"));
+  }
+
+  @Test
+  public void testPoliticaContrasenasExcluidasArchivoInvalida() throws IOException {
+    PoliticaContrasenasExcluidas politica = new PoliticaContrasenasExcluidas(
+        cargarPeoresContrasenas());
+
+    assertFalse(politica.esValida("superman"));
   }
 
   @Test
@@ -272,5 +292,24 @@ public class PoliticaContrasenaTest {
 
   private static ValidadorContrasena getValidador(List<PoliticaContrasena> politicas) {
     return new ValidadorContrasena(new ArrayList<>(politicas));
+  }
+
+  // TODO: de ser necesario, incorporarlo a PoliticaContrasenasExcluidas y parametrizar fileName
+  private static HashSet<String> cargarPeoresContrasenas() throws IOException {
+    var peoresContrasenas = new HashSet<String>();
+
+    String projectDir = System.getProperty("user.dir");
+    String filePath = Paths.get(projectDir, "src", "test", "resources", "top-10000-worst-passwords.txt").toString();
+
+    try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+      String contrasena;
+      while ((contrasena = reader.readLine()) != null) {
+        peoresContrasenas.add(contrasena);
+      }
+    } catch (IOException e) {
+      throw new IOException(e);
+    }
+
+    return peoresContrasenas;
   }
 }
