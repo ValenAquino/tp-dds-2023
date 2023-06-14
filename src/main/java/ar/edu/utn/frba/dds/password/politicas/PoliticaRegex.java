@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.password.politicas;
 
-import ar.edu.utn.frba.dds.excepciones.ValidacionContrasenaException;
 import ar.edu.utn.frba.dds.password.validacion.PoliticaContrasena;
 import java.util.regex.Pattern;
 
@@ -14,10 +13,8 @@ public class PoliticaRegex implements PoliticaContrasena {
   }
 
   @Override
-  public void validar(String contrasena) {
-    if (!patron.matcher(contrasena).matches()) {
-      throw new ValidacionContrasenaException(getMensajeError());
-    }
+  public boolean esValida(String contrasena) {
+    return patron.matcher(contrasena).matches();
   }
 
   @Override

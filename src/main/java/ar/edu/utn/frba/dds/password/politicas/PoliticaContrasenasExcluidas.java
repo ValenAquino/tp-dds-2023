@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.password.politicas;
 
-import ar.edu.utn.frba.dds.excepciones.ValidacionContrasenaException;
 import ar.edu.utn.frba.dds.password.validacion.PoliticaContrasena;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,16 +13,14 @@ public class PoliticaContrasenasExcluidas implements PoliticaContrasena {
   }
 
   @Override
-  public void validar(String contrasena) {
-    if (contrasenasExcluidas.contains(contrasena)) {
-      throw new ValidacionContrasenaException(getMensajeError());
-    }
+  public boolean esValida(String contrasena) {
+    return !contrasenasExcluidas.contains(contrasena);
   }
 
   @Override
   public String getMensajeError() {
     return
         "La contraseña ingresada se encuentra en la lista "
-            + "de contraseñas excluídas. Por favor, ingresá otra.";
+            + "de contraseñas excluidas. Por favor, ingresá otra.";
   }
 }
