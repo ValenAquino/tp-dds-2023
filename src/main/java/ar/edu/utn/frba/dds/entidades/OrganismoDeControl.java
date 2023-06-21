@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.entidades;
 
+import ar.edu.utn.frba.dds.excepciones.OrganismoDeControlException;
 import java.util.List;
 
 public class OrganismoDeControl {
@@ -15,6 +16,10 @@ public class OrganismoDeControl {
 
   public String getNombre() {
     return nombre;
+  }
+
+  public String getCorreoElectronico() {
+    return correoElectronico;
   }
 
   public void asignarResponsable(Usuario nuevoResponsable) {
