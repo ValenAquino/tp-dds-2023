@@ -5,7 +5,6 @@ import ar.edu.utn.frba.dds.excepciones.LocalizacionNoExistenteException;
 import java.util.ArrayList;
 import java.util.Map;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 
 public class GeoRefApiCliente {
