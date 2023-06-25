@@ -1,4 +1,4 @@
-@startuml TPA2-Clases
+@startuml TPA3-Clases
 skinparam linetype ortho
 
 ' Supermercado, Centro Comunal, Banco, ...
@@ -21,6 +21,12 @@ class Establecimiento {
 class Servicio {
   descripcion: String
   tipoDeServicio: TipoDeServicio
+  incidentes : List<Incidente>
+  servicioActivo : Boolean
+  interesados : InteresadosServicio
+  --
+  darDeBaja()
+  darDeAlta()
 }
 
 enum TipoDeServicio {
@@ -44,7 +50,10 @@ class Usuario {
   correoElectronico: String
   entidadesDeInteres: List<Entidad>
   localizacion: Localizacion
-  ' membresias: List<Membresia>
+  membresias: List<Membresia>
+  --
+  informarIncidente(Servicio)
+  resolverIncidente()
 }
 
 class Localizacion {
@@ -72,25 +81,55 @@ class OrganismoDeControl {
 
 class Incidente {
   servicioAfectado: Servicio
+  comunidadesInteresadas : List<Comunidad>
   observaciones: String
   fecha: DateTime
 }
 
-/'
-
-class Comunidad {
+class Membresia {
+  comunidad: Comunidad
+  esAdministrador: Boolean
 }
-
-'/
-
+class Comunidad {
+  serviciosDeInteres: List<Servicio>
+  --
+  crearServicio()
+}
+class RepositorioIncidentes{
+  incidentes : List<Incidente>
+}
+interface InteresadosServicio{
+  --
+  informarAlta()
+  informarBaja()
+}
+class InformarPorWhatsapp{
+  --
+  informarAlta()
+  informarBaja()
+}
+class InformarPorMail{
+  --
+  informarAlta()
+  informarBaja()
+}
+InteresadosServicio <|.. InformarPorMail
+InteresadosServicio <|.. InformarPorWhatsapp
+Incidente "*"<-- RepositorioIncidentes
+Servicio ->"*" InteresadosServicio
+Usuario ..> Incidente
+Servicio <-- Incidente
+Comunidad ..> Servicio
+Membresia -> Comunidad
+Usuario ->"*" Membresia
 Entidad ->"*" Establecimiento
 Entidad --> TipoDeEntidad
 Establecimiento ->"*" Servicio
-Servicio -> TipoDeServicio
+Servicio --> TipoDeServicio
 Usuario -->"entidadesDeInteres *" Entidad
-Usuario -> Localizacion
 Localizacion <- Entidad
-Localizacion -> TipoDeLocalizacion
+Localizacion <- Usuario
+TipoDeLocalizacion <- Localizacion
 Entidad "entidadesControladas *"<-- OrganismoDeControl
 
 
