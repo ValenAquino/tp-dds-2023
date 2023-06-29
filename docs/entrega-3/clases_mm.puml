@@ -90,6 +90,8 @@ class Incidente {
   servicioAfectado: Servicio
   observaciones: String
   fecha: DateTime
+  resuelto: Boolean
+  fechaResolucion: DateTime
 }
 
 class Comunidad {
@@ -98,6 +100,7 @@ class Comunidad {
   incidentes: List<Incidente>
   --
   abrirIncidente(Servicio)
+  cerrarIncidente(Incidente)
 }
 
 /'
@@ -106,6 +109,12 @@ void abrirIncidente(Servicio servicio) {
   var incidente = new Incidente(servicio, "")
   incidentes.add(incidente)
   usuarios.forEach(u -> u.notificarIncidente(incidente))
+}
+
+void cerrarIncidente(Incidente incidente) {
+  var incidente = incidentes.find(i -> i.equals(incidente))
+  incidente.resuelto = true
+  incidente.fechaResolucion = getDate()
 }
 '/
 
