@@ -71,3 +71,13 @@ class CalendarioNotificaciones {
         return rango != null && rango.contiene(hora);
     }
 }
+
+// RankingSemanal
+void getRankingPromedioTiempoDeCierre() {
+  this.promedioTiempoDeCierre = 
+
+}
+
+void getRankingCantidadDeIncidentes() {
+  this.cantidadDeIncidentes =
+}

@@ -123,13 +123,21 @@ class Comunidad {
   cerrarIncidente(Incidente)
 }
 
-Usuario -up-> MedioDeComunicacion
+class RankingSemanal {
+  promedioTiempoDeCierre: List<Entidades>
+  cantidadDeIncidentes: List<Entidades>
+  --
+  getRankingPromedioTiempoDeCierre()
+  getRankingCantidadDeIncidentes()
+}
+
+Usuario -u-> MedioDeComunicacion
 Usuario -> CalendarioNotificaciones
 CalendarioNotificaciones -->"*" RangoHorario
 Entidad ->"*" Establecimiento
 Entidad --> TipoDeEntidad
 Establecimiento ->"*" Servicio
-Servicio -> TipoDeServicio
+Servicio -d-> TipoDeServicio
 Usuario -->"entidadesDeInteres *" Entidad
 Localizacion <- Usuario
 Localizacion <- Entidad
@@ -138,6 +146,7 @@ Entidad "entidadesControladas *"<-- OrganismoDeControl
 Comunidad -->"*" Servicio
 Usuario "*"<- Comunidad
 Comunidad ->"*" Incidente
+Incidente -l-> Servicio
 MedioWhatsApp ..|> MedioDeComunicacion
 MedioEmail ..|> MedioDeComunicacion
 
