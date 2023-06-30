@@ -1,5 +1,4 @@
 @startuml TPA3-Clases
-skinparam linetype ortho
 
 ' Supermercado, Centro Comunal, Banco, ...
 class Entidad {
@@ -7,6 +6,8 @@ class Entidad {
   localizacion: Localizacion
   tipoDeEntidad: TipoDeEntidad
   establecimientos: List<Establecimiento>
+  --
+  tieneServicio(Servicio)
 }
 
 ' Sucursal, Estacion, ...
@@ -16,6 +17,7 @@ class Establecimiento {
   --
   agregarServicio(Servicio)
   removerServicio(Servicio)
+  tieneServicio(Servicio)
 }
 
 class Servicio {
@@ -45,9 +47,26 @@ class Usuario {
   entidadesDeInteres: List<Entidad>
   localizacion: Localizacion
   medioDeComunicacion: MedioDeComunicacion
+  calendarioNotificaciones: CalendarioNotificaciones
   --
   cambiarMedioDeComunicacion()
   notificarIncidente(Incidente)
+  interesadoEn(Servicio)
+}
+
+class RangoHorario {
+  inicio: LocalTime
+  fin: LocalTime
+  --
+  contiene(LocalTime)
+}
+
+class CalendarioNotificaciones {
+  horarios: Map<DayOfWeek, RangoHorario>
+  --
+  agregarHorario(DayOfWeek, LocalTime, LocalTime)
+  eliminarHorario(DayOfWeek)
+  abarcaA(DateTime)
 }
 
 interface MedioDeComunicacion {
@@ -100,25 +119,13 @@ class Comunidad {
   incidentes: List<Incidente>
   --
   abrirIncidente(Servicio)
+  getUsuariosInteresados(Servicio)
   cerrarIncidente(Incidente)
 }
 
-/'
-# Comunidad
-void abrirIncidente(Servicio servicio) {
-  var incidente = new Incidente(servicio, "")
-  incidentes.add(incidente)
-  usuarios.forEach(u -> u.notificarIncidente(incidente))
-}
-
-void cerrarIncidente(Incidente incidente) {
-  var incidente = incidentes.find(i -> i.equals(incidente))
-  incidente.resuelto = true
-  incidente.fechaResolucion = getDate()
-}
-'/
-
-
+Usuario -up-> MedioDeComunicacion
+Usuario -> CalendarioNotificaciones
+CalendarioNotificaciones -->"*" RangoHorario
 Entidad ->"*" Establecimiento
 Entidad --> TipoDeEntidad
 Establecimiento ->"*" Servicio
@@ -131,9 +138,7 @@ Entidad "entidadesControladas *"<-- OrganismoDeControl
 Comunidad -->"*" Servicio
 Usuario "*"<- Comunidad
 Comunidad ->"*" Incidente
-Usuario -up-> MedioDeComunicacion
 MedioWhatsApp ..|> MedioDeComunicacion
 MedioEmail ..|> MedioDeComunicacion
-
 
 @enduml
