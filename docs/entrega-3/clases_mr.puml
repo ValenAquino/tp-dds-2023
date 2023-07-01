@@ -1,0 +1,136 @@
+@startuml TPA3-Clases
+skinparam linetype ortho
+
+' Supermercado, Centro Comunal, Banco, ...
+class Entidad {
+  nombre: String
+  localizacion: Localizacion
+  tipoDeEntidad: TipoDeEntidad
+  establecimientos: List<Establecimiento>
+}
+
+' Sucursal, Estacion, ...
+class Establecimiento {
+  nombre: String
+  servicios: List<Servicio>
+  --
+  agregarServicio(Servicio)
+  removerServicio(Servicio)
+}
+
+class Servicio {
+  descripcion: String
+  tipoDeServicio: TipoDeServicio
+  incidentes : List<Incidente>
+  servicioActivo : Boolean
+  interesados : InteresadosServicio
+  --
+  darDeBaja()
+  darDeAlta()
+}
+
+enum TipoDeServicio {
+  ESCALERAS_MECANICAS
+  ASCENSORES
+  BAÑOS
+}
+
+enum TipoDeEntidad {
+  SUBTERRANEO
+  FERROCARRIL
+  SUPERMERADO
+  BANCO
+}
+
+class Usuario {
+  usuario: String
+  contraseña: String
+  nombre: String
+  apellido: String
+  correoElectronico: String
+  entidadesDeInteres: List<Entidad>
+  localizacion: Localizacion
+  membresias: List<Membresia>
+  --
+  informarIncidente(Servicio)
+  resolverIncidente()
+}
+
+class Localizacion {
+  nombre: String
+  latitud: Double
+  longitud: Double
+  tipoDeLocalizacion: TipoDeLocalizacion
+}
+
+enum TipoDeLocalizacion {
+  DEPARTAMENTO
+  MUNICIPIO
+  PROVINCIA
+}
+
+class OrganismoDeControl {
+  nombre: String
+  correoElectronico: String
+  responsableDeInformes: Usuario
+  entidadesControladas: List<Entidad>
+  --
+  asignarResponsable()
+  agregarEntidad()
+}
+
+class Incidente {
+  servicioAfectado: Servicio
+  comunidadesInteresadas : List<Comunidad>
+  observaciones: String
+  fecha: DateTime
+}
+
+class Membresia {
+  comunidad: Comunidad
+  esAdministrador: Boolean
+}
+class Comunidad {
+  serviciosDeInteres: List<Servicio>
+  --
+  crearServicio()
+}
+class RepositorioIncidentes{
+  incidentes : List<Incidente>
+}
+interface InteresadosServicio{
+  --
+  informarAlta()
+  informarBaja()
+}
+class InformarPorWhatsapp{
+  --
+  informarAlta()
+  informarBaja()
+}
+class InformarPorMail{
+  --
+  informarAlta()
+  informarBaja()
+}
+InteresadosServicio <|.. InformarPorMail
+InteresadosServicio <|.. InformarPorWhatsapp
+Incidente "*"<-- RepositorioIncidentes
+Servicio ->"*" InteresadosServicio
+Usuario ..> Incidente
+Servicio <-- Incidente
+Comunidad ..> Servicio
+Membresia -> Comunidad
+Usuario ->"*" Membresia
+Entidad ->"*" Establecimiento
+Entidad --> TipoDeEntidad
+Establecimiento ->"*" Servicio
+Servicio --> TipoDeServicio
+Usuario -->"entidadesDeInteres *" Entidad
+Localizacion <- Entidad
+Localizacion <- Usuario
+TipoDeLocalizacion <- Localizacion
+Entidad "entidadesControladas *"<-- OrganismoDeControl
+
+
+@enduml

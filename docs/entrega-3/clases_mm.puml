@@ -1,0 +1,153 @@
+@startuml TPA3-Clases
+
+' Supermercado, Centro Comunal, Banco, ...
+class Entidad {
+  nombre: String
+  localizacion: Localizacion
+  tipoDeEntidad: TipoDeEntidad
+  establecimientos: List<Establecimiento>
+  --
+  tieneServicio(Servicio)
+}
+
+' Sucursal, Estacion, ...
+class Establecimiento {
+  nombre: String
+  servicios: List<Servicio>
+  --
+  agregarServicio(Servicio)
+  removerServicio(Servicio)
+  tieneServicio(Servicio)
+}
+
+class Servicio {
+  descripcion: String
+  tipoDeServicio: TipoDeServicio
+}
+
+enum TipoDeServicio {
+  ESCALERAS_MECANICAS
+  ASCENSORES
+  BAÑOS
+}
+
+enum TipoDeEntidad {
+  SUBTERRANEO
+  FERROCARRIL
+  SUPERMERADO
+  BANCO
+}
+
+class Usuario {
+  usuario: String
+  contraseña: String
+  nombre: String
+  apellido: String
+  correoElectronico: String
+  entidadesDeInteres: List<Entidad>
+  localizacion: Localizacion
+  medioDeComunicacion: MedioDeComunicacion
+  calendarioNotificaciones: CalendarioNotificaciones
+  --
+  cambiarMedioDeComunicacion()
+  notificarIncidente(Incidente)
+  interesadoEn(Servicio)
+}
+
+class RangoHorario {
+  inicio: LocalTime
+  fin: LocalTime
+  --
+  contiene(LocalTime)
+}
+
+class CalendarioNotificaciones {
+  horarios: Map<DayOfWeek, RangoHorario>
+  --
+  agregarHorario(DayOfWeek, LocalTime, LocalTime)
+  eliminarHorario(DayOfWeek)
+  abarcaA(DateTime)
+}
+
+interface MedioDeComunicacion {
+  --
+  notificar()
+}
+class MedioWhatsApp {
+  --
+  notificar()
+}
+class MedioEmail {
+  --
+  notificar()
+}
+
+class Localizacion {
+  nombre: String
+  latitud: Double
+  longitud: Double
+  tipoDeLocalizacion: TipoDeLocalizacion
+}
+
+enum TipoDeLocalizacion {
+  DEPARTAMENTO
+  MUNICIPIO
+  PROVINCIA
+}
+
+class OrganismoDeControl {
+  nombre: String
+  correoElectronico: String
+  responsableDeInformes: Usuario
+  entidadesControladas: List<Entidad>
+  --
+  asignarResponsable()
+  agregarEntidad()
+}
+
+class Incidente {
+  servicioAfectado: Servicio
+  observaciones: String
+  fecha: DateTime
+  resuelto: Boolean
+  fechaResolucion: DateTime
+}
+
+class Comunidad {
+  serviciosDeInteres: List<Servicio>
+  usuarios: List<Usuario>
+  incidentes: List<Incidente>
+  --
+  abrirIncidente(Servicio)
+  getUsuariosInteresados(Servicio)
+  cerrarIncidente(Incidente)
+}
+
+class RankingSemanal {
+  promedioTiempoDeCierre: List<Entidades>
+  cantidadDeIncidentes: List<Entidades>
+  --
+  getRankingPromedioTiempoDeCierre()
+  getRankingCantidadDeIncidentes()
+}
+
+Usuario -u-> MedioDeComunicacion
+Usuario -> CalendarioNotificaciones
+CalendarioNotificaciones -->"*" RangoHorario
+Entidad ->"*" Establecimiento
+Entidad --> TipoDeEntidad
+Establecimiento ->"*" Servicio
+Servicio -d-> TipoDeServicio
+Usuario -->"entidadesDeInteres *" Entidad
+Localizacion <- Usuario
+Localizacion <- Entidad
+TipoDeLocalizacion -> Localizacion
+Entidad "entidadesControladas *"<-- OrganismoDeControl
+Comunidad -->"*" Servicio
+Usuario "*"<- Comunidad
+Comunidad ->"*" Incidente
+Incidente -l-> Servicio
+MedioWhatsApp ..|> MedioDeComunicacion
+MedioEmail ..|> MedioDeComunicacion
+
+@enduml
