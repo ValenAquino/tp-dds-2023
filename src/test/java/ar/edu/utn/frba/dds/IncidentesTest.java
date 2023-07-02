@@ -34,4 +34,22 @@ public class IncidentesTest {
     assertTrue(incidente.estaResuelto());
     assertNotNull(incidente.getFechaResolucion());
   }
+
+  @Test
+  public void puedoConsultarIncidentesPorEstado() {
+    Comunidad nosMovemosEnSubte = new Comunidad();
+    Servicio ascensor = new Servicio("Ascensor - acceso a estación", TipoDeServicio.ASCENSORES);
+    Servicio escaleraMecanica = new Servicio("Escalera mecánica - acceso a andén", TipoDeServicio.ESCALERAS_MECANICAS);
+    nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
+    nosMovemosEnSubte.agregarServicioDeInteres(escaleraMecanica);
+
+    Incidente incidenteAscensor = nosMovemosEnSubte.abrirIncidente(ascensor, "Fuera de servicio");
+    Incidente incidenteEscalera = nosMovemosEnSubte.abrirIncidente(escaleraMecanica, "Fuera de servicio");
+    incidenteAscensor.cerrar();
+
+    assertEquals(1, nosMovemosEnSubte.getIncidentesAbiertos().size());
+    assertEquals(1, nosMovemosEnSubte.getIncidentesResueltos().size());
+    assertEquals(incidenteAscensor, nosMovemosEnSubte.getIncidentesResueltos().get(0));
+    assertEquals(incidenteEscalera, nosMovemosEnSubte.getIncidentesAbiertos().get(0));
+  }
 }

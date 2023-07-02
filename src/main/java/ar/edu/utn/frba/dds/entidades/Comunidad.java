@@ -31,4 +31,18 @@ public class Comunidad {
       throw new RuntimeException("El servicio debe ser de interés para abrir un incidente");
     }
   }
+
+  public List<Incidente> getIncidentesResueltos() {
+    return incidentes
+        .stream()
+        .filter(Incidente::estaResuelto)
+        .toList();
+  }
+
+  public List<Incidente> getIncidentesAbiertos() {
+    return incidentes
+        .stream()
+        .filter(i -> !i.estaResuelto())
+        .toList();
+  }
 }
