@@ -10,16 +10,14 @@ public class Usuario {
   private String apellido;
   private String correoElectronico;
   private List<Entidad> entidadesDeInteres;
-  private Localizacion localizacion;
 
   public Usuario(String usuario, String contrasenia, String nombre, String apellido,
-                 String correoElectronico, Localizacion localizacion) {
+                 String correoElectronico) {
     this.usuario = usuario;
     this.contrasenia = contrasenia;
     this.nombre = nombre;
     this.apellido = apellido;
     this.correoElectronico = correoElectronico;
-    this.localizacion = localizacion;
     this.entidadesDeInteres = new ArrayList<>();
   }
 

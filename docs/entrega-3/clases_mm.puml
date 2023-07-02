@@ -3,7 +3,7 @@
 ' Supermercado, Centro Comunal, Banco, ...
 class Entidad {
   nombre: String
-  localizacion: Localizacion
+  ' localizacion: Localizacion
   tipoDeEntidad: TipoDeEntidad
   establecimientos: List<Establecimiento>
   --
@@ -45,7 +45,7 @@ class Usuario {
   apellido: String
   correoElectronico: String
   entidadesDeInteres: List<Entidad>
-  localizacion: Localizacion
+  ' localizacion: Localizacion
   medioDeComunicacion: MedioDeComunicacion
   calendarioNotificaciones: CalendarioNotificaciones
   --
@@ -82,6 +82,7 @@ class MedioEmail {
   notificar()
 }
 
+/'
 class Localizacion {
   nombre: String
   latitud: Double
@@ -94,6 +95,7 @@ enum TipoDeLocalizacion {
   MUNICIPIO
   PROVINCIA
 }
+'/
 
 class OrganismoDeControl {
   nombre: String
@@ -139,9 +141,9 @@ Entidad --> TipoDeEntidad
 Establecimiento ->"*" Servicio
 Servicio -d-> TipoDeServicio
 Usuario -->"entidadesDeInteres *" Entidad
-Localizacion <- Usuario
-Localizacion <- Entidad
-TipoDeLocalizacion -> Localizacion
+' Localizacion <- Usuario
+' Localizacion <- Entidad
+' TipoDeLocalizacion -> Localizacion
 Entidad "entidadesControladas *"<-- OrganismoDeControl
 Comunidad -->"*" Servicio
 Usuario "*"<- Comunidad
