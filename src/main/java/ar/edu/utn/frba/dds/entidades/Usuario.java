@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.entidades;
 
+import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ public class Usuario {
   private String apellido;
   private String correoElectronico;
   private List<Servicio> serviciosDeInteres;
+  private MedioDeComunicacion medioDeComunicacion;
 
   public Usuario(String usuario, String contrasenia, String nombre, String apellido,
                  String correoElectronico) {
@@ -19,6 +21,10 @@ public class Usuario {
     this.apellido = apellido;
     this.correoElectronico = correoElectronico;
     this.serviciosDeInteres = new ArrayList<>();
+  }
+
+  public void setMedioDeComunicacion(MedioDeComunicacion medioDeComunicacion) {
+    this.medioDeComunicacion = medioDeComunicacion;
   }
 
   public void agregarServicioDeInteres(Servicio servicio) {
