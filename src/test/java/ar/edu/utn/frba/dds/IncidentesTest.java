@@ -1,16 +1,26 @@
 package ar.edu.utn.frba.dds;
 
 import ar.edu.utn.frba.dds.entidades.*;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class IncidentesTest {
 
+  private final Servicio ascensor = new Servicio(
+      "Ascensor - acceso a estación",
+      TipoDeServicio.ASCENSORES
+  );
+
+  private final Servicio escaleraMecanica = new Servicio(
+      "Escalera mecánica - acceso a andén",
+      TipoDeServicio.ESCALERAS_MECANICAS
+  );
+
+  private final Comunidad nosMovemosEnSubte = new Comunidad();
+
   @Test
   public void puedoAbrirUnIncidenteEnUnaComunidad() {
-    Comunidad nosMovemosEnSubte = new Comunidad();
-    Servicio ascensor = new Servicio("Ascensor - acceso a estación", TipoDeServicio.ASCENSORES);
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
     nosMovemosEnSubte.abrirIncidente(ascensor, "Fuera de servicio");
     assertEquals(1, nosMovemosEnSubte.getIncidentes().size());
@@ -18,16 +28,12 @@ public class IncidentesTest {
 
   @Test
   public void abrirIncidenteDeServicioNoInteresLanzaExcepcion() {
-    Comunidad nosMovemosEnSubte = new Comunidad();
-    Servicio ascensor = new Servicio("Ascensor - acceso a estación", TipoDeServicio.ASCENSORES);
     assertThrows(RuntimeException.class, () ->
         nosMovemosEnSubte.abrirIncidente(ascensor, "Fuera de servicio"));
   }
 
   @Test
   public void puedoCerrarUnIncidenteEnUnaComunidad() {
-    Comunidad nosMovemosEnSubte = new Comunidad();
-    Servicio ascensor = new Servicio("Ascensor - acceso a estación", TipoDeServicio.ASCENSORES);
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
     Incidente incidente = nosMovemosEnSubte.abrirIncidente(ascensor, "Fuera de servicio");
     incidente.cerrar();
@@ -37,9 +43,6 @@ public class IncidentesTest {
 
   @Test
   public void puedoConsultarIncidentesPorEstado() {
-    Comunidad nosMovemosEnSubte = new Comunidad();
-    Servicio ascensor = new Servicio("Ascensor - acceso a estación", TipoDeServicio.ASCENSORES);
-    Servicio escaleraMecanica = new Servicio("Escalera mecánica - acceso a andén", TipoDeServicio.ESCALERAS_MECANICAS);
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
     nosMovemosEnSubte.agregarServicioDeInteres(escaleraMecanica);
 
