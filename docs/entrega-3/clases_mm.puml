@@ -1,5 +1,7 @@
 @startuml TPA3-Clases
 
+hide empty members
+
 ' Supermercado, Centro Comunal, Banco, ...
 class Entidad {
   nombre: String
@@ -44,7 +46,7 @@ class Usuario {
   nombre: String
   apellido: String
   correoElectronico: String
-  entidadesDeInteres: List<Entidad>
+  serviciosDeInteres: List<Servicio>
   ' localizacion: Localizacion
   medioDeComunicacion: MedioDeComunicacion
   calendarioNotificaciones: CalendarioNotificaciones
@@ -134,21 +136,23 @@ class RankingSemanal {
 }
 
 Usuario -u-> MedioDeComunicacion
-Usuario -> CalendarioNotificaciones
+Usuario -l-> CalendarioNotificaciones
+
+Usuario ->"*" Servicio
+Establecimiento ->"*" Servicio
+Comunidad ->"*" Servicio
+Incidente --> Servicio
+
 CalendarioNotificaciones -->"*" RangoHorario
 Entidad ->"*" Establecimiento
 Entidad --> TipoDeEntidad
-Establecimiento ->"*" Servicio
 Servicio -d-> TipoDeServicio
-Usuario -->"entidadesDeInteres *" Entidad
 ' Localizacion <- Usuario
 ' Localizacion <- Entidad
 ' TipoDeLocalizacion -> Localizacion
 Entidad "entidadesControladas *"<-- OrganismoDeControl
-Comunidad -->"*" Servicio
 Usuario "*"<- Comunidad
 Comunidad ->"*" Incidente
-Incidente -l-> Servicio
 MedioWhatsApp ..|> MedioDeComunicacion
 MedioEmail ..|> MedioDeComunicacion
 
