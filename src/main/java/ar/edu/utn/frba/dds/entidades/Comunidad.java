@@ -30,6 +30,7 @@ public class Comunidad {
     if (serviciosDeInteres.contains(servicio)) {
       Incidente incidente = new Incidente(servicio, observaciones);
       incidentes.add(incidente);
+      notificarAperturaDeIncidente(incidente);
       return incidente;
     } else {
       throw new RuntimeException("El servicio debe ser de interés para abrir un incidente");
@@ -48,5 +49,11 @@ public class Comunidad {
         .stream()
         .filter(i -> !i.estaResuelto())
         .toList();
+  }
+
+  public void notificarAperturaDeIncidente(Incidente incidente) {
+    miembros.stream()
+        .filter(m -> m.esInteresadoEn(incidente.getServicio()))
+        .forEach(m -> m.notificarAperturaDeIncidente(incidente));
   }
 }

@@ -30,4 +30,12 @@ public class Usuario {
   public void agregarServicioDeInteres(Servicio servicio) {
     serviciosDeInteres.add(servicio);
   }
+
+  public boolean esInteresadoEn(Servicio servicio) {
+    return serviciosDeInteres.contains(servicio);
+  }
+
+  public void notificarAperturaDeIncidente(Incidente incidente) {
+    medioDeComunicacion.notificarAperturaDeIncidente(incidente);
+  }
 }
