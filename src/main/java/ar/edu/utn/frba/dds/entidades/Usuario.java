@@ -9,7 +9,7 @@ public class Usuario {
   private String nombre;
   private String apellido;
   private String correoElectronico;
-  private List<Entidad> entidadesDeInteres;
+  private List<Servicio> serviciosDeInteres;
 
   public Usuario(String usuario, String contrasenia, String nombre, String apellido,
                  String correoElectronico) {
@@ -18,7 +18,10 @@ public class Usuario {
     this.nombre = nombre;
     this.apellido = apellido;
     this.correoElectronico = correoElectronico;
-    this.entidadesDeInteres = new ArrayList<>();
+    this.serviciosDeInteres = new ArrayList<>();
   }
 
+  public void agregarServicioDeInteres(Servicio servicio) {
+    serviciosDeInteres.add(servicio);
+  }
 }
