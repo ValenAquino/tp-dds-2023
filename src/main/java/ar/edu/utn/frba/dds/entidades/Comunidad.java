@@ -22,6 +22,10 @@ public class Comunidad {
     serviciosDeInteres.add(servicio);
   }
 
+  public void agregarMiembro(Usuario usuario) {
+    miembros.add(usuario);
+  }
+
   public Incidente abrirIncidente(Servicio servicio, String observaciones) {
     if (serviciosDeInteres.contains(servicio)) {
       Incidente incidente = new Incidente(servicio, observaciones);

@@ -8,4 +8,8 @@ public class Servicio {
     this.descripcion = descripcion;
     this.tipoDeServicio = tipoDeServicio;
   }
+
+  public String getDescripcion() {
+    return descripcion;
+  }
 }

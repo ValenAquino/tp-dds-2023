@@ -16,16 +16,32 @@ public class Incidente {
     this.observaciones = observaciones;
   }
 
-  public void cerrar() {
-    resuelto = true;
-    fechaResolucion = LocalDateTime.now();
-  }
-
   public boolean estaResuelto() {
     return resuelto;
   }
 
+  public LocalDateTime getFecha() {
+    return fecha;
+  }
+
   public LocalDateTime getFechaResolucion() {
     return fechaResolucion;
+  }
+
+  public Servicio getServicio() {
+    return servicio;
+  }
+
+  public String getDescripcionServicio() {
+    return servicio.getDescripcion();
+  }
+
+  public String getObservaciones() {
+    return observaciones;
+  }
+
+  public void cerrar() {
+    resuelto = true;
+    fechaResolucion = LocalDateTime.now();
   }
 }
