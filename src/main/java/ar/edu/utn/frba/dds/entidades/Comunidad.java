@@ -52,8 +52,6 @@ public class Comunidad {
   }
 
   public void notificarAperturaDeIncidente(Incidente incidente) {
-    miembros.stream()
-        .filter(m -> m.esInteresadoEn(incidente.getServicio()))
-        .forEach(m -> m.notificarAperturaDeIncidente(incidente));
+    miembros.forEach(m -> m.notificarAperturaDeIncidente(incidente));
   }
 }

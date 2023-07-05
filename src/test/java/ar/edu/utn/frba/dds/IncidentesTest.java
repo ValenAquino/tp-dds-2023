@@ -85,30 +85,10 @@ public class IncidentesTest {
   }
 
   @Test
-  public void seLlamaElMetodoNotificarDeUnUsuarioInteresado() {
-    nosMovemosEnSubte.agregarMiembro(usuarioQueUsaSubte);
-    nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
-    usuarioQueUsaSubte.agregarServicioDeInteres(ascensor);
-    usuarioQueUsaSubte.setMedioDeComunicacion(medioDeComunicacion);
-    nosMovemosEnSubte.abrirIncidente(ascensor, "Fuera de servicio");
-    verify(medioDeComunicacion).notificarAperturaDeIncidente(any());
-  }
-
-  @Test
-  public void noSeLlamaElMetodoNotificarDeUnUsuarioNoInteresado() {
-    nosMovemosEnSubte.agregarMiembro(usuarioQueUsaSubte);
-    nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
-    usuarioQueUsaSubte.setMedioDeComunicacion(medioDeComunicacion);
-    nosMovemosEnSubte.abrirIncidente(ascensor, "Fuera de servicio");
-    verify(medioDeComunicacion, never()).notificarAperturaDeIncidente(any());
-  }
-
-  @Test
   public void seLlamaElMetodoDeMailCuandoElUsuarioEligeMail() {
     nosMovemosEnSubte.agregarMiembro(usuarioQueUsaSubte);
     nosMovemosEnSubte.agregarServicioDeInteres(escaleraMecanica);
     usuarioQueUsaSubte.setMedioDeComunicacion(mailSender);
-    usuarioQueUsaSubte.agregarServicioDeInteres(escaleraMecanica);
     nosMovemosEnSubte.abrirIncidente(escaleraMecanica, "Fuera de servicio");
     verify(mailSender).notificarAperturaDeIncidente(any());
   }
@@ -118,7 +98,6 @@ public class IncidentesTest {
     nosMovemosEnSubte.agregarMiembro(usuarioQueUsaSubte);
     nosMovemosEnSubte.agregarServicioDeInteres(escaleraMecanica);
     usuarioQueUsaSubte.setMedioDeComunicacion(whatsAppSender);
-    usuarioQueUsaSubte.agregarServicioDeInteres(escaleraMecanica);
     nosMovemosEnSubte.abrirIncidente(escaleraMecanica, "Fuera de servicio");
     verify(whatsAppSender).notificarAperturaDeIncidente(any());
   }
@@ -135,7 +114,6 @@ public class IncidentesTest {
 
     usuarioQueUsaSubte.setCalendarioNotificaciones(calendarioNotificaciones);
     usuarioQueUsaSubte.setMedioDeComunicacion(medioDeComunicacion);
-    usuarioQueUsaSubte.agregarServicioDeInteres(ascensor);
     nosMovemosEnSubte.agregarMiembro(usuarioQueUsaSubte);
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
     nosMovemosEnSubte.abrirIncidente(ascensor, "Fuera de servicio");
@@ -155,7 +133,6 @@ public class IncidentesTest {
 
     usuarioQueUsaSubte.setCalendarioNotificaciones(calendarioNotificaciones);
     usuarioQueUsaSubte.setMedioDeComunicacion(medioDeComunicacion);
-    usuarioQueUsaSubte.agregarServicioDeInteres(ascensor);
     nosMovemosEnSubte.agregarMiembro(usuarioQueUsaSubte);
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
     nosMovemosEnSubte.abrirIncidente(ascensor, "Fuera de servicio");
@@ -167,7 +144,6 @@ public class IncidentesTest {
   public void seLlamaElMetodoNotificarCuandoNoSeConfiguraHorario() {
     usuarioQueUsaSubte.setCalendarioNotificaciones(null);
     usuarioQueUsaSubte.setMedioDeComunicacion(medioDeComunicacion);
-    usuarioQueUsaSubte.agregarServicioDeInteres(ascensor);
     nosMovemosEnSubte.agregarMiembro(usuarioQueUsaSubte);
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
     nosMovemosEnSubte.abrirIncidente(ascensor, "Fuera de servicio");
