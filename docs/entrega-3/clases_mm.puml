@@ -25,6 +25,7 @@ class Establecimiento {
 class Servicio {
   descripcion: String
   tipoDeServicio: TipoDeServicio
+  incidentes: List<Incidente>
 }
 
 enum TipoDeServicio {
@@ -107,6 +108,7 @@ class OrganismoDeControl {
   --
   asignarResponsable()
   agregarEntidad()
+  getEntidades()
 }
 
 class Incidente {
@@ -127,13 +129,49 @@ class Comunidad {
   cerrarIncidente(Incidente)
 }
 
-class RankingSemanal {
-  promedioTiempoDeCierre: List<Entidades>
-  cantidadDeIncidentes: List<Entidades>
+'class RepositorioOrganismosDeControl {
+'  organismosDeControl: List<OrganismoDeControl>
+'  --
+'  agregarOrganismoDeControl()
+'  eliminarOrganismoDeControl()
+'}
+
+class GeneradorRankingSemanal {
+  criterios : List<criterioDeOrdenamiento>
+  organismo : OrganismoDeControl
+  rankings : List<Ranking>
   --
-  getRankingPromedioTiempoDeCierre()
-  getRankingCantidadDeIncidentes()
+  generarRanking(criterio)
+  generarRankingSemanal()
 }
+
+class Ranking {
+  fecha: DateTime
+  ranking: List<Entidad>
+  criterioElegido: String
+}
+
+abstract class CriterioDeOrdenamiento {
+  nombre: String
+  ---
+  ordenar(listaEntidades)
+}
+
+class PromedioCierre {
+  ordenar(listaEntidades)
+}
+
+class CantidadIncidentes {
+  ordenar(listaEntidades)
+}
+
+'RepositorioOrganismosDeControl -u-> OrganismoDeControl
+GeneradorRankingSemanal -> OrganismoDeControl
+GeneradorRankingSemanal -d> "*" CriterioDeOrdenamiento
+GeneradorRankingSemanal --> "*" Ranking
+
+CriterioDeOrdenamiento <|.. PromedioCierre
+CriterioDeOrdenamiento <|.d. CantidadIncidentes
 
 Usuario -u-> MedioDeComunicacion
 Usuario -l-> CalendarioNotificaciones
@@ -145,8 +183,9 @@ Incidente --> Servicio
 
 CalendarioNotificaciones -->"*" RangoHorario
 Entidad ->"*" Establecimiento
-Entidad --> TipoDeEntidad
-Servicio -d-> TipoDeServicio
+Entidad -> TipoDeEntidad
+Servicio --> TipoDeServicio
+Servicio -u-> "*" Incidente
 ' Localizacion <- Usuario
 ' Localizacion <- Entidad
 ' TipoDeLocalizacion -> Localizacion
