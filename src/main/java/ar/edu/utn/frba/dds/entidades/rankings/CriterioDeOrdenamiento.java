@@ -3,7 +3,7 @@ package ar.edu.utn.frba.dds.entidades.rankings;
 import ar.edu.utn.frba.dds.entidades.Entidad;
 import java.util.List;
 
-abstract public class CriterioDeOrdenamiento {
+public abstract class CriterioDeOrdenamiento {
   private final String nombre;
 
   public CriterioDeOrdenamiento(String nombre) {
@@ -14,5 +14,5 @@ abstract public class CriterioDeOrdenamiento {
     return nombre;
   }
 
-  abstract public void ordenar(List<Entidad> entidades);
+  public abstract List<Entidad> ordenar(List<Entidad> entidades);
 }
