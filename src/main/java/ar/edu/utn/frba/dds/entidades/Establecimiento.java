@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Establecimiento {
   private String nombre;
-  private List<Servicio> servicios;
+  private final List<Servicio> servicios = new ArrayList<>();
 
   public void agregarServicio(Servicio servicio) {
     this.servicios.add(servicio);
