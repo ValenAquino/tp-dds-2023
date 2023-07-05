@@ -46,7 +46,7 @@ class Usuario {
   nombre: String
   apellido: String
   correoElectronico: String
-  serviciosDeInteres: List<Servicio>
+  entidadesDeInteres: List<Entidad>
   ' localizacion: Localizacion
   medioDeComunicacion: MedioDeComunicacion
   calendarioNotificaciones: CalendarioNotificaciones
@@ -138,7 +138,7 @@ class RankingSemanal {
 Usuario -u-> MedioDeComunicacion
 Usuario -l-> CalendarioNotificaciones
 
-Usuario ->"*" Servicio
+Usuario -->"*" Entidad
 Establecimiento ->"*" Servicio
 Comunidad ->"*" Servicio
 Incidente --> Servicio

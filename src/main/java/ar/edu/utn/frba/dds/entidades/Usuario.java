@@ -11,7 +11,7 @@ public class Usuario {
   private String nombre;
   private String apellido;
   private String correoElectronico;
-  private List<Servicio> serviciosDeInteres;
+  private List<Entidad> entidadesDeInteres;
   private MedioDeComunicacion medioDeComunicacion;
   private CalendarioNotificaciones calendarioNotificaciones;
 
@@ -22,7 +22,7 @@ public class Usuario {
     this.nombre = nombre;
     this.apellido = apellido;
     this.correoElectronico = correoElectronico;
-    this.serviciosDeInteres = new ArrayList<>();
+    this.entidadesDeInteres = new ArrayList<>();
   }
 
   public void setMedioDeComunicacion(MedioDeComunicacion medioDeComunicacion) {
