@@ -1,12 +1,12 @@
 package ar.edu.utn.frba.dds.entidades;
 
-import ar.edu.utn.frba.dds.excepciones.OrganismoDeControlException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrganismoDeControl {
   private final String nombre;
   private final String correoElectronico;
+  private Usuario usuarioResponsable;
   private final List<Entidad> entidadesControladas = new ArrayList<>();
 
   public OrganismoDeControl(String nombre, String correoElectronico) {
@@ -23,13 +23,14 @@ public class OrganismoDeControl {
   }
 
   public void asignarResponsable(Usuario nuevoResponsable) {
+    usuarioResponsable = nuevoResponsable;
   }
 
   public void agregarEntidad(Entidad nuevaEntidad) {
     entidadesControladas.add(nuevaEntidad);
   }
 
-  public List<Entidad> getEntidadesUltimaSemana() {
+  public List<Entidad> getEntidades() {
     return entidadesControladas;
   }
 }

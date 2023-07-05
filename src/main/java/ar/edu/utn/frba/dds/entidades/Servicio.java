@@ -1,13 +1,11 @@
 package ar.edu.utn.frba.dds.entidades;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Servicio {
   List<Incidente> incidentes;
-  private String descripcion;
+  private final String descripcion;
   private TipoDeServicio tipoDeServicio;
 
   public Servicio(String descripcion, TipoDeServicio tipoDeServicio) {
@@ -26,5 +24,9 @@ public class Servicio {
 
   public String getDescripcion() {
     return descripcion;
+  }
+
+  public List<Incidente> getIncidentes() {
+    return incidentes;
   }
 }
