@@ -1,5 +1,7 @@
 package ar.edu.utn.frba.dds.entidades;
 
+import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
+import ar.edu.utn.frba.dds.notificaciones.horarios.CalendarioNotificaciones;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +12,8 @@ public class Usuario {
   private String apellido;
   private String correoElectronico;
   private List<Servicio> serviciosDeInteres;
+  private MedioDeComunicacion medioDeComunicacion;
+  private CalendarioNotificaciones calendarioNotificaciones;
 
   public Usuario(String usuario, String contrasenia, String nombre, String apellido,
                  String correoElectronico) {
@@ -21,7 +25,26 @@ public class Usuario {
     this.serviciosDeInteres = new ArrayList<>();
   }
 
+  public void setMedioDeComunicacion(MedioDeComunicacion medioDeComunicacion) {
+    this.medioDeComunicacion = medioDeComunicacion;
+  }
+
+  public void setCalendarioNotificaciones(CalendarioNotificaciones calendarioNotificaciones) {
+    this.calendarioNotificaciones = calendarioNotificaciones;
+  }
+
   public void agregarServicioDeInteres(Servicio servicio) {
     serviciosDeInteres.add(servicio);
+  }
+
+  public boolean esInteresadoEn(Servicio servicio) {
+    return serviciosDeInteres.contains(servicio);
+  }
+
+  public void notificarAperturaDeIncidente(Incidente incidente) {
+    if (calendarioNotificaciones == null ||
+        calendarioNotificaciones.abarcaA(incidente.getFecha())) {
+      medioDeComunicacion.notificarAperturaDeIncidente(incidente);
+    }
   }
 }
