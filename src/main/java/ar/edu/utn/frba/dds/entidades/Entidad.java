@@ -1,7 +1,9 @@
 package ar.edu.utn.frba.dds.entidades;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Entidad {
   private String nombre;
@@ -25,25 +27,21 @@ public class Entidad {
   public void agregarEstablecimiento(Establecimiento establecimiento) {
     establecimientos.add(establecimiento);
   }
-  public Incidente abrirIncidente(Servicio servicio, String observaciones) {
-    if(establecimientos.stream().anyMatch(establecimiento -> establecimiento.tieneServicio(servicio))){
-      Incidente incidente = new Incidente(servicio, observaciones);
-      servicio.agregarIncidente(incidente);
-      RepositorioUsuarios.getInstance().todos().forEach(usuario -> {
-        if(usuario.interesadoEnEntidad(this)){
-          usuario.notificarAperturaDeIncidente(incidente);
-        }
-      });
-      return incidente;
-    }else {
-      throw new RuntimeException("El servicio debe pertenecer a algun establecimiento de la entidad");
-    }
-  }
+
   public List<Incidente> getIncidentes() {
-    List<Incidente> incidentes = new ArrayList<>();
-    for (Establecimiento establecimiento : establecimientos) {
-      incidentes.addAll(establecimiento.getIncidentes());
-    }
-    return incidentes;
+    return establecimientos.stream()
+        .flatMap(establecimiento -> establecimiento.getIncidentes().stream())
+        .collect(Collectors.toList());
   }
+
+  public List<Incidente> getIncidentesSemana(LocalDateTime fecha) {
+    LocalDateTime fechaLimite = fecha.minusDays(7);
+
+    return establecimientos.stream()
+        .flatMap(establecimiento -> establecimiento.getIncidentes().stream())
+        .filter(inc -> inc.getFecha().isAfter(fechaLimite) && inc.getFecha().isBefore(fecha))
+        .collect(Collectors.toList());
+  }
+
+
 }
