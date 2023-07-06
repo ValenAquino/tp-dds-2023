@@ -7,7 +7,7 @@ import java.util.List;
 
 public class CantidadIncidentes extends CriterioDeOrdenamiento {
 
-  public CantidadIncidentes(String nombre) {
+  public CantidadIncidentes() {
     super("Cantidad de incidentes");
   }
 

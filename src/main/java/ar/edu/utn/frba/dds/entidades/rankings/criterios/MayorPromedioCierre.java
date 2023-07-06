@@ -4,11 +4,13 @@ import ar.edu.utn.frba.dds.entidades.Entidad;
 import ar.edu.utn.frba.dds.entidades.Incidente;
 import ar.edu.utn.frba.dds.entidades.rankings.CriterioDeOrdenamiento;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MayorPromedioCierre extends CriterioDeOrdenamiento {
-  public MayorPromedioCierre(String nombre) {
+  public MayorPromedioCierre() {
     super("Mayor promedio de cierre");
   }
 
@@ -19,13 +21,37 @@ public class MayorPromedioCierre extends CriterioDeOrdenamiento {
   }
 
   private double calcularPromedioCierre(Entidad entidad) {
-    List<Incidente> incidentes = entidad.getIncidentes();
+    List<Incidente> incidentesResueltos = obtenerIncidentesResueltos(entidad);
 
-    return incidentes.stream()
-        .filter(Incidente::estaResuelto)
-        .mapToLong(incidente ->
-            Duration.between(incidente.getFecha(), incidente.getFechaResolucion()).toMillis())
-        .average()
-        .orElse(0.0);
+    if (incidentesResueltos.isEmpty()) {
+      // Excepcion?
+      return 0.0;
+    }
+
+    long duracionTotal = calcularDuracionTotal(incidentesResueltos);
+    return (double) duracionTotal / incidentesResueltos.size();
   }
+
+  private List<Incidente> obtenerIncidentesResueltos(Entidad entidad) {
+    LocalDateTime fechaActual = LocalDateTime.now();
+
+    return entidad.getIncidentesSemana(fechaActual).stream()
+        .filter(Incidente::estaResuelto)
+        .collect(Collectors.toList());
+  }
+
+  private long calcularDuracionTotal(List<Incidente> incidentes) {
+    return incidentes.stream()
+        .mapToLong(this::calcularDuracionIncidente)
+        .sum();
+  }
+
+  private long calcularDuracionIncidente(Incidente incidente) {
+    LocalDateTime fechaInicio = incidente.getFecha();
+    LocalDateTime fechaResolucion = incidente.getFechaResolucion();
+
+    return Duration.between(fechaInicio, fechaResolucion).toMillis();
+  }
+
+
 }

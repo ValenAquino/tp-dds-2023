@@ -12,87 +12,91 @@ import ar.edu.utn.frba.dds.entidades.rankings.Ranking;
 import ar.edu.utn.frba.dds.entidades.rankings.criterios.CantidadIncidentes;
 import ar.edu.utn.frba.dds.entidades.rankings.criterios.MayorPromedioCierre;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class GeneradorRankingSemanalTest {
+  GeneradorRankingSemanal generador;
+  OrganismoDeControl organismo;
+  Entidad entidadA;
+  Entidad entidadB;
+  Entidad entidadC;
 
-  @Test
-  public void seGeneranRankingsOrdenadosPorCantidadIncidentes() {
-    OrganismoDeControl organismo = unOrganismoDeControlConTresIncidentes();
-    CantidadIncidentes cantidadIncidentes = new CantidadIncidentes("CantidadIncidentes");
-    GeneradorRankingSemanal generadorRankingSemanal = new GeneradorRankingSemanal(organismo);
+  @BeforeEach
+  public void init() {
+    organismo = new OrganismoDeControl("Organismo", "org@mail");
+    generador = new GeneradorRankingSemanal(organismo);
 
-    generadorRankingSemanal.agregarCriterio(cantidadIncidentes);
-    generadorRankingSemanal.generarRankingSemanal();
+    entidadA = crearEntidadConIncidentes(2, "Entidad A");
+    entidadB = crearEntidadConIncidentes(3, "Entidad B");
+    entidadC = crearEntidadConIncidentes(1, "Entidad C");
 
-    List<Ranking> rankings = generadorRankingSemanal.getRankings();
-    List<Entidad> entidades = rankings.get(0).getEntidades();
-
-    Assertions.assertEquals("b", entidades.get(0).getNombre());
-    Assertions.assertEquals(1, generadorRankingSemanal.getRankings().size());
+    organismo.agregarEntidad(entidadA);
+    organismo.agregarEntidad(entidadB);
+    organismo.agregarEntidad(entidadC);
   }
 
   @Test
-  public void ordenarEntidadesPorPromedioDeCierre() {
-    MayorPromedioCierre mayorPromedioCierre = new MayorPromedioCierre("Mayor promedio de cierre");
-    OrganismoDeControl organismoDeControl = new OrganismoDeControl("Organismo", "organismo@mail.com");
+  public void seGeneranRankingsOrdenadosPorCantidadIncidentes() {
+    CantidadIncidentes cantidadIncidentes = new CantidadIncidentes();
+    generador.agregarCriterio(cantidadIncidentes);
 
-    Entidad entidadA = entidadConIncidentes(2, "Entidad A");
-    Entidad entidadB = entidadConIncidentes(3, "Entidad B");
-    Entidad entidadC = entidadConIncidentes(1, "Entidad C");
-
-    organismoDeControl.agregarEntidad(entidadA);
-    organismoDeControl.agregarEntidad(entidadB);
-    organismoDeControl.agregarEntidad(entidadC);
-
-    List<Entidad> entidades = new ArrayList<>();
-    entidades.add(entidadA);
-    entidades.add(entidadB);
-    entidades.add(entidadC);
-
-    List<Entidad> entidadesOrdenadas = mayorPromedioCierre.ordenar(entidades);
+    // Prueba
+    generador.generarRankingSemanal();
+    List<Ranking> rankings = generador.getRankings();
+    List<Entidad> entidadesOrdenadas = rankings.get(0).getEntidades();
 
     Assertions.assertEquals(entidadB, entidadesOrdenadas.get(0));
     Assertions.assertEquals(entidadA, entidadesOrdenadas.get(1));
     Assertions.assertEquals(entidadC, entidadesOrdenadas.get(2));
   }
 
-  private Entidad entidadConIncidentes(int cantidadIncidentes, String nombre) {
+  @Test
+  public void ordenarEntidadesPorPromedioDeCierre() {
+    MayorPromedioCierre mayorPromedioCierre = new MayorPromedioCierre();
+    generador.agregarCriterio(mayorPromedioCierre);
+
+    // Prueba
+    generador.generarRankingSemanal();
+    List<Ranking> rankings = generador.getRankings();
+    List<Entidad> entidadesOrdenadas = rankings.get(0).getEntidades();
+
+    Assertions.assertEquals(entidadB, entidadesOrdenadas.get(0));
+    Assertions.assertEquals(entidadA, entidadesOrdenadas.get(1));
+    Assertions.assertEquals(entidadC, entidadesOrdenadas.get(2));
+  }
+
+  private Entidad crearEntidadConIncidentes(int cantidadIncidentes, String nombre) {
     Entidad unaEntidad = new Entidad(nombre, TipoDeEntidad.SUBTERRANEO);
     Establecimiento unEstablecimiento = new Establecimiento();
     Servicio unBanio = new Servicio("servicioInestable", TipoDeServicio.BANIOS);
 
-    LocalDateTime fechaApertura = LocalDateTime.of(2023, 1, 1, 9, 0);
+    LocalDateTime fechaApertura = LocalDateTime.now().minusDays(6);
 
     for (int i = 0; i < cantidadIncidentes; i++) {
-      Incidente incidente = new Incidente(unBanio, "No anda la cadena del banio - " + i);
-      LocalDateTime fechaCierre = fechaApertura.plusHours(i * 2L); // a + incidentes + tardanza
-
-      incidente.cerrar();
-      incidente.setFecha(fechaApertura);
-      incidente.setFechaResolucion(fechaCierre);
+      Incidente incidente = crearIncidenteEnBanios(unBanio, fechaApertura, i);
       unBanio.agregarIncidente(incidente);
     }
+
     unaEntidad.agregarEstablecimiento(unEstablecimiento);
     unEstablecimiento.agregarServicio(unBanio);
 
     return unaEntidad;
   }
 
-  private OrganismoDeControl unOrganismoDeControlConTresIncidentes() {
-    String nombre = "OrganismoDeControl";
-    String correoElectronico = "hola@mail.com";
-    OrganismoDeControl org = new OrganismoDeControl(nombre, correoElectronico);
+  private Incidente crearIncidenteEnBanios(Servicio servicio, LocalDateTime apertura, int index) {
+    // Cada incidente se cierra 2 horas despues del anterior
+    // Cuantos mas incidentes, mas bajo sera el promedio de cierre
+    LocalDateTime fechaCierre = apertura.plusHours(index * 2L);
+    Incidente incidente = new Incidente(servicio, "No anda la cadena del baño - " + index);
 
-    Entidad unaEntidad = entidadConIncidentes(1, "a");
-    Entidad otraEntidad = entidadConIncidentes(2, "b");
+    incidente.cerrar();
+    incidente.setFecha(apertura);
+    incidente.setFechaResolucion(fechaCierre);
 
-    org.agregarEntidad(otraEntidad);
-    org.agregarEntidad(unaEntidad);
-
-    return org;
+    return incidente;
   }
+
 }
