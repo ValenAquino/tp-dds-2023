@@ -8,11 +8,15 @@ public class Establecimiento {
   private final List<Servicio> servicios = new ArrayList<>();
 
   public void agregarServicio(Servicio servicio) {
-    this.servicios.add(servicio);
+    servicios.add(servicio);
   }
 
   public void removerServicio(Servicio servicio) {
-    this.servicios.remove(servicio);
+    servicios.remove(servicio);
+  }
+
+  public boolean tieneServicio(Servicio servicio) {
+    return servicios.contains(servicio);
   }
 
   public List<Incidente> getIncidentes() {
@@ -21,9 +25,5 @@ public class Establecimiento {
       incidentes.addAll(servicio.getIncidentes());
     }
     return incidentes;
-  }
-
-  public boolean tieneServicio(Servicio servicio) {
-    return servicios.contains(servicio);
   }
 }

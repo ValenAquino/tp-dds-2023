@@ -27,14 +27,22 @@ public class Comunidad {
   }
 
   public Incidente abrirIncidente(Servicio servicio, String observaciones) {
-    if (serviciosDeInteres.contains(servicio)) {
+    if (this.leInteresaServicio(servicio)) {
       Incidente incidente = new Incidente(servicio, observaciones);
-      incidentes.add(incidente);
+      agregarIncidente(incidente);
       notificarAperturaDeIncidente(incidente);
       return incidente;
     } else {
       throw new RuntimeException("El servicio debe ser de interés para abrir un incidente");
     }
+  }
+
+  public boolean leInteresaServicio(Servicio servicio) {
+    return serviciosDeInteres.contains(servicio);
+  }
+
+  private void agregarIncidente(Incidente incidente) {
+    incidentes.add(incidente);
   }
 
   public List<Incidente> getIncidentesResueltos() {
