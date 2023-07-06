@@ -22,4 +22,8 @@ public class Establecimiento {
     }
     return incidentes;
   }
+
+  public boolean tieneServicio(Servicio servicio) {
+    return servicios.contains(servicio);
+  }
 }

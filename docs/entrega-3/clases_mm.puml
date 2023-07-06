@@ -10,6 +10,8 @@ class Entidad {
   establecimientos: List<Establecimiento>
   --
   tieneServicio(Servicio)
+  abrirIncidente(Servicio)
+  cerrarIncidente(Servicio)
 }
 
 ' Sucursal, Estacion, ...
@@ -54,7 +56,8 @@ class Usuario {
   --
   cambiarMedioDeComunicacion()
   notificarIncidente(Incidente)
-  interesadoEn(Servicio)
+  interesadoEnServicio(Servicio)
+  interesadoEnEntidad(Entidad)
 }
 
 class RangoHorario {
@@ -164,6 +167,10 @@ class PromedioCierre {
 class CantidadIncidentes {
   ordenar(listaEntidades)
 }
+class RepositorioUsuarios{
+    --
+    todos()
+}
 
 'RepositorioOrganismosDeControl -u-> OrganismoDeControl
 GeneradorRankingSemanal -> OrganismoDeControl
@@ -182,6 +189,7 @@ Comunidad ->"*" Servicio
 Incidente --> Servicio
 
 CalendarioNotificaciones -->"*" RangoHorario
+RepositorioUsuarios <- Entidad
 Entidad ->"*" Establecimiento
 Entidad -> TipoDeEntidad
 Servicio --> TipoDeServicio

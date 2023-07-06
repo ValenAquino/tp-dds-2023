@@ -39,4 +39,7 @@ public class Usuario {
       medioDeComunicacion.notificarAperturaDeIncidente(incidente);
     }
   }
+  public boolean interesadoEnEntidad(Entidad entidad){
+    return entidadesDeInteres.contains(entidad);
+  }
 }
