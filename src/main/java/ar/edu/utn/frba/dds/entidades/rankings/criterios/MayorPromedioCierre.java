@@ -3,10 +3,8 @@ package ar.edu.utn.frba.dds.entidades.rankings.criterios;
 import ar.edu.utn.frba.dds.entidades.Entidad;
 import ar.edu.utn.frba.dds.entidades.Incidente;
 import ar.edu.utn.frba.dds.entidades.rankings.CriterioDeOrdenamiento;
-import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioEntidades;
 import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioIncidentes;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -18,8 +16,8 @@ public class MayorPromedioCierre implements CriterioDeOrdenamiento {
         .stream()
         .filter(Incidente::estaResuelto)
         .collect(Collectors
-            .groupingBy(incidente ->
-                    RepositorioEntidades.getInstance().getEntidadDe(incidente.getServicio()),
+            .groupingBy(
+                Incidente::getEntidad,
                 Collectors.averagingDouble(Incidente::tiempoDeCierre)));
 
     return entidades
