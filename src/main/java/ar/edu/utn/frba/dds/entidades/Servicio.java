@@ -5,7 +5,7 @@ import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
 public class Servicio {
   private final String descripcion;
   private final TipoDeServicio tipoDeServicio;
-  private Ubicacion ubicacion;
+  private Establecimiento establecimiento;
 
   public Servicio(String descripcion, TipoDeServicio tipoDeServicio) {
     this.descripcion = descripcion;
@@ -21,6 +21,10 @@ public class Servicio {
   }
 
   public Ubicacion getUbicacion() {
-    return ubicacion;
+    return establecimiento.getUbicacion();
+  }
+
+  public Entidad getEntidad() {
+    return establecimiento.getEntidad();
   }
 }

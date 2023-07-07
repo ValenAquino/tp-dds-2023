@@ -42,6 +42,10 @@ public class Incidente {
     return Duration.between(fecha, fechaResolucion).toMillis();
   }
 
+  public Entidad getEntidad() {
+    return servicio.getEntidad();
+  }
+
   public Ubicacion getUbicacion() {
     return servicio.getUbicacion();
   }
