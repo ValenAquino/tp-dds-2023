@@ -1,0 +1,26 @@
+@startuml Repositorios
+
+hide empty members
+
+class RepositorioIncidentes {
+  incidentes: List<Incidente>
+  --
+  todos()
+  ultimaSemana()
+}
+
+class RepositorioComunidades {
+  comunidades: List<Comunidad>
+  --
+  todas()
+  getComunidadesDe(Usuario)
+}
+
+class RepositorioEntidades {
+  entidades: List<Entidad>
+  --
+  todas()
+  getEntidadDe(Servicio)
+}
+
+@enduml
