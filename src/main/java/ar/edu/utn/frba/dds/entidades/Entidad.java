@@ -1,10 +1,8 @@
 package ar.edu.utn.frba.dds.entidades;
 
-import java.time.LocalDateTime;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeEntidad;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Entidad {
   private String nombre;
@@ -23,14 +21,6 @@ public class Entidad {
 
   public String getNombre() {
     return nombre;
-  }
-
-  public List<Establecimiento> getEstablecimientos() {
-    return establecimientos;
-  }
-
-  public List<Usuario> getUsuariosInteresados() {
-    return usuariosInteresados;
   }
 
   public void agregarEstablecimiento(Establecimiento establecimiento) {
@@ -77,9 +67,5 @@ public class Entidad {
         .stream()
         .filter(i -> !i.estaResuelto())
         .toList();
-  }
-
-  public List<Incidente> getIncidentes() {
-    return incidentes;
   }
 }
