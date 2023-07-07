@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds;
 
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -101,5 +102,35 @@ public class RankingTest {
 
     Assertions.assertEquals(rankingMayorCantidadIncidentes.getEntidades().size(),2);
     Assertions.assertEquals(rankingMayorCantidadIncidentes.getEntidades().keySet(),new HashSet<>(Arrays.asList(lineaSarmiento,subteA)));
+  }
+  @Test
+  public void elRankingPorMayorPromedioDeCierreDeIncidentesDevuelveLaListaEnElOrdenCorrecto(){
+
+
+    Incidente seRompeLaCadenaEnEstacionCaballito = mock(Incidente.class);
+
+    Incidente seRompeLaCanillaEnEstacionOnce = mock(Incidente.class);
+
+    Incidente seRompeElAscensor = mock(Incidente.class);
+
+    when(seRompeLaCadenaEnEstacionCaballito.getFechaResolucion()).thenReturn(LocalDateTime.of(2023,7,8,10,0,0));
+    when(seRompeLaCanillaEnEstacionOnce.getFechaResolucion()).thenReturn(LocalDateTime.of(2023,7,8,11,0,0));
+    when(seRompeElAscensor.getFechaResolucion()).thenReturn(LocalDateTime.of(2023,7,7,23,50,0));
+    
+
+    seRompeLaCadenaEnEstacionCaballito.cerrar();
+    seRompeLaCanillaEnEstacionOnce.cerrar();
+    seRompeElAscensor.cerrar();
+
+    Map<Entidad,Double> entidadesOrdenadasEsperadas = new HashMap<>();
+    entidadesOrdenadasEsperadas.put(subteA,(double)1);
+    entidadesOrdenadasEsperadas.put(lineaSarmiento,(double)2);
+
+    when(criterioMayorPromedioCierre.getEntidadesOrdenadas()).thenReturn(entidadesOrdenadasEsperadas);
+
+    rankingMayorPromedioDeCierre.generarRanking();
+
+    Assertions.assertEquals(rankingMayorPromedioDeCierre.getEntidades().size(),2);
+    Assertions.assertEquals(rankingMayorPromedioDeCierre.getEntidades().keySet(),new HashSet<>(Arrays.asList(subteA,lineaSarmiento)));
   }
 }
