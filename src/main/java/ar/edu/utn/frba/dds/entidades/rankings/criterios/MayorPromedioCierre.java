@@ -5,13 +5,14 @@ import ar.edu.utn.frba.dds.entidades.Incidente;
 import ar.edu.utn.frba.dds.entidades.rankings.CriterioDeOrdenamiento;
 import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioEntidades;
 import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioIncidentes;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MayorPromedioCierre implements CriterioDeOrdenamiento {
   @Override
-  public List<Entidad> getEntidadesOrdenadas() {
+  public Map<Entidad, Double> getEntidadesOrdenadas() {
     var entidades = RepositorioIncidentes.getInstance()
         .ultimaSemana()
         .stream()
@@ -25,7 +26,11 @@ public class MayorPromedioCierre implements CriterioDeOrdenamiento {
         .entrySet()
         .stream()
         .sorted(Map.Entry.comparingByValue())
-        .map(Map.Entry::getKey)
-        .toList();
+        .collect(
+            Collectors.toMap(
+                Map.Entry::getKey,
+                Map.Entry::getValue,
+                (oldValue, newValue) -> oldValue,
+                HashMap::new));
   }
 }
