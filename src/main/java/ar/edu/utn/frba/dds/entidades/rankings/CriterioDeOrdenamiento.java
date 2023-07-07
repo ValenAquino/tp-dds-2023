@@ -6,4 +6,6 @@ import java.util.Map;
 
 public interface CriterioDeOrdenamiento {
   Map<Entidad, Double> getEntidadesOrdenadas();
+
+  String getDescripcion();
 }

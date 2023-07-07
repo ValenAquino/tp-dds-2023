@@ -31,4 +31,9 @@ public class MayorPromedioCierre implements CriterioDeOrdenamiento {
                 (oldValue, newValue) -> oldValue,
                 HashMap::new));
   }
+
+  @Override
+  public String getDescripcion() {
+    return "PromedioTiempoCierreDeIncidentes";
+  }
 }

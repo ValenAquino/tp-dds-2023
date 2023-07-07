@@ -28,4 +28,9 @@ public class CantidadIncidentes implements CriterioDeOrdenamiento {
                 (oldValue, newValue) -> oldValue,
                 HashMap::new));
   }
+
+  @Override
+  public String getDescripcion() {
+    return "CantidadDeIncidentesReportados";
+  }
 }

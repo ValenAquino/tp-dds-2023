@@ -10,9 +10,9 @@ public class Ranking {
   CriterioDeOrdenamiento criterio;
   Map<Entidad, Double> entidades;
 
-  public Ranking(CriterioDeOrdenamiento criterioElegido) {
+  public Ranking(CriterioDeOrdenamiento criterio) {
     this.fecha = LocalDateTime.now();
-    this.criterio = criterioElegido;
+    this.criterio = criterio;
   }
 
   public LocalDateTime getFecha() {
@@ -21,6 +21,10 @@ public class Ranking {
 
   public void generarRanking() {
     entidades = criterio.getEntidadesOrdenadas();
+  }
+
+  public String getDescripcionCriterio() {
+    return criterio.getDescripcion();
   }
 
   public Map<Entidad, Double> getEntidades() {
