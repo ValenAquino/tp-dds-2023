@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.localizacion.implementaciones;
 
 import ar.edu.utn.frba.dds.entidades.Localizacion;
-import ar.edu.utn.frba.dds.entidades.TipoDeLocalizacion;
+import ar.edu.utn.frba.dds.entidades.enums.TipoDeLocalizacion;
 import ar.edu.utn.frba.dds.entidades.Ubicacion;
 import ar.edu.utn.frba.dds.localizacion.ServicioLocalizacion;
 import ar.edu.utn.frba.dds.localizacion.apis.GeoRefApiCliente;

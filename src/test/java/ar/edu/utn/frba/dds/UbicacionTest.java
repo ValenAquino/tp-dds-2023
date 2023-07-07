@@ -5,7 +5,7 @@ import static org.mockito.Mockito.*;
 import ar.edu.utn.frba.dds.entidades.Comunidad;
 import ar.edu.utn.frba.dds.entidades.Incidente;
 import ar.edu.utn.frba.dds.entidades.Servicio;
-import ar.edu.utn.frba.dds.entidades.TipoDeServicio;
+import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
 import ar.edu.utn.frba.dds.entidades.Ubicacion;
 import ar.edu.utn.frba.dds.entidades.Usuario;
 import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioComunidades;

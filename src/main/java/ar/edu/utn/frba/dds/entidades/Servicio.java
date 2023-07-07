@@ -1,5 +1,7 @@
 package ar.edu.utn.frba.dds.entidades;
 
+import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
+
 public class Servicio {
   private final String descripcion;
   private final TipoDeServicio tipoDeServicio;
