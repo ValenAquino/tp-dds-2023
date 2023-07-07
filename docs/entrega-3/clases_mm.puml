@@ -5,14 +5,20 @@ hide empty members
 ' Supermercado, Centro Comunal, Banco, ...
 class Entidad {
   nombre: String
-  ' localizacion: Localizacion
   tipoDeEntidad: TipoDeEntidad
   establecimientos: List<Establecimiento>
+  usuariosInteresados: List<Usuario>
+  incidentes: List<Incidente>
   --
-  tieneServicio(Servicio)
   abrirIncidente(Servicio)
-  cerrarIncidente(Servicio)
+  notificarAperturaDeIncidente(Incidente)
+  getIncidentesResueltos()
+  getIncidentesAbiertos()
 }
+
+Entidad -r->"*" Establecimiento
+Entidad -l->"*" Usuario
+Entidad -u->"*" Incidente
 
 ' Sucursal, Estacion, ...
 class Establecimiento {
@@ -24,17 +30,133 @@ class Establecimiento {
   tieneServicio(Servicio)
 }
 
+Establecimiento ->"*" Servicio
+
 class Servicio {
   descripcion: String
   tipoDeServicio: TipoDeServicio
-  incidentes: List<Incidente>
+  ubicacion: Ubicacion
 }
+
+Servicio -> Ubicacion
+
+class Usuario {
+  usuario: String
+  contraseña: String
+  nombre: String
+  apellido: String
+  correoElectronico: String
+  medioDeComunicacion: MedioDeComunicacion
+  calendarioNotificaciones: CalendarioNotificaciones
+  --
+  getUbicacionActual(ServicioUbicacion)
+  puedeRecibirNotificacion()
+  notificarAperturaDeIncidente(Incidente)
+  sugerirRevisionDeIncidente(Incidente)
+}
+
+Usuario -l-> MedioDeComunicacion
+Usuario -d-> CalendarioNotificaciones
+
+class CalendarioNotificaciones {
+  horarios: Map<DayOfWeek, RangoHorario>
+  --
+  abarcaA(LocalDateTime)
+}
+
+CalendarioNotificaciones -d-> RangoHorario
+
+class RangoHorario {
+  inicio: LocalTime
+  fin: LocalTime
+  --
+  contieneHorario(LocalTime)
+}
+
+interface MedioDeComunicacion {
+  --
+  notificarAperturaDeIncidente(Incidente)
+  sugerirRevisionDeIncidente(Incidente)
+}
+
+class MedioWhatsApp implements MedioDeComunicacion {
+  --
+  notificarAperturaDeIncidente(Incidente)
+  sugerirRevisionDeIncidente(Incidente)
+}
+
+class MedioEmail implements MedioDeComunicacion {
+  --
+  notificarAperturaDeIncidente(Incidente)
+  sugerirRevisionDeIncidente(Incidente)
+}
+
+class Comunidad {
+  serviciosDeInteres: List<Servicio>
+  incidentes: List<Incidente>
+  miembros: List<Usuario>
+  --
+  abrirIncidente(Servicio, String)
+  notificarAperturaDeIncidente(Incidente)
+  getIncidentesAbiertos()
+  getIncidentesResueltos()
+}
+
+Comunidad ->"*" Servicio
+Comunidad -d->"*" Incidente
+Comunidad -l->"*" Usuario
+
+class Incidente {
+  resuelto: boolean
+  fecha: DateTime
+  fechaResolucion: DateTime
+  servicio: Servicio
+  observaciones: String
+  --
+  cerrar()
+  tiempoDeCierre()
+  getUbicacion()
+}
+
+Incidente -> Servicio
+
+class Ubicacion {
+  latitud: double
+  longitud: double
+}
+
+ServicioMapas ..> Ubicacion
+ServicioUbicacion .u.> Ubicacion
+
+interface ServicioMapas {
+  --
+  estanCerca(Ubicacion, Ubicacion, long): boolean
+}
+
+interface ServicioUbicacion {
+  --
+  ubicacionActual(String): Ubicacion
+}
+
+class OrganismoDeControl {
+  nombre: String
+  correoElectronico: String
+  usuarioResponsable: Usuario
+  entidadesControladas: List<Entidad>
+  --
+}
+
+OrganismoDeControl -u->"entidadesControladas*" Entidad
+
+/'
 
 enum TipoDeServicio {
   ESCALERAS_MECANICAS
   ASCENSORES
   BAÑOS
 }
+
+Servicio -> TipoDeServicio
 
 enum TipoDeEntidad {
   SUBTERRANEO
@@ -43,164 +165,8 @@ enum TipoDeEntidad {
   BANCO
 }
 
-class Usuario {
-  usuario: String
-  contraseña: String
-  nombre: String
-  apellido: String
-  correoElectronico: String
-  entidadesDeInteres: List<Entidad>
-  ' localizacion: Localizacion
-  medioDeComunicacion: MedioDeComunicacion
-  calendarioNotificaciones: CalendarioNotificaciones
-  --
-  cambiarMedioDeComunicacion()
-  notificarIncidente(Incidente)
-  interesadoEnServicio(Servicio)
-  interesadoEnEntidad(Entidad)
-}
-
-class RangoHorario {
-  inicio: LocalTime
-  fin: LocalTime
-  --
-  contiene(LocalTime)
-}
-
-class CalendarioNotificaciones {
-  horarios: Map<DayOfWeek, RangoHorario>
-  --
-  agregarHorario(DayOfWeek, LocalTime, LocalTime)
-  eliminarHorario(DayOfWeek)
-  abarcaA(DateTime)
-}
-
-interface MedioDeComunicacion {
-  --
-  notificar()
-}
-class MedioWhatsApp {
-  --
-  notificar()
-}
-class MedioEmail {
-  --
-  notificar()
-}
-
-/'
-class Localizacion {
-  nombre: String
-  latitud: Double
-  longitud: Double
-  tipoDeLocalizacion: TipoDeLocalizacion
-}
-
-enum TipoDeLocalizacion {
-  DEPARTAMENTO
-  MUNICIPIO
-  PROVINCIA
-}
-'/
-
-class OrganismoDeControl {
-  nombre: String
-  correoElectronico: String
-  responsableDeInformes: Usuario
-  entidadesControladas: List<Entidad>
-  --
-  asignarResponsable()
-  agregarEntidad()
-  getEntidades()
-}
-
-class Incidente {
-  servicioAfectado: Servicio
-  observaciones: String
-  fecha: DateTime
-  resuelto: Boolean
-  fechaResolucion: DateTime
-}
-
-class Comunidad {
-  serviciosDeInteres: List<Servicio>
-  usuarios: List<Usuario>
-  incidentes: List<Incidente>
-  --
-  abrirIncidente(Servicio)
-  getUsuariosInteresados(Servicio)
-  cerrarIncidente(Incidente)
-}
-
-'class RepositorioOrganismosDeControl {
-'  organismosDeControl: List<OrganismoDeControl>
-'  --
-'  agregarOrganismoDeControl()
-'  eliminarOrganismoDeControl()
-'}
-
-class GeneradorRankingSemanal {
-  criterios : List<criterioDeOrdenamiento>
-  organismo : OrganismoDeControl
-  rankings : List<Ranking>
-  --
-  generarRanking(criterio)
-  generarRankingSemanal()
-}
-
-class Ranking {
-  fecha: DateTime
-  ranking: List<Entidad>
-  criterioElegido: String
-}
-
-abstract class CriterioDeOrdenamiento {
-  nombre: String
-  ---
-  ordenar(listaEntidades)
-}
-
-class PromedioCierre {
-  ordenar(listaEntidades)
-}
-
-class CantidadIncidentes {
-  ordenar(listaEntidades)
-}
-class RepositorioUsuarios{
-    --
-    todos()
-}
-
-'RepositorioOrganismosDeControl -u-> OrganismoDeControl
-GeneradorRankingSemanal -> OrganismoDeControl
-GeneradorRankingSemanal -d> "*" CriterioDeOrdenamiento
-GeneradorRankingSemanal --> "*" Ranking
-
-CriterioDeOrdenamiento <|.. PromedioCierre
-CriterioDeOrdenamiento <|.d. CantidadIncidentes
-
-Usuario -u-> MedioDeComunicacion
-Usuario -l-> CalendarioNotificaciones
-
-Usuario -->"*" Entidad
-Establecimiento ->"*" Servicio
-Comunidad ->"*" Servicio
-Incidente --> Servicio
-
-CalendarioNotificaciones -->"*" RangoHorario
-RepositorioUsuarios <- Entidad
-Entidad ->"*" Establecimiento
 Entidad -> TipoDeEntidad
-Servicio --> TipoDeServicio
-Servicio -u-> "*" Incidente
-' Localizacion <- Usuario
-' Localizacion <- Entidad
-' TipoDeLocalizacion -> Localizacion
-Entidad "entidadesControladas *"<-- OrganismoDeControl
-Usuario "*"<- Comunidad
-Comunidad ->"*" Incidente
-MedioWhatsApp ..|> MedioDeComunicacion
-MedioEmail ..|> MedioDeComunicacion
+
+'/
 
 @enduml
