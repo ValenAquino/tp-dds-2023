@@ -8,4 +8,9 @@ public class WhatsAppSender implements MedioDeComunicacion {
   public void notificarAperturaDeIncidente(Incidente incidente) {
 
   }
+
+  @Override
+  public void sugerirRevisionDeIncidente(Incidente incidente) {
+
+  }
 }

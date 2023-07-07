@@ -4,4 +4,6 @@ import ar.edu.utn.frba.dds.entidades.Incidente;
 
 public interface MedioDeComunicacion {
   void notificarAperturaDeIncidente(Incidente incidente);
+
+  void sugerirRevisionDeIncidente(Incidente incidente);
 }

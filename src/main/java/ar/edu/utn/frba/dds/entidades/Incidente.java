@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.entidades;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class Incidente {
@@ -43,5 +44,9 @@ public class Incidente {
   public void cerrar() {
     resuelto = true;
     fechaResolucion = LocalDateTime.now();
+  }
+
+  public long tiempoDeCierre() {
+    return Duration.between(fecha, fechaResolucion).toMillis();
   }
 }

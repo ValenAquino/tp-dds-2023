@@ -8,4 +8,9 @@ public class MailSender implements MedioDeComunicacion {
   public void notificarAperturaDeIncidente(Incidente incidente) {
 
   }
+
+  @Override
+  public void sugerirRevisionDeIncidente(Incidente incidente) {
+
+  }
 }

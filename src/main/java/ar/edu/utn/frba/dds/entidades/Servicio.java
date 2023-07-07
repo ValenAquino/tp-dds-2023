@@ -1,7 +1,10 @@
 package ar.edu.utn.frba.dds.entidades;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Servicio {
-  private String descripcion;
+  private final String descripcion;
   private TipoDeServicio tipoDeServicio;
 
   public Servicio(String descripcion, TipoDeServicio tipoDeServicio) {
