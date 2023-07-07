@@ -6,21 +6,20 @@ import java.util.List;
 
 public class Ranking {
   LocalDateTime fecha;
-  String criterioElegido;
+  CriterioDeOrdenamiento criterio;
   List<Entidad> entidades;
 
-  public Ranking(LocalDateTime fecha, String criterioElegido, List<Entidad> entidades) {
-    this.fecha = fecha;
-    this.criterioElegido = criterioElegido;
-    this.entidades = entidades;
+  public Ranking(CriterioDeOrdenamiento criterioElegido) {
+    this.fecha = LocalDateTime.now();
+    this.criterio = criterioElegido;
   }
 
   public LocalDateTime getFecha() {
     return fecha;
   }
 
-  public String getCriterioElegido() {
-    return criterioElegido;
+  public void generarRanking() {
+    entidades = criterio.getEntidadesOrdenadas();
   }
 
   public List<Entidad> getEntidades() {

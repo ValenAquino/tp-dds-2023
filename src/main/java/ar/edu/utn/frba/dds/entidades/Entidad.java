@@ -79,17 +79,6 @@ public class Entidad {
   }
 
   public List<Incidente> getIncidentes() {
-    return establecimientos.stream()
-        .flatMap(establecimiento -> establecimiento.getIncidentes().stream())
-        .collect(Collectors.toList());
-  }
-
-  public List<Incidente> getIncidentesSemana(LocalDateTime fecha) {
-    LocalDateTime fechaLimite = fecha.minusDays(7);
-
-    return establecimientos.stream()
-        .flatMap(establecimiento -> establecimiento.getIncidentes().stream())
-        .filter(inc -> inc.getFecha().isAfter(fechaLimite) && inc.getFecha().isBefore(fecha))
-        .collect(Collectors.toList());
+    return incidentes;
   }
 }

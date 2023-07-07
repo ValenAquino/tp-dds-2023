@@ -3,55 +3,29 @@ package ar.edu.utn.frba.dds.entidades.rankings.criterios;
 import ar.edu.utn.frba.dds.entidades.Entidad;
 import ar.edu.utn.frba.dds.entidades.Incidente;
 import ar.edu.utn.frba.dds.entidades.rankings.CriterioDeOrdenamiento;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.Comparator;
+import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioEntidades;
+import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioIncidentes;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-public class MayorPromedioCierre extends CriterioDeOrdenamiento {
-  public MayorPromedioCierre() {
-    super("Mayor promedio de cierre");
-  }
-
+public class MayorPromedioCierre implements CriterioDeOrdenamiento {
   @Override
-  public List<Entidad> ordenar(List<Entidad> entidades) {
-    entidades.sort(Comparator.comparingDouble(this::calcularPromedioCierre).reversed());
-    return entidades;
-  }
-
-  private double calcularPromedioCierre(Entidad entidad) {
-    List<Incidente> incidentesResueltos = obtenerIncidentesResueltos(entidad);
-
-    if (incidentesResueltos.isEmpty()) {
-      // Excepcion?
-      return 0.0;
-    }
-
-    long duracionTotal = calcularDuracionTotal(incidentesResueltos);
-    return (double) duracionTotal / incidentesResueltos.size();
-  }
-
-  private List<Incidente> obtenerIncidentesResueltos(Entidad entidad) {
-    LocalDateTime fechaActual = LocalDateTime.now();
-
-    return entidad.getIncidentesSemana(fechaActual).stream()
+  public List<Entidad> getEntidadesOrdenadas() {
+    var entidades = RepositorioIncidentes.getInstance()
+        .ultimaSemana()
+        .stream()
         .filter(Incidente::estaResuelto)
-        .collect(Collectors.toList());
+        .collect(Collectors
+            .groupingBy(incidente ->
+                    RepositorioEntidades.getInstance().getEntidadDe(incidente.getServicio()),
+                Collectors.averagingDouble(Incidente::tiempoDeCierre)));
+
+    return entidades
+        .entrySet()
+        .stream()
+        .sorted(Map.Entry.comparingByValue())
+        .map(Map.Entry::getKey)
+        .toList();
   }
-
-  private long calcularDuracionTotal(List<Incidente> incidentes) {
-    return incidentes.stream()
-        .mapToLong(this::calcularDuracionIncidente)
-        .sum();
-  }
-
-  private long calcularDuracionIncidente(Incidente incidente) {
-    LocalDateTime fechaInicio = incidente.getFecha();
-    LocalDateTime fechaResolucion = incidente.getFechaResolucion();
-
-    return Duration.between(fechaInicio, fechaResolucion).toMillis();
-  }
-
-
 }

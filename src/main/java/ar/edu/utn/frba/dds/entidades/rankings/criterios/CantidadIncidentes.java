@@ -2,21 +2,29 @@ package ar.edu.utn.frba.dds.entidades.rankings.criterios;
 
 import ar.edu.utn.frba.dds.entidades.Entidad;
 import ar.edu.utn.frba.dds.entidades.rankings.CriterioDeOrdenamiento;
-import java.util.Comparator;
+import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioEntidades;
+import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioIncidentes;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-public class CantidadIncidentes extends CriterioDeOrdenamiento {
-
-  public CantidadIncidentes() {
-    super("Cantidad de incidentes");
-  }
+public class CantidadIncidentes implements CriterioDeOrdenamiento {
 
   @Override
-  public List<Entidad> ordenar(List<Entidad> entidades) {
-    // Obtener los de la ultima semana
-    // Filtrar que haya uno por dia
-    // Si hay mas de uno por día, solo uno puede seguir abierto o ninguno abierto? 🤔
-    entidades.sort(Comparator.comparingInt((Entidad e) -> e.getIncidentes().size()).reversed());
-    return entidades;
+  public List<Entidad> getEntidadesOrdenadas() {
+    var entidades = RepositorioIncidentes.getInstance()
+        .ultimaSemana()
+        .stream()
+        .collect(Collectors
+            .groupingBy(incidente ->
+                RepositorioEntidades.getInstance().getEntidadDe(incidente.getServicio()),
+                Collectors.counting()));
+
+    return entidades
+        .entrySet()
+        .stream()
+        .sorted(Map.Entry.comparingByValue())
+        .map(Map.Entry::getKey)
+        .toList();
   }
 }
