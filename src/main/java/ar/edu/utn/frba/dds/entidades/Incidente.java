@@ -49,4 +49,8 @@ public class Incidente {
   public long tiempoDeCierre() {
     return Duration.between(fecha, fechaResolucion).toMillis();
   }
+
+  public Ubicacion getUbicacion() {
+    return servicio.getUbicacion();
+  }
 }

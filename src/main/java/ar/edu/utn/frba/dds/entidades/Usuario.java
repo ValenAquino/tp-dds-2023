@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.entidades;
 
 import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
 import ar.edu.utn.frba.dds.notificaciones.horarios.CalendarioNotificaciones;
+import ar.edu.utn.frba.dds.ubicacion.ServicioUbicacion;
 import java.time.LocalDateTime;
 
 public class Usuario {
@@ -30,6 +31,14 @@ public class Usuario {
     this.calendarioNotificaciones = calendarioNotificaciones;
   }
 
+  public Ubicacion getUbicacionActual(ServicioUbicacion servicioUbicacion) {
+    return servicioUbicacion.ubicacionActual(correoElectronico);
+  }
+
+  public String getCorreoElectronico() {
+    return correoElectronico;
+  }
+
   public void notificarAperturaDeIncidente(Incidente incidente) {
     if (puedeRecibirNotificacion()) {
       medioDeComunicacion.notificarAperturaDeIncidente(incidente);
@@ -43,7 +52,7 @@ public class Usuario {
   }
 
   private boolean puedeRecibirNotificacion() {
-    return calendarioNotificaciones == null ||
-        calendarioNotificaciones.abarcaA(LocalDateTime.now());
+    return calendarioNotificaciones == null
+        || calendarioNotificaciones.abarcaA(LocalDateTime.now());
   }
 }
