@@ -10,13 +10,13 @@ class Entidad {
   usuariosInteresados: List<Usuario>
   incidentes: List<Incidente>
   --
-  abrirIncidente(Servicio)
+  abrirIncidente(Servicio, String)
   notificarAperturaDeIncidente(Incidente)
-  getIncidentesResueltos()
   getIncidentesAbiertos()
+  getIncidentesResueltos()
 }
 
-Entidad -r->"*" Establecimiento
+Entidad <-r->"*" Establecimiento
 Entidad -l->"*" Usuario
 Entidad -u->"*" Incidente
 
@@ -24,21 +24,22 @@ Entidad -u->"*" Incidente
 class Establecimiento {
   nombre: String
   servicios: List<Servicio>
+  entidad: Entidad
+  ubicacion: Ubicacion
   --
   agregarServicio(Servicio)
   removerServicio(Servicio)
   tieneServicio(Servicio)
 }
 
-Establecimiento ->"*" Servicio
+Establecimiento <->"*" Servicio
+Establecimiento -d-> Ubicacion
 
 class Servicio {
   descripcion: String
+  establecimiento: Establecimiento
   tipoDeServicio: TipoDeServicio
-  ubicacion: Ubicacion
 }
-
-Servicio -> Ubicacion
 
 class Usuario {
   usuario: String
@@ -56,7 +57,7 @@ class Usuario {
 }
 
 Usuario -l-> MedioDeComunicacion
-Usuario -d-> CalendarioNotificaciones
+Usuario -u-> CalendarioNotificaciones
 
 class CalendarioNotificaciones {
   horarios: Map<DayOfWeek, RangoHorario>
@@ -64,7 +65,7 @@ class CalendarioNotificaciones {
   abarcaA(LocalDateTime)
 }
 
-CalendarioNotificaciones -d-> RangoHorario
+CalendarioNotificaciones -u-> RangoHorario
 
 class RangoHorario {
   inicio: LocalTime
@@ -125,18 +126,15 @@ class Ubicacion {
   longitud: double
 }
 
-ServicioMapas ..> Ubicacion
-ServicioUbicacion .u.> Ubicacion
-
-interface ServicioMapas {
-  --
-  estanCerca(Ubicacion, Ubicacion, long): boolean
-}
-
-interface ServicioUbicacion {
-  --
-  ubicacionActual(String): Ubicacion
-}
+'interface ServicioMapas {
+'  --
+'  estanCerca(Ubicacion, Ubicacion, long): boolean
+'}
+'
+'interface ServicioUbicacion {
+'  --
+'  ubicacionActual(String): Ubicacion
+'}
 
 class OrganismoDeControl {
   nombre: String
