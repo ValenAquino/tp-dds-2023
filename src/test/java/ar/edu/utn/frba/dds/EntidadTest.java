@@ -5,20 +5,16 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-import ar.edu.utn.frba.dds.entidades.Comunidad;
 import ar.edu.utn.frba.dds.entidades.Entidad;
 import ar.edu.utn.frba.dds.entidades.Establecimiento;
 import ar.edu.utn.frba.dds.entidades.Incidente;
 import ar.edu.utn.frba.dds.entidades.Servicio;
-import ar.edu.utn.frba.dds.entidades.TipoDeEntidad;
-import ar.edu.utn.frba.dds.entidades.TipoDeServicio;
+import ar.edu.utn.frba.dds.entidades.enums.TipoDeEntidad;
+import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import ar.edu.utn.frba.dds.entidades.Usuario;
 import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
 import ar.edu.utn.frba.dds.notificaciones.medios.MailSender;
-import ar.edu.utn.frba.dds.notificaciones.medios.WhatsAppSender;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -94,7 +90,7 @@ public class EntidadTest {
   public void unaEntidadPuedeAbrirUnIncidenteEnUnServicioSuyo() {
     entidad.abrirIncidente(servicio1, "No anda la cadena");
     entidad.abrirIncidente(servicio2, "No funciona botón de piso 3");
-    Assertions.assertEquals(2, entidad.getIncidentes().size());
+    Assertions.assertEquals(2, entidad.getIncidentesAbiertos().size());
   }
 
   @Test

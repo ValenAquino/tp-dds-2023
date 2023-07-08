@@ -6,6 +6,8 @@ import java.util.List;
 public class Establecimiento {
   private String nombre;
   private final List<Servicio> servicios = new ArrayList<>();
+  private Entidad entidad;
+  private Ubicacion ubicacion;
 
   public void agregarServicio(Servicio servicio) {
     this.servicios.add(servicio);
@@ -17,5 +19,13 @@ public class Establecimiento {
 
   public boolean tieneServicio(Servicio servicio) {
     return servicios.contains(servicio);
+  }
+
+  public Entidad getEntidad() {
+    return entidad;
+  }
+
+  public Ubicacion getUbicacion() {
+    return ubicacion;
   }
 }

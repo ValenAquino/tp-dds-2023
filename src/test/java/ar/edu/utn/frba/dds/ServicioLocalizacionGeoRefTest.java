@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import ar.edu.utn.frba.dds.entidades.Localizacion;
-import ar.edu.utn.frba.dds.entidades.TipoDeLocalizacion;
+import ar.edu.utn.frba.dds.entidades.enums.TipoDeLocalizacion;
 import ar.edu.utn.frba.dds.excepciones.LocalizacionNoExistenteException;
 import ar.edu.utn.frba.dds.localizacion.implementaciones.ServicioLocalizacionGeoRef;
 import ar.edu.utn.frba.dds.localizacion.apis.GeoRefApiCliente;

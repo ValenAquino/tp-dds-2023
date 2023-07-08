@@ -62,4 +62,8 @@ public class Comunidad {
   public void notificarAperturaDeIncidente(Incidente incidente) {
     miembros.forEach(m -> m.notificarAperturaDeIncidente(incidente));
   }
+
+  public boolean tieneMiembro(Usuario usuario) {
+    return miembros.contains(usuario);
+  }
 }

@@ -1,102 +1,136 @@
 package ar.edu.utn.frba.dds;
 
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import ar.edu.utn.frba.dds.entidades.Entidad;
 import ar.edu.utn.frba.dds.entidades.Establecimiento;
 import ar.edu.utn.frba.dds.entidades.Incidente;
 import ar.edu.utn.frba.dds.entidades.OrganismoDeControl;
 import ar.edu.utn.frba.dds.entidades.Servicio;
-import ar.edu.utn.frba.dds.entidades.TipoDeEntidad;
-import ar.edu.utn.frba.dds.entidades.TipoDeServicio;
+import ar.edu.utn.frba.dds.entidades.Usuario;
+import ar.edu.utn.frba.dds.entidades.enums.TipoDeEntidad;
+import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
+import ar.edu.utn.frba.dds.entidades.rankings.CriterioDeOrdenamiento;
 import ar.edu.utn.frba.dds.entidades.rankings.Ranking;
 import ar.edu.utn.frba.dds.entidades.rankings.criterios.CantidadIncidentes;
 import ar.edu.utn.frba.dds.entidades.rankings.criterios.MayorPromedioCierre;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioIncidentes;
+import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
+import ar.edu.utn.frba.dds.notificaciones.medios.MailSender;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class RankingTest {
-  /*
-  GeneradorRankingSemanal generador;
-  OrganismoDeControl organismo;
-  Entidad entidadA;
-  Entidad entidadB;
-  Entidad entidadC;
+  private Entidad subteA;
+  private Entidad lineaSarmiento;
+  private Establecimiento estacionFlores;
+  private Establecimiento estacionCarabobo;
+  private Establecimiento estacionCaballito;
+  private Establecimiento estacionOnce;
+  private Servicio banioDeMujeres;
+  private Servicio ascensorALaCalle;
+  private Servicio escaleraMecanica;
+  private Servicio banioDeHombres;
+
+  private Ranking rankingMayorPromedioDeCierre;
+  private Ranking rankingMayorCantidadIncidentes;
+
+  private CantidadIncidentes criterioCantidadIncidentes;
+  private MayorPromedioCierre criterioMayorPromedioCierre;
 
   @BeforeEach
-  public void init() {
-    organismo = new OrganismoDeControl("Organismo", "org@mail");
-    generador = new GeneradorRankingSemanal(organismo);
+  public void setUp() {
+    subteA = new Entidad("subteA", TipoDeEntidad.SUBTERRANEO);
+    lineaSarmiento = new Entidad("lineaSarmiento", TipoDeEntidad.FERROCARRIL);
 
-    entidadA = crearEntidadConIncidentes(2, "Entidad A");
-    entidadB = crearEntidadConIncidentes(3, "Entidad B");
-    entidadC = crearEntidadConIncidentes(1, "Entidad C");
+    banioDeMujeres = new Servicio("banioDeMujeres", TipoDeServicio.BANIOS);
+    ascensorALaCalle = new Servicio("ascensorALaCalle", TipoDeServicio.ASCENSORES);
+    escaleraMecanica = new Servicio("escaleraMecanica", TipoDeServicio.ESCALERAS_MECANICAS);
+    banioDeHombres = new Servicio("banioDeHombres", TipoDeServicio.BANIOS);
 
-    organismo.agregarEntidad(entidadA);
-    organismo.agregarEntidad(entidadB);
-    organismo.agregarEntidad(entidadC);
+    estacionFlores = new Establecimiento();
+    estacionCarabobo = new Establecimiento();
+    estacionCaballito = new Establecimiento();
+    estacionOnce = new Establecimiento();
+
+    estacionFlores.agregarServicio(ascensorALaCalle);
+    estacionCaballito.agregarServicio(banioDeHombres);
+    estacionCarabobo.agregarServicio(escaleraMecanica);
+    estacionOnce.agregarServicio(banioDeMujeres);
+
+    subteA.agregarEstablecimiento(estacionCarabobo);
+    subteA.agregarEstablecimiento(estacionFlores);
+
+    lineaSarmiento.agregarEstablecimiento(estacionCaballito);
+    lineaSarmiento.agregarEstablecimiento(estacionOnce);
+
+    criterioCantidadIncidentes = mock(CantidadIncidentes.class);
+    criterioMayorPromedioCierre = mock(MayorPromedioCierre.class);
+
+    rankingMayorCantidadIncidentes = new Ranking(criterioCantidadIncidentes);
+    rankingMayorPromedioDeCierre = new Ranking(criterioMayorPromedioCierre);
+
   }
-
   @Test
-  public void seGeneranRankingsOrdenadosPorCantidadIncidentes() {
-    CantidadIncidentes cantidadIncidentes = new CantidadIncidentes();
-    generador.agregarCriterio(cantidadIncidentes);
+  public void elRankingPorMayorCantidadDeIncidentesDevuelveLaListaEnElOrdenCorrecto(){
 
-    // Prueba
-    generador.generarRankingSemanal();
-    List<Ranking> rankings = generador.getRankings();
-    List<Entidad> entidadesOrdenadas = rankings.get(0).getEntidades();
+    Incidente seRompeLaCadenaEnEstacionCaballito = lineaSarmiento.abrirIncidente(banioDeHombres,"No anda la cadena");
+    Incidente seRompeLaCanillaEnEstacionOnce = lineaSarmiento.abrirIncidente(banioDeMujeres,"No anda la canilla");
 
-    Assertions.assertEquals(entidadB, entidadesOrdenadas.get(0));
-    Assertions.assertEquals(entidadA, entidadesOrdenadas.get(1));
-    Assertions.assertEquals(entidadC, entidadesOrdenadas.get(2));
+    Incidente seRompeElAscensor = subteA.abrirIncidente(ascensorALaCalle,"No sube el ascensor");
+
+    seRompeLaCadenaEnEstacionCaballito.cerrar();
+    seRompeLaCanillaEnEstacionOnce.cerrar();
+    seRompeElAscensor.cerrar();
+
+    Map<Entidad,Double> entidadesOrdenadasEsperadas = new HashMap<>();
+    entidadesOrdenadasEsperadas.put(lineaSarmiento,(double)2);
+    entidadesOrdenadasEsperadas.put(subteA,(double)1);
+
+    when(criterioCantidadIncidentes.getEntidadesOrdenadas()).thenReturn(entidadesOrdenadasEsperadas);
+
+    rankingMayorCantidadIncidentes.generarRanking();
+
+    Assertions.assertEquals(rankingMayorCantidadIncidentes.getEntidades().size(),2);
+    Assertions.assertEquals(rankingMayorCantidadIncidentes.getEntidades().keySet(),new HashSet<>(Arrays.asList(lineaSarmiento,subteA)));
   }
-
   @Test
-  public void ordenarEntidadesPorPromedioDeCierre() {
-    MayorPromedioCierre mayorPromedioCierre = new MayorPromedioCierre();
-    generador.agregarCriterio(mayorPromedioCierre);
+  public void elRankingPorMayorPromedioDeCierreDeIncidentesDevuelveLaListaEnElOrdenCorrecto(){
 
-    // Prueba
-    generador.generarRankingSemanal();
-    List<Ranking> rankings = generador.getRankings();
-    List<Entidad> entidadesOrdenadas = rankings.get(0).getEntidades();
 
-    Assertions.assertEquals(entidadB, entidadesOrdenadas.get(0));
-    Assertions.assertEquals(entidadA, entidadesOrdenadas.get(1));
-    Assertions.assertEquals(entidadC, entidadesOrdenadas.get(2));
+    Incidente seRompeLaCadenaEnEstacionCaballito = mock(Incidente.class);
+
+    Incidente seRompeLaCanillaEnEstacionOnce = mock(Incidente.class);
+
+    Incidente seRompeElAscensor = mock(Incidente.class);
+
+    when(seRompeLaCadenaEnEstacionCaballito.getFechaResolucion()).thenReturn(LocalDateTime.of(2023,7,8,10,0,0));
+    when(seRompeLaCanillaEnEstacionOnce.getFechaResolucion()).thenReturn(LocalDateTime.of(2023,7,8,11,0,0));
+    when(seRompeElAscensor.getFechaResolucion()).thenReturn(LocalDateTime.of(2023,7,7,23,50,0));
+    
+
+    seRompeLaCadenaEnEstacionCaballito.cerrar();
+    seRompeLaCanillaEnEstacionOnce.cerrar();
+    seRompeElAscensor.cerrar();
+
+    Map<Entidad,Double> entidadesOrdenadasEsperadas = new HashMap<>();
+    entidadesOrdenadasEsperadas.put(subteA,(double)1);
+    entidadesOrdenadasEsperadas.put(lineaSarmiento,(double)2);
+
+    when(criterioMayorPromedioCierre.getEntidadesOrdenadas()).thenReturn(entidadesOrdenadasEsperadas);
+
+    rankingMayorPromedioDeCierre.generarRanking();
+
+    Assertions.assertEquals(rankingMayorPromedioDeCierre.getEntidades().size(),2);
+    Assertions.assertEquals(rankingMayorPromedioDeCierre.getEntidades().keySet(),new HashSet<>(Arrays.asList(subteA,lineaSarmiento)));
   }
-
-  private Entidad crearEntidadConIncidentes(int cantidadIncidentes, String nombre) {
-    Entidad unaEntidad = new Entidad(nombre, TipoDeEntidad.SUBTERRANEO);
-    Establecimiento unEstablecimiento = new Establecimiento();
-    Servicio unBanio = new Servicio("servicioInestable", TipoDeServicio.BANIOS);
-
-    LocalDateTime fechaApertura = LocalDateTime.now().minusDays(6);
-
-    for (int i = 0; i < cantidadIncidentes; i++) {
-      Incidente incidente = crearIncidenteEnBanios(unBanio, fechaApertura, i);
-      unBanio.agregarIncidente(incidente);
-    }
-
-    unaEntidad.agregarEstablecimiento(unEstablecimiento);
-    unEstablecimiento.agregarServicio(unBanio);
-
-    return unaEntidad;
-  }
-
-  private Incidente crearIncidenteEnBanios(Servicio servicio, LocalDateTime apertura, int index) {
-    // Cada incidente se cierra 2 horas despues del anterior
-    // Cuantos mas incidentes, mas bajo sera el promedio de cierre
-    LocalDateTime fechaCierre = apertura.plusHours(index * 2L);
-    Incidente incidente = new Incidente(servicio, "No anda la cadena del baño - " + index);
-
-    incidente.cerrar();
-    incidente.setFecha(apertura);
-    incidente.setFechaResolucion(fechaCierre);
-
-    return incidente;
-  }
-  */
 }

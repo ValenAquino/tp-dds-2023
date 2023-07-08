@@ -1,11 +1,11 @@
 package ar.edu.utn.frba.dds.entidades;
 
-import java.util.ArrayList;
-import java.util.List;
+import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
 
 public class Servicio {
   private final String descripcion;
-  private TipoDeServicio tipoDeServicio;
+  private final TipoDeServicio tipoDeServicio;
+  private Establecimiento establecimiento;
 
   public Servicio(String descripcion, TipoDeServicio tipoDeServicio) {
     this.descripcion = descripcion;
@@ -14,5 +14,17 @@ public class Servicio {
 
   public String getDescripcion() {
     return descripcion;
+  }
+
+  public TipoDeServicio getTipoDeServicio() {
+    return tipoDeServicio;
+  }
+
+  public Ubicacion getUbicacion() {
+    return establecimiento.getUbicacion();
+  }
+
+  public Entidad getEntidad() {
+    return establecimiento.getEntidad();
   }
 }

@@ -22,7 +22,7 @@ public class OrganismoDeControl {
     return correoElectronico;
   }
 
-  public void asignarResponsable(Usuario nuevoResponsable) {
+  public void setResponsable(Usuario nuevoResponsable) {
     usuarioResponsable = nuevoResponsable;
   }
 

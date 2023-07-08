@@ -1,0 +1,170 @@
+@startuml TPA3-Clases
+
+hide empty members
+
+' Supermercado, Centro Comunal, Banco, ...
+class Entidad {
+  nombre: String
+  tipoDeEntidad: TipoDeEntidad
+  establecimientos: List<Establecimiento>
+  usuariosInteresados: List<Usuario>
+  incidentes: List<Incidente>
+  --
+  abrirIncidente(Servicio, String)
+  notificarAperturaDeIncidente(Incidente)
+  getIncidentesAbiertos()
+  getIncidentesResueltos()
+}
+
+Entidad <-r->"*" Establecimiento
+Entidad -l->"*" Usuario
+Entidad -u->"*" Incidente
+
+' Sucursal, Estacion, ...
+class Establecimiento {
+  nombre: String
+  servicios: List<Servicio>
+  entidad: Entidad
+  ubicacion: Ubicacion
+  --
+  agregarServicio(Servicio)
+  removerServicio(Servicio)
+  tieneServicio(Servicio)
+}
+
+Establecimiento <->"*" Servicio
+Establecimiento -d-> Ubicacion
+
+class Servicio {
+  descripcion: String
+  establecimiento: Establecimiento
+  tipoDeServicio: TipoDeServicio
+}
+
+class Usuario {
+  usuario: String
+  contraseña: String
+  nombre: String
+  apellido: String
+  correoElectronico: String
+  medioDeComunicacion: MedioDeComunicacion
+  calendarioNotificaciones: CalendarioNotificaciones
+  --
+  getUbicacionActual(ServicioUbicacion)
+  puedeRecibirNotificacion()
+  notificarAperturaDeIncidente(Incidente)
+  sugerirRevisionDeIncidente(Incidente)
+}
+
+Usuario -l-> MedioDeComunicacion
+Usuario -u-> CalendarioNotificaciones
+
+class CalendarioNotificaciones {
+  horarios: Map<DayOfWeek, RangoHorario>
+  --
+  abarcaA(LocalDateTime)
+}
+
+CalendarioNotificaciones -u-> RangoHorario
+
+class RangoHorario {
+  inicio: LocalTime
+  fin: LocalTime
+  --
+  contieneHorario(LocalTime)
+}
+
+interface MedioDeComunicacion {
+  --
+  notificarAperturaDeIncidente(Incidente)
+  sugerirRevisionDeIncidente(Incidente)
+}
+
+class MedioWhatsApp implements MedioDeComunicacion {
+  --
+  notificarAperturaDeIncidente(Incidente)
+  sugerirRevisionDeIncidente(Incidente)
+}
+
+class MedioEmail implements MedioDeComunicacion {
+  --
+  notificarAperturaDeIncidente(Incidente)
+  sugerirRevisionDeIncidente(Incidente)
+}
+
+class Comunidad {
+  serviciosDeInteres: List<Servicio>
+  incidentes: List<Incidente>
+  miembros: List<Usuario>
+  --
+  abrirIncidente(Servicio, String)
+  notificarAperturaDeIncidente(Incidente)
+  getIncidentesAbiertos()
+  getIncidentesResueltos()
+}
+
+Comunidad ->"*" Servicio
+Comunidad -d->"*" Incidente
+Comunidad -l->"*" Usuario
+
+class Incidente {
+  resuelto: boolean
+  fecha: DateTime
+  fechaResolucion: DateTime
+  servicio: Servicio
+  observaciones: String
+  --
+  cerrar()
+  tiempoDeCierre()
+  getUbicacion()
+}
+
+Incidente -> Servicio
+
+class Ubicacion {
+  latitud: double
+  longitud: double
+}
+
+'interface ServicioMapas {
+'  --
+'  estanCerca(Ubicacion, Ubicacion, long): boolean
+'}
+'
+'interface ServicioUbicacion {
+'  --
+'  ubicacionActual(String): Ubicacion
+'}
+
+class OrganismoDeControl {
+  nombre: String
+  correoElectronico: String
+  usuarioResponsable: Usuario
+  entidadesControladas: List<Entidad>
+  --
+}
+
+OrganismoDeControl -u->"entidadesControladas*" Entidad
+
+/'
+
+enum TipoDeServicio {
+  ESCALERAS_MECANICAS
+  ASCENSORES
+  BAÑOS
+}
+
+Servicio -> TipoDeServicio
+
+enum TipoDeEntidad {
+  SUBTERRANEO
+  FERROCARRIL
+  SUPERMERADO
+  BANCO
+}
+
+Entidad -> TipoDeEntidad
+
+'/
+
+@enduml

@@ -1,0 +1,31 @@
+@startuml Rankings
+
+hide empty members
+
+class Ranking {
+  fecha: DateTime
+  criterio: CriterioDeOrdenamiento
+  entidades: List<Entidad>
+  --
+  generarRanking()
+}
+
+Ranking -> CriterioDeOrdenamiento
+Ranking -l->"*" Entidad
+
+interface CriterioDeOrdenamiento {
+  --
+  getEntidadesOrdenadas()
+}
+
+class MayorPromedioCierre implements CriterioDeOrdenamiento {
+  --
+  getEntidadesOrdenadas()
+}
+
+class CantidadIncidentes implements CriterioDeOrdenamiento {
+  --
+  getEntidadesOrdenadas()
+}
+
+@enduml
