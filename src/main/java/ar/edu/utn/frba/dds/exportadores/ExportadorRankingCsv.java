@@ -5,11 +5,11 @@ import ar.edu.utn.frba.dds.excepciones.GeneradorCsvException;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 
-public class GeneradorReportesCsv {
+public class ExportadorRankingCsv {
   private String path = "./reportes/";
   private final Ranking ranking;
 
-  public GeneradorReportesCsv(Ranking ranking) {
+  public ExportadorRankingCsv(Ranking ranking) {
     this.ranking = ranking;
   }
 
