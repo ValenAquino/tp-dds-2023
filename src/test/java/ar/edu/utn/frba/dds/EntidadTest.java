@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -104,13 +105,13 @@ public class EntidadTest {
     usuarioQueUsaSubte.setMedioDeComunicacion(mailSender);
     entidad.agregarUsuarioInteresado(usuarioQueUsaSubte);
     entidad.abrirIncidente(servicio1, "No anda la cadena");
-    verify(mailSender).notificarAperturaDeIncidente(any());
+    verify(mailSender).notificarAperturaDeIncidente(any(), eq(usuarioQueUsaSubte.getCorreoElectronico()));
   }
 
   @Test
   public void unUsuarioNoEsNotificadoPorLaAperturaDeUnIncidenteQueNoLeInteresa() {
     usuarioQueUsaSubte.setMedioDeComunicacion(mailSender);
     entidad.abrirIncidente(servicio1, "No anda la cadena");
-    verify(medioDeComunicacion, never()).notificarAperturaDeIncidente(any());
+    verify(medioDeComunicacion, never()).notificarAperturaDeIncidente(any(), eq(usuarioQueUsaSubte.getCorreoElectronico()));
   }
 }

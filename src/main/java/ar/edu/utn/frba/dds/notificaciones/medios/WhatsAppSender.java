@@ -5,12 +5,12 @@ import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
 
 public class WhatsAppSender implements MedioDeComunicacion {
   @Override
-  public void notificarAperturaDeIncidente(Incidente incidente) {
+  public void notificarAperturaDeIncidente(Incidente incidente, String destinatario) {
 
   }
 
   @Override
-  public void sugerirRevisionDeIncidente(Incidente incidente) {
+  public void sugerirRevisionDeIncidente(Incidente incidente, String destinatario) {
 
   }
 }
