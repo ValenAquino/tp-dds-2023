@@ -33,6 +33,10 @@ public class Incidente {
     return servicio;
   }
 
+  public String getObservaciones() {
+    return observaciones;
+  }
+
   public void cerrar() {
     resuelto = true;
     fechaResolucion = LocalDateTime.now();
