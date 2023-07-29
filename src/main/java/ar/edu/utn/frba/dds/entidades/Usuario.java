@@ -43,6 +43,8 @@ public class Usuario {
     if (puedeRecibirNotificacion()) {
       medioDeComunicacion.notificarAperturaDeIncidente(incidente);
     }
+    // TODO: si no puede recibir la notificación ahora,
+    //  almacenarla para luego recibir un resumen de todas las notificaciones pendientes
   }
 
   public void sugerirRevisionDeIncidente(Incidente incidente) {

@@ -76,7 +76,6 @@ public class UbicacionTest {
             nosLiberamos
         )
     );
-
     List<Incidente> listaIncidentesCercanosAbiertos =
         repositorioComunidades
         .getComunidadesDe(cornelioSaavedra)
@@ -90,6 +89,7 @@ public class UbicacionTest {
             )
         )
         .toList();
+    // TODO: aumentar declaratividad, por ejemplo: getIncidentesAbiertosCercanosAUnUsuario
 
     listaIncidentesCercanosAbiertos.forEach(cornelioSaavedra::sugerirRevisionDeIncidente);
     verify(medioDeComunicacion).sugerirRevisionDeIncidente(any());

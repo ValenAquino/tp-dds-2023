@@ -12,6 +12,7 @@ public class CantidadIncidentes implements CriterioDeOrdenamiento {
 
   @Override
   public Map<Entidad, Double> getEntidadesOrdenadas() {
+    // TODO: ver mail de Franco para implementar el criterio correctamente
     var entidades = RepositorioIncidentes.getInstance()
         .ultimaSemana()
         .stream()
