@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.notificaciones.medios;
 
 import ar.edu.utn.frba.dds.entidades.Incidente;
+import ar.edu.utn.frba.dds.entidades.Usuario;
 import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
 import javax.mail.Authenticator;
 import javax.mail.Message;
@@ -26,9 +27,9 @@ public class MailSender implements MedioDeComunicacion {
   }
 
   @Override
-  public void notificarAperturaDeIncidente(Incidente incidente, String destinatario) {
+  public void notificarAperturaDeIncidente(Incidente incidente, Usuario destinatario) {
     enviarEmail(new Mail(
-        destinatario,
+        destinatario.getCorreoElectronico(),
         "Nuevo incidente!",
         String.format(
             "Se ha abierto un nuevo incidente en el servicio %s a las %s",
@@ -39,9 +40,9 @@ public class MailSender implements MedioDeComunicacion {
   }
 
   @Override
-  public void sugerirRevisionDeIncidente(Incidente incidente, String destinatario) {
+  public void sugerirRevisionDeIncidente(Incidente incidente, Usuario destinatario) {
     enviarEmail(new Mail(
-        destinatario,
+        destinatario.getCorreoElectronico(),
         "Sugerencia de revisión de incidente",
         String.format(
             "Le sugerimos revisar el servicio %s con incidente: %s",

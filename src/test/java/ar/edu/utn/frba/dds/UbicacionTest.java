@@ -91,6 +91,6 @@ public class UbicacionTest {
     // TODO: aumentar declaratividad, por ejemplo: getIncidentesAbiertosCercanosAUnUsuario
 
     listaIncidentesCercanosAbiertos.forEach(cornelioSaavedra::sugerirRevisionDeIncidente);
-    verify(medioDeComunicacion).sugerirRevisionDeIncidente(any(), eq(cornelioSaavedra.getCorreoElectronico()));
+    verify(medioDeComunicacion).sugerirRevisionDeIncidente(any(), eq(cornelioSaavedra));
   }
 }

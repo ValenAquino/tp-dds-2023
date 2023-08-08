@@ -105,13 +105,13 @@ public class EntidadTest {
     usuarioQueUsaSubte.setMedioDeComunicacion(mailSender);
     entidad.agregarUsuarioInteresado(usuarioQueUsaSubte);
     entidad.abrirIncidente(servicio1, "No anda la cadena");
-    verify(mailSender).notificarAperturaDeIncidente(any(), eq(usuarioQueUsaSubte.getCorreoElectronico()));
+    verify(mailSender).notificarAperturaDeIncidente(any(), eq(usuarioQueUsaSubte));
   }
 
   @Test
   public void unUsuarioNoEsNotificadoPorLaAperturaDeUnIncidenteQueNoLeInteresa() {
     usuarioQueUsaSubte.setMedioDeComunicacion(mailSender);
     entidad.abrirIncidente(servicio1, "No anda la cadena");
-    verify(medioDeComunicacion, never()).notificarAperturaDeIncidente(any(), eq(usuarioQueUsaSubte.getCorreoElectronico()));
+    verify(medioDeComunicacion, never()).notificarAperturaDeIncidente(any(), eq(usuarioQueUsaSubte));
   }
 }
