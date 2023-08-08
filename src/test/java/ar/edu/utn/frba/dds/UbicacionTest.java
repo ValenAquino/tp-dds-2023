@@ -10,7 +10,6 @@ import ar.edu.utn.frba.dds.entidades.Ubicacion;
 import ar.edu.utn.frba.dds.entidades.Usuario;
 import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioComunidades;
 import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
-import ar.edu.utn.frba.dds.notificaciones.medios.MailSender;
 import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
 import ar.edu.utn.frba.dds.ubicacion.ServicioUbicacion;
 import java.util.Collections;
@@ -92,6 +91,6 @@ public class UbicacionTest {
     // TODO: aumentar declaratividad, por ejemplo: getIncidentesAbiertosCercanosAUnUsuario
 
     listaIncidentesCercanosAbiertos.forEach(cornelioSaavedra::sugerirRevisionDeIncidente);
-    verify(medioDeComunicacion).sugerirRevisionDeIncidente(any());
+    verify(medioDeComunicacion).sugerirRevisionDeIncidente(any(), eq(cornelioSaavedra));
   }
 }

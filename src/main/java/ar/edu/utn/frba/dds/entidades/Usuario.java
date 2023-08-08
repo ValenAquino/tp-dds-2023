@@ -41,7 +41,7 @@ public class Usuario {
 
   public void notificarAperturaDeIncidente(Incidente incidente) {
     if (puedeRecibirNotificacion()) {
-      medioDeComunicacion.notificarAperturaDeIncidente(incidente);
+      medioDeComunicacion.notificarAperturaDeIncidente(incidente, this);
     }
     // TODO: si no puede recibir la notificación ahora,
     //  almacenarla para luego recibir un resumen de todas las notificaciones pendientes
@@ -49,7 +49,7 @@ public class Usuario {
 
   public void sugerirRevisionDeIncidente(Incidente incidente) {
     if (puedeRecibirNotificacion()) {
-      medioDeComunicacion.sugerirRevisionDeIncidente(incidente);
+      medioDeComunicacion.sugerirRevisionDeIncidente(incidente, this);
     }
   }
 

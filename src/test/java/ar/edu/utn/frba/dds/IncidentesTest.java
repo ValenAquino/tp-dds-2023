@@ -91,7 +91,7 @@ public class IncidentesTest {
     nosMovemosEnSubte.agregarServicioDeInteres(escaleraMecanica);
     usuarioQueUsaSubte.setMedioDeComunicacion(mailSender);
     nosMovemosEnSubte.abrirIncidente(escaleraMecanica, "Fuera de servicio");
-    verify(mailSender).notificarAperturaDeIncidente(any());
+    verify(mailSender).notificarAperturaDeIncidente(any(), eq(usuarioQueUsaSubte));
   }
 
   @Test
@@ -100,7 +100,7 @@ public class IncidentesTest {
     nosMovemosEnSubte.agregarServicioDeInteres(escaleraMecanica);
     usuarioQueUsaSubte.setMedioDeComunicacion(whatsAppSender);
     nosMovemosEnSubte.abrirIncidente(escaleraMecanica, "Fuera de servicio");
-    verify(whatsAppSender).notificarAperturaDeIncidente(any());
+    verify(whatsAppSender).notificarAperturaDeIncidente(any(), eq(usuarioQueUsaSubte));
   }
 
   @Test
@@ -119,7 +119,7 @@ public class IncidentesTest {
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
     nosMovemosEnSubte.abrirIncidente(ascensor, "Fuera de servicio");
 
-    verify(medioDeComunicacion).notificarAperturaDeIncidente(any());
+    verify(medioDeComunicacion).notificarAperturaDeIncidente(any(), eq(usuarioQueUsaSubte));
   }
 
   @Test
@@ -138,7 +138,7 @@ public class IncidentesTest {
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
     nosMovemosEnSubte.abrirIncidente(ascensor, "Fuera de servicio");
 
-    verify(medioDeComunicacion, never()).notificarAperturaDeIncidente(any());
+    verify(medioDeComunicacion, never()).notificarAperturaDeIncidente(any(), eq(usuarioQueUsaSubte));
   }
 
   @Test
@@ -149,7 +149,7 @@ public class IncidentesTest {
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
     nosMovemosEnSubte.abrirIncidente(ascensor, "Fuera de servicio");
 
-    verify(medioDeComunicacion).notificarAperturaDeIncidente(any());
+    verify(medioDeComunicacion).notificarAperturaDeIncidente(any(), eq(usuarioQueUsaSubte));
   }
 
 }
