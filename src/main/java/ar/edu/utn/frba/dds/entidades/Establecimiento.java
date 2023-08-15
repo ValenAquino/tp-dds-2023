@@ -28,4 +28,8 @@ public class Establecimiento {
   public Ubicacion getUbicacion() {
     return ubicacion;
   }
+
+  public void setEntidad(Entidad entidad) {
+    this.entidad = entidad;
+  }
 }
