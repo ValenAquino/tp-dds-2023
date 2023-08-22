@@ -2,7 +2,7 @@ package ar.edu.utn.frba.dds.entidades;
 
 import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
 import ar.edu.utn.frba.dds.notificaciones.horarios.CalendarioNotificaciones;
-import ar.edu.utn.frba.dds.ubicacion.ServicioUbicacion;
+import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
 import java.time.LocalDateTime;
 
 public class Usuario {
@@ -31,8 +31,8 @@ public class Usuario {
     this.calendarioNotificaciones = calendarioNotificaciones;
   }
 
-  public Ubicacion getUbicacionActual(ServicioUbicacion servicioUbicacion) {
-    return servicioUbicacion.ubicacionActual(correoElectronico);
+  public Ubicacion getUbicacionActual(ServicioMapas servicioMapas) {
+    return servicioMapas.ubicacionActual(correoElectronico);
   }
 
   public String getCorreoElectronico() {
