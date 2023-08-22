@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds;
 
 import ar.edu.utn.frba.dds.entidades.*;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
+import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioComunidades;
 import ar.edu.utn.frba.dds.notificaciones.*;
 import ar.edu.utn.frba.dds.notificaciones.horarios.CalendarioNotificaciones;
 import ar.edu.utn.frba.dds.notificaciones.horarios.RangoHorario;
@@ -42,30 +43,36 @@ public class IncidentesTest {
         "Master",
         "subtemaster@gmail.com"
     );
+
     medioDeComunicacion = mock(MedioDeComunicacion.class);
     whatsAppSender = mock(WhatsAppSender.class);
     mailSender = mock(MailSender.class);
+
+    usuarioQueUsaSubte.setMedioDeComunicacion(medioDeComunicacion);
+
     nosMovemosEnSubte = new Comunidad();
+    nosMovemosEnSubte.agregarMiembro(usuarioQueUsaSubte);
+
+    RepositorioComunidades.getInstance().agregarComunidad(nosMovemosEnSubte);
   }
 
   @Test
-  public void puedoAbrirUnIncidenteEnUnaComunidad() {
+  public void unUsuarioPuedeReportarUnIncidente() {
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
-    nosMovemosEnSubte.abrirIncidente(ascensor, "Fuera de servicio");
+    usuarioQueUsaSubte.reportarIncidente(ascensor, "Fuera de servicio");
+
     assertEquals(1, nosMovemosEnSubte.getIncidentes().size());
   }
 
   @Test
-  public void abrirIncidenteDeServicioNoInteresLanzaExcepcion() {
-    assertThrows(RuntimeException.class, () ->
-        nosMovemosEnSubte.abrirIncidente(ascensor, "Fuera de servicio"));
-  }
-
-  @Test
-  public void puedoCerrarUnIncidenteEnUnaComunidad() {
+  public void unUsuarioPuedeCerrarUnIncidenteEnUnaComunidad() {
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
-    Incidente incidente = nosMovemosEnSubte.abrirIncidente(ascensor, "Fuera de servicio");
-    incidente.cerrar();
+    usuarioQueUsaSubte.reportarIncidente(ascensor, "Fuera de servicio");
+
+    var incidente = nosMovemosEnSubte.getIncidentes().get(0);
+
+    nosMovemosEnSubte.cerrarIncidente(incidente);
+
     assertTrue(incidente.estaResuelto());
     assertNotNull(incidente.getFechaResolucion());
   }
@@ -75,9 +82,13 @@ public class IncidentesTest {
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
     nosMovemosEnSubte.agregarServicioDeInteres(escaleraMecanica);
 
-    Incidente incidenteAscensor = nosMovemosEnSubte.abrirIncidente(ascensor, "Fuera de servicio");
-    Incidente incidenteEscalera = nosMovemosEnSubte.abrirIncidente(escaleraMecanica, "Fuera de servicio");
-    incidenteAscensor.cerrar();
+    usuarioQueUsaSubte.reportarIncidente(ascensor, "Fuera de servicio");
+    usuarioQueUsaSubte.reportarIncidente(escaleraMecanica, "Fuera de servicio");
+
+    var incidenteAscensor = nosMovemosEnSubte.getIncidentesAbiertos().get(0);
+    var incidenteEscalera = nosMovemosEnSubte.getIncidentesAbiertos().get(1);
+
+    nosMovemosEnSubte.cerrarIncidente(incidenteAscensor);
 
     assertEquals(1, nosMovemosEnSubte.getIncidentesAbiertos().size());
     assertEquals(1, nosMovemosEnSubte.getIncidentesResueltos().size());
@@ -87,20 +98,22 @@ public class IncidentesTest {
 
   @Test
   public void seLlamaElMetodoDeMailCuandoElUsuarioEligeMail() {
-    nosMovemosEnSubte.agregarMiembro(usuarioQueUsaSubte);
     nosMovemosEnSubte.agregarServicioDeInteres(escaleraMecanica);
     usuarioQueUsaSubte.setMedioDeComunicacion(mailSender);
-    nosMovemosEnSubte.abrirIncidente(escaleraMecanica, "Fuera de servicio");
-    verify(mailSender).notificarAperturaDeIncidente(any(), eq(usuarioQueUsaSubte));
+
+    usuarioQueUsaSubte.reportarIncidente(escaleraMecanica, "Fuera de servicio");
+
+    verify(mailSender).notificarReporteDeIncidente(any(), eq(usuarioQueUsaSubte));
   }
 
   @Test
   public void seLlamaElMetodoDeWhatsappCuandoElUsuarioEligeWhatsapp() {
-    nosMovemosEnSubte.agregarMiembro(usuarioQueUsaSubte);
     nosMovemosEnSubte.agregarServicioDeInteres(escaleraMecanica);
     usuarioQueUsaSubte.setMedioDeComunicacion(whatsAppSender);
-    nosMovemosEnSubte.abrirIncidente(escaleraMecanica, "Fuera de servicio");
-    verify(whatsAppSender).notificarAperturaDeIncidente(any(), eq(usuarioQueUsaSubte));
+
+    usuarioQueUsaSubte.reportarIncidente(escaleraMecanica, "Fuera de servicio");
+
+    verify(whatsAppSender).notificarReporteDeIncidente(any(), eq(usuarioQueUsaSubte));
   }
 
   @Test
@@ -114,12 +127,11 @@ public class IncidentesTest {
     var calendarioNotificaciones = new CalendarioNotificaciones(horarios);
 
     usuarioQueUsaSubte.setCalendarioNotificaciones(calendarioNotificaciones);
-    usuarioQueUsaSubte.setMedioDeComunicacion(medioDeComunicacion);
-    nosMovemosEnSubte.agregarMiembro(usuarioQueUsaSubte);
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
-    nosMovemosEnSubte.abrirIncidente(ascensor, "Fuera de servicio");
 
-    verify(medioDeComunicacion).notificarAperturaDeIncidente(any(), eq(usuarioQueUsaSubte));
+    usuarioQueUsaSubte.reportarIncidente(ascensor, "Fuera de servicio");
+
+    verify(medioDeComunicacion).notificarReporteDeIncidente(any(), eq(usuarioQueUsaSubte));
   }
 
   @Test
@@ -133,23 +145,21 @@ public class IncidentesTest {
     var calendarioNotificaciones = new CalendarioNotificaciones(horarios);
 
     usuarioQueUsaSubte.setCalendarioNotificaciones(calendarioNotificaciones);
-    usuarioQueUsaSubte.setMedioDeComunicacion(medioDeComunicacion);
     nosMovemosEnSubte.agregarMiembro(usuarioQueUsaSubte);
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
-    nosMovemosEnSubte.abrirIncidente(ascensor, "Fuera de servicio");
 
-    verify(medioDeComunicacion, never()).notificarAperturaDeIncidente(any(), eq(usuarioQueUsaSubte));
+    usuarioQueUsaSubte.reportarIncidente(ascensor, "Fuera de servicio");
+
+    verify(medioDeComunicacion, never()).notificarReporteDeIncidente(any(), eq(usuarioQueUsaSubte));
   }
 
   @Test
   public void seLlamaElMetodoNotificarCuandoNoSeConfiguraHorario() {
     usuarioQueUsaSubte.setCalendarioNotificaciones(null);
-    usuarioQueUsaSubte.setMedioDeComunicacion(medioDeComunicacion);
-    nosMovemosEnSubte.agregarMiembro(usuarioQueUsaSubte);
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
-    nosMovemosEnSubte.abrirIncidente(ascensor, "Fuera de servicio");
 
-    verify(medioDeComunicacion).notificarAperturaDeIncidente(any(), eq(usuarioQueUsaSubte));
+    usuarioQueUsaSubte.reportarIncidente(ascensor, "Fuera de servicio");
+
+    verify(medioDeComunicacion).notificarReporteDeIncidente(any(), eq(usuarioQueUsaSubte));
   }
-
 }

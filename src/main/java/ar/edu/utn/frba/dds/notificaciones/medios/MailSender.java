@@ -27,7 +27,7 @@ public class MailSender implements MedioDeComunicacion {
   }
 
   @Override
-  public void notificarAperturaDeIncidente(Incidente incidente, Usuario destinatario) {
+  public void notificarReporteDeIncidente(Incidente incidente, Usuario destinatario) {
     enviarEmail(new Mail(
         destinatario.getCorreoElectronico(),
         "Nuevo incidente!",

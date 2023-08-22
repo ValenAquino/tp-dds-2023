@@ -6,7 +6,7 @@ import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
 
 public class WhatsAppSender implements MedioDeComunicacion {
   @Override
-  public void notificarAperturaDeIncidente(Incidente incidente, Usuario destinatario) {
+  public void notificarReporteDeIncidente(Incidente incidente, Usuario destinatario) {
 
   }
 

@@ -1,9 +1,11 @@
 package ar.edu.utn.frba.dds.entidades;
 
+import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioComunidades;
 import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
 import ar.edu.utn.frba.dds.notificaciones.horarios.CalendarioNotificaciones;
 import ar.edu.utn.frba.dds.ubicacion.ServicioUbicacion;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Usuario {
   private String usuario;
@@ -39,9 +41,27 @@ public class Usuario {
     return correoElectronico;
   }
 
-  public void notificarAperturaDeIncidente(Incidente incidente) {
+  public void reportarIncidente(Servicio servicio, String observaciones) {
+    var comunidades = getComunidadesInteresadas(servicio);
+
+    var incidente = new Incidente(servicio, observaciones);
+
+    for (var comunidad : comunidades) {
+      comunidad.reportarIncidente(incidente.copiar());
+    }
+  }
+
+  public void cerrarIncidente(Comunidad comunidad, Incidente incidente) {
+    if (comunidad.tieneIncidente(incidente)) {
+      comunidad.cerrarIncidente(incidente);
+    } else {
+      throw new RuntimeException("El incidente a cerrar debe estar abierto para la comunidad");
+    }
+  }
+
+  public void notificarReporteDeIncidente(Incidente incidente) {
     if (puedeRecibirNotificacion()) {
-      medioDeComunicacion.notificarAperturaDeIncidente(incidente, this);
+      medioDeComunicacion.notificarReporteDeIncidente(incidente, this);
     }
     // TODO: si no puede recibir la notificación ahora,
     //  almacenarla para luego recibir un resumen de todas las notificaciones pendientes
@@ -56,5 +76,10 @@ public class Usuario {
   private boolean puedeRecibirNotificacion() {
     return calendarioNotificaciones == null
         || calendarioNotificaciones.abarcaA(LocalDateTime.now());
+  }
+
+  private List<Comunidad> getComunidadesInteresadas(Servicio servicio) {
+    return RepositorioComunidades
+        .getInstance().getComunidadesInteresadas(this, servicio);
   }
 }
