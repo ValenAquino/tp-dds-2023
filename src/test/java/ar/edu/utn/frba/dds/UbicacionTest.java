@@ -22,6 +22,7 @@ public class UbicacionTest {
   private ServicioMapas servicioMapas;
   private MedioDeComunicacion medioDeComunicacion;
   private final Ubicacion plazaDeMayo = new Ubicacion(-34.608421330, -58.372169490);
+  private final Ubicacion lima = new Ubicacion(-34.627777777778, -58.381305555556);
   private final Usuario cornelioSaavedra = new Usuario(
       "cornelio.saavedra",
       "",
@@ -31,6 +32,7 @@ public class UbicacionTest {
   );
   private  Servicio ascensor;
   private Servicio escaleraMecanica;
+  private Servicio banioDeHombres;
   private Comunidad nosLiberamos;
 
   private RepositorioComunidades repositorioComunidades;
@@ -45,6 +47,11 @@ public class UbicacionTest {
         any(Ubicacion.class), // Cualquier ubicación
         any(Long.class)
     )).thenReturn(true);
+    when(servicioMapas.estanCerca(
+        eq(plazaDeMayo), // Cualquier ubicación
+        eq(lima), // Cualquier ubicación
+        any(Long.class)
+    )).thenReturn(false);
 
     when(servicioMapas.ubicacionActual(cornelioSaavedra.getCorreoElectronico()))
         .thenReturn(plazaDeMayo); // Set Ubicacion del Usuario
@@ -60,7 +67,10 @@ public class UbicacionTest {
     escaleraMecanica = mock(Servicio.class);
     when(escaleraMecanica.getUbicacion()).thenReturn(plazaDeMayo);  // Set Ubicacion del Servicio
 
+    banioDeHombres = mock(Servicio.class);
+    when(banioDeHombres.getUbicacion()).thenReturn(lima);  // Set Ubicacion del Servicio
 
+    nosLiberamos.agregarServicioDeInteres(banioDeHombres);
     nosLiberamos.agregarServicioDeInteres(ascensor);
     nosLiberamos.agregarServicioDeInteres(escaleraMecanica);
 
@@ -71,7 +81,8 @@ public class UbicacionTest {
         )
     );  // Set comunidades del usuario
     nosLiberamos.abrirIncidente(ascensor, "Fuera de servicio");
-    incidenteACerrar = nosLiberamos.abrirIncidente(escaleraMecanica, "aaaaaaa");
+    incidenteACerrar = nosLiberamos.abrirIncidente(escaleraMecanica, "Fuera de servicio");
+    nosLiberamos.abrirIncidente(banioDeHombres, "Fuera de servicio");
   }
 
   @Test
@@ -100,6 +111,19 @@ public class UbicacionTest {
 
     listaIncidentesCercanosAbiertos.forEach(cornelioSaavedra::sugerirRevisionDeIncidente);
     verify(medioDeComunicacion, times(1))
+        .sugerirRevisionDeIncidente(any(), eq(cornelioSaavedra));
+  }
+  @Test
+  public void unUsuarioNoRecibeSugerenciaDeIncidenteLejano() {
+
+    List<Incidente> listaIncidentesCercanosAbiertos =
+        repositorioComunidades
+            .getComunidadesDe(cornelioSaavedra)
+            .stream()
+            .flatMap(c -> c.getIncidentesAbiertosCercanosA(cornelioSaavedra).stream()).toList();
+
+    listaIncidentesCercanosAbiertos.forEach(cornelioSaavedra::sugerirRevisionDeIncidente);
+    verify(medioDeComunicacion, times(2))
         .sugerirRevisionDeIncidente(any(), eq(cornelioSaavedra));
   }
 }
