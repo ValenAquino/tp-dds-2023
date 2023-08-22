@@ -22,6 +22,9 @@ public class CantidadIncidentesTest {
   Servicio servicio2 = new Servicio("Servicio 2", TipoDeServicio.BANIOS);
   Establecimiento establecimiento1 = new Establecimiento();
   Establecimiento establecimiento2 = new Establecimiento();
+  Incidente incidente1 = new Incidente(servicio1, "Observación 1");
+  Incidente incidente2 = new Incidente(servicio2, "Observación 2");
+  Incidente incidente3 = new Incidente(servicio2, "Observación 3");
 
   @BeforeEach
   public void setUp() {
@@ -38,76 +41,40 @@ public class CantidadIncidentesTest {
     servicio2.setEstablecimiento(establecimiento2);
   }
 
-  @Test
-  public void siSeCierraUnIncidenteYseAbreOtroDespuesEntoncesHayDosIncidentes() {
-    List<Incidente> incidentes = incidentesCaso1();
+  public void testCantidadIncidentes(List<Incidente> incidentes, double resA, double resB) {
     CantidadIncidentes cantidadIncidentes = new CantidadIncidentes();
-
     Map<Entidad, Double> resultados = cantidadIncidentes.getEntidadesOrdenadas(incidentes);
 
     resultados.forEach((entidad, count) -> {
       System.out.println("Entidad: " + entidad.getNombre() + ", Incidentes: " + count);
     });
 
-    // Verifica que los resultados sean los esperados
-    Assertions.assertEquals(1.0, resultados.get(entidadA));
-    Assertions.assertEquals(2.0, resultados.get(entidadB));
+    Assertions.assertEquals(resA, resultados.get(entidadA));
+    Assertions.assertEquals(resB, resultados.get(entidadB));
+  }
+
+  @Test
+  public void siSeCierraUnIncidenteYseAbreOtroDespuesEntoncesHayDosIncidentes() {
+    testCantidadIncidentes(incidentesCaso1(), 1.0, 2.0);
   }
 
   @Test
   public void siSeCierraUnIncidenteYseAbreOtroAntesEntoncesHayUnIncidente() {
-    List<Incidente> incidentes = incidentesCaso2();
-    CantidadIncidentes cantidadIncidentes = new CantidadIncidentes();
-
-    Map<Entidad, Double> resultados = cantidadIncidentes.getEntidadesOrdenadas(incidentes);
-
-    resultados.forEach((entidad, count) -> {
-      System.out.println("Entidad: " + entidad.getNombre() + ", Incidentes: " + count);
-    });
-
-    // Verifica que los resultados sean los esperados
-    Assertions.assertEquals(1.0, resultados.get(entidadA));
-    Assertions.assertEquals(1.0, resultados.get(entidadB));
+    testCantidadIncidentes(incidentesCaso2(), 1.0, 1.0);
   }
 
   @Test
   public void siSeAbreUnIncidenteDespuesDe24HorasQueAbrioOtroEntoncesHayDosIncidentes() {
-    List<Incidente> incidentes = incidentesCaso3();
-    CantidadIncidentes cantidadIncidentes = new CantidadIncidentes();
-
-    Map<Entidad, Double> resultados = cantidadIncidentes.getEntidadesOrdenadas(incidentes);
-
-    resultados.forEach((entidad, count) -> {
-      System.out.println("Entidad: " + entidad.getNombre() + ", Incidentes: " + count);
-    });
-
-    // Verifica que los resultados sean los esperados
-    Assertions.assertEquals(1.0, resultados.get(entidadA));
-    Assertions.assertEquals(2.0, resultados.get(entidadB));
+    testCantidadIncidentes(incidentesCaso3(), 1.0, 2.0);
   }
 
   @Test
   public void siSeAbreUnIncidenteAntesDe24HorasQueAbrioOtroEntoncesHayDosIncidentes() {
-    List<Incidente> incidentes = incidentesCaso4();
-    CantidadIncidentes cantidadIncidentes = new CantidadIncidentes();
-
-    Map<Entidad, Double> resultados = cantidadIncidentes.getEntidadesOrdenadas(incidentes);
-
-    resultados.forEach((entidad, count) -> {
-      System.out.println("Entidad: " + entidad.getNombre() + ", Incidentes: " + count);
-    });
-
-    // Verifica que los resultados sean los esperados
-    Assertions.assertEquals(1.0, resultados.get(entidadA));
-    Assertions.assertEquals(1.0, resultados.get(entidadB));
+    testCantidadIncidentes(incidentesCaso4(), 1.0, 1.0);
   }
 
-  private List<Incidente> incidentesCaso1() {
+  public List<Incidente> incidentesCaso1() {
     LocalDateTime fecha = LocalDateTime.now();
-
-    Incidente incidente1 = new Incidente(servicio1, "Observación 1");
-    Incidente incidente2 = new Incidente(servicio2, "Observación 2");
-    Incidente incidente3 = new Incidente(servicio2, "Observación 3");
 
     // El incidente 1 Pertenece a la entidad A
     incidente1.cerrar();
@@ -124,12 +91,8 @@ public class CantidadIncidentesTest {
     return Arrays.asList(incidente1, incidente2, incidente3);
   }
 
-  private List<Incidente> incidentesCaso2() {
+  public List<Incidente> incidentesCaso2() {
     LocalDateTime fecha = LocalDateTime.now();
-
-    Incidente incidente1 = new Incidente(servicio1, "Observación 1");
-    Incidente incidente2 = new Incidente(servicio2, "Observación 2");
-    Incidente incidente3 = new Incidente(servicio2, "Observación 3");
 
     // El incidente 1 Pertenece a la entidad A
     incidente1.cerrar();
@@ -146,12 +109,8 @@ public class CantidadIncidentesTest {
     return Arrays.asList(incidente1, incidente2, incidente3);
   }
 
-  private List<Incidente> incidentesCaso3() {
+  public List<Incidente> incidentesCaso3() {
     LocalDateTime fecha = LocalDateTime.now();
-
-    Incidente incidente1 = new Incidente(servicio1, "Observación 1");
-    Incidente incidente2 = new Incidente(servicio2, "Observación 2");
-    Incidente incidente3 = new Incidente(servicio2, "Observación 3");
 
     // El incidente 1 Pertenece a la entidad A
     incidente1.cerrar();
@@ -159,19 +118,15 @@ public class CantidadIncidentesTest {
     // Los incidente 2 y 3 pertenecen a la entidad B
     incidente2.setFechaApertura(fecha.plusMinutes(10));
 
-    // Este se abre 25hs Despues que se abre el incidente anterior del mismo servicio
+    // Este se abre 24hs Despues que se abre el incidente anterior del mismo servicio
     // Por lo que deberia contar como otro incidente
     incidente3.setFechaApertura(fecha.plusMinutes(10).plusHours(24));
 
     return Arrays.asList(incidente1, incidente2, incidente3);
   }
 
-  private List<Incidente> incidentesCaso4() {
+  public List<Incidente> incidentesCaso4() {
     LocalDateTime fecha = LocalDateTime.now();
-
-    Incidente incidente1 = new Incidente(servicio1, "Observación 1");
-    Incidente incidente2 = new Incidente(servicio2, "Observación 2");
-    Incidente incidente3 = new Incidente(servicio2, "Observación 3");
 
     // El incidente 1 Pertenece a la entidad A
     incidente1.cerrar();
