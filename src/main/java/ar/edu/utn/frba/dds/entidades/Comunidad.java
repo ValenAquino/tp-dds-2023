@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.entidades;
 
+import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,10 +9,13 @@ public class Comunidad {
   List<Incidente> incidentes;
   List<Usuario> miembros;
 
-  public Comunidad() {
+  ServicioMapas servicioMapa;
+
+  public Comunidad(ServicioMapas servicioMapa) {
     this.serviciosDeInteres = new ArrayList<>();
     this.incidentes = new ArrayList<>();
     this.miembros = new ArrayList<>();
+    this.servicioMapa = servicioMapa;
   }
 
   public List<Incidente> getIncidentes() {
@@ -62,7 +66,15 @@ public class Comunidad {
   public void notificarAperturaDeIncidente(Incidente incidente) {
     miembros.forEach(m -> m.notificarAperturaDeIncidente(incidente));
   }
-
+  public List<Incidente> getIncidentesAbiertosCercanosA(Usuario usuario){
+    return this.getIncidentesAbiertos().stream().filter(i ->
+        servicioMapa.estanCerca(
+            usuario.getUbicacionActual(servicioMapa),
+            i.getUbicacion(),
+            200
+        )
+    ).toList();
+  }
   public boolean tieneMiembro(Usuario usuario) {
     return miembros.contains(usuario);
   }
