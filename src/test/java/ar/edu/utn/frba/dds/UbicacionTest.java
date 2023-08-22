@@ -35,9 +35,20 @@ public class UbicacionTest {
 
   private RepositorioComunidades repositorioComunidades;
 
+  private Incidente incidenteACerrar;
+
   @BeforeEach
   public void inicializar() {
     servicioMapas = mock(ServicioMapas.class);
+    when(servicioMapas.estanCerca(
+        any(Ubicacion.class), // Cualquier ubicación
+        any(Ubicacion.class), // Cualquier ubicación
+        any(Long.class)
+    )).thenReturn(true);
+
+    when(servicioMapas.ubicacionActual(cornelioSaavedra.getCorreoElectronico()))
+        .thenReturn(plazaDeMayo); // Set Ubicacion del Usuario
+
     medioDeComunicacion = mock(MedioDeComunicacion.class);
     nosLiberamos = new Comunidad(servicioMapas);
     nosLiberamos.agregarMiembro(cornelioSaavedra);
@@ -47,16 +58,8 @@ public class UbicacionTest {
     when(ascensor.getUbicacion()).thenReturn(plazaDeMayo);  // Set Ubicacion del Servicio
 
     escaleraMecanica = mock(Servicio.class);
-    when(ascensor.getUbicacion()).thenReturn(plazaDeMayo);  // Set Ubicacion del Servicio
+    when(escaleraMecanica.getUbicacion()).thenReturn(plazaDeMayo);  // Set Ubicacion del Servicio
 
-    when(servicioMapas.ubicacionActual(cornelioSaavedra.getCorreoElectronico()))
-        .thenReturn(plazaDeMayo); // Set Ubicacion del Usuario
-
-    when(servicioMapas.estanCerca(
-        any(),
-        eq(plazaDeMayo),
-        eq(200)
-    )).thenReturn(true);
 
     nosLiberamos.agregarServicioDeInteres(ascensor);
     nosLiberamos.agregarServicioDeInteres(escaleraMecanica);
@@ -67,26 +70,36 @@ public class UbicacionTest {
             nosLiberamos
         )
     );  // Set comunidades del usuario
-
+    nosLiberamos.abrirIncidente(ascensor, "Fuera de servicio");
+    incidenteACerrar = nosLiberamos.abrirIncidente(escaleraMecanica, "aaaaaaa");
   }
 
   @Test
   public void unUsuarioPuedeRecibirUnaSugerenciaDeRevisionDeIncidenteSiEstaCerca() {
 
-    Incidente incidenteAbierto = nosLiberamos.abrirIncidente(ascensor, "Fuera de servicio");
-    Incidente incidenteACerrar = nosLiberamos.abrirIncidente(escaleraMecanica, "Fuera de servicio");
+    List<Incidente> listaIncidentesCercanosAbiertos =
+        repositorioComunidades
+            .getComunidadesDe(cornelioSaavedra)
+            .stream()
+            .flatMap(c -> c.getIncidentesAbiertosCercanosA(cornelioSaavedra).stream()).toList();
+
+    listaIncidentesCercanosAbiertos.forEach(cornelioSaavedra::sugerirRevisionDeIncidente);
+    verify(medioDeComunicacion, times(2))
+        .sugerirRevisionDeIncidente(any(), eq(cornelioSaavedra));
+  }
+  @Test
+  public void unUsuarioNoRecibeSugerenciaDeIncidenteCerrado() {
+
     incidenteACerrar.cerrar();
 
     List<Incidente> listaIncidentesCercanosAbiertos =
         repositorioComunidades
-        .getComunidadesDe(cornelioSaavedra)
-        .stream()
-        .flatMap(c -> c.getIncidentesAbiertosCercanosA(cornelioSaavedra).stream())
-            .collect(Collectors.toList());
-
+            .getComunidadesDe(cornelioSaavedra)
+            .stream()
+            .flatMap(c -> c.getIncidentesAbiertosCercanosA(cornelioSaavedra).stream()).toList();
 
     listaIncidentesCercanosAbiertos.forEach(cornelioSaavedra::sugerirRevisionDeIncidente);
-    verify(medioDeComunicacion, times(listaIncidentesCercanosAbiertos.size()))
+    verify(medioDeComunicacion, times(1))
         .sugerirRevisionDeIncidente(any(), eq(cornelioSaavedra));
   }
 }
