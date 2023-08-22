@@ -11,15 +11,14 @@ import ar.edu.utn.frba.dds.entidades.Usuario;
 import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioComunidades;
 import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
 import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
-import ar.edu.utn.frba.dds.ubicacion.ServicioUbicacion;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class UbicacionTest {
 
-  private ServicioUbicacion servicioUbicacion;
   private ServicioMapas servicioMapas;
   private MedioDeComunicacion medioDeComunicacion;
   private final Ubicacion plazaDeMayo = new Ubicacion(-34.608421330, -58.372169490);
@@ -30,67 +29,64 @@ public class UbicacionTest {
       "Saavedra",
       "saavedra@primerajunta.gob"
   );
-  private final Servicio ascensor = new Servicio(
-      "Ascensor - acceso a estación",
-      TipoDeServicio.ASCENSORES
-  );
-  private final Servicio escaleraMecanica = new Servicio(
-      "Escalera mecánica - acceso a andén",
-      TipoDeServicio.ESCALERAS_MECANICAS
-  );
+  private  Servicio ascensor;
+  private Servicio escaleraMecanica;
   private Comunidad nosLiberamos;
+
+  private RepositorioComunidades repositorioComunidades;
 
   @BeforeEach
   public void inicializar() {
-    servicioUbicacion = mock(ServicioUbicacion.class);
     servicioMapas = mock(ServicioMapas.class);
     medioDeComunicacion = mock(MedioDeComunicacion.class);
-    nosLiberamos = new Comunidad();
+    nosLiberamos = new Comunidad(servicioMapas);
     nosLiberamos.agregarMiembro(cornelioSaavedra);
     cornelioSaavedra.setMedioDeComunicacion(medioDeComunicacion);
-  }
 
-  @Test
-  public void unUsuarioPuedeRecibirUnaSugerenciaDeRevisionDeIncidenteSiEstaCerca() {
-    var ascensorMock = mock(ascensor.getClass());
-    when(ascensorMock.getUbicacion()).thenReturn(plazaDeMayo);
-    when(servicioUbicacion.ubicacionActual(cornelioSaavedra.getCorreoElectronico()))
-        .thenReturn(plazaDeMayo);
+    ascensor = mock(Servicio.class);
+    when(ascensor.getUbicacion()).thenReturn(plazaDeMayo);  // Set Ubicacion del Servicio
 
-    nosLiberamos.agregarServicioDeInteres(ascensorMock);
-    nosLiberamos.agregarServicioDeInteres(escaleraMecanica);
-    Incidente incidenteAbierto = nosLiberamos.abrirIncidente(ascensorMock, "Fuera de servicio");
-    Incidente incidenteACerrar = nosLiberamos.abrirIncidente(escaleraMecanica, "Fuera de servicio");
-    incidenteACerrar.cerrar();
+    escaleraMecanica = mock(Servicio.class);
+    when(ascensor.getUbicacion()).thenReturn(plazaDeMayo);  // Set Ubicacion del Servicio
+
+    when(servicioMapas.ubicacionActual(cornelioSaavedra.getCorreoElectronico()))
+        .thenReturn(plazaDeMayo); // Set Ubicacion del Usuario
 
     when(servicioMapas.estanCerca(
-        cornelioSaavedra.getUbicacionActual(servicioUbicacion),
-        incidenteAbierto.getUbicacion(),
-        200
+        any(),
+        eq(plazaDeMayo),
+        eq(200)
     )).thenReturn(true);
 
-    RepositorioComunidades repositorioComunidades = mock(RepositorioComunidades.class);
+    nosLiberamos.agregarServicioDeInteres(ascensor);
+    nosLiberamos.agregarServicioDeInteres(escaleraMecanica);
+
+    repositorioComunidades = mock(RepositorioComunidades.class);
     when(repositorioComunidades.getComunidadesDe(cornelioSaavedra)).thenReturn(
         Collections.singletonList(
             nosLiberamos
         )
-    );
+    );  // Set comunidades del usuario
+
+  }
+
+  @Test
+  public void unUsuarioPuedeRecibirUnaSugerenciaDeRevisionDeIncidenteSiEstaCerca() {
+
+    Incidente incidenteAbierto = nosLiberamos.abrirIncidente(ascensor, "Fuera de servicio");
+    Incidente incidenteACerrar = nosLiberamos.abrirIncidente(escaleraMecanica, "Fuera de servicio");
+    incidenteACerrar.cerrar();
+
     List<Incidente> listaIncidentesCercanosAbiertos =
         repositorioComunidades
         .getComunidadesDe(cornelioSaavedra)
         .stream()
-        .flatMap(c -> c.getIncidentesAbiertos().stream())
-        .filter(i ->
-            servicioMapas.estanCerca(
-                cornelioSaavedra.getUbicacionActual(servicioUbicacion),
-                i.getUbicacion(),
-                200
-            )
-        )
-        .toList();
-    // TODO: aumentar declaratividad, por ejemplo: getIncidentesAbiertosCercanosAUnUsuario
+        .flatMap(c -> c.getIncidentesAbiertosCercanosA(cornelioSaavedra).stream())
+            .collect(Collectors.toList());
+
 
     listaIncidentesCercanosAbiertos.forEach(cornelioSaavedra::sugerirRevisionDeIncidente);
-    verify(medioDeComunicacion).sugerirRevisionDeIncidente(any(), eq(cornelioSaavedra));
+    verify(medioDeComunicacion, times(listaIncidentesCercanosAbiertos.size()))
+        .sugerirRevisionDeIncidente(any(), eq(cornelioSaavedra));
   }
 }

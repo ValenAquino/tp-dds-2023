@@ -6,6 +6,7 @@ import ar.edu.utn.frba.dds.notificaciones.*;
 import ar.edu.utn.frba.dds.notificaciones.horarios.CalendarioNotificaciones;
 import ar.edu.utn.frba.dds.notificaciones.horarios.RangoHorario;
 import ar.edu.utn.frba.dds.notificaciones.medios.*;
+import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,6 +34,8 @@ public class IncidentesTest {
   );
   private Comunidad nosMovemosEnSubte;
 
+  private ServicioMapas servicioMapas;
+
   @BeforeEach
   public void inicializar() {
     usuarioQueUsaSubte = new Usuario(
@@ -45,7 +48,7 @@ public class IncidentesTest {
     medioDeComunicacion = mock(MedioDeComunicacion.class);
     whatsAppSender = mock(WhatsAppSender.class);
     mailSender = mock(MailSender.class);
-    nosMovemosEnSubte = new Comunidad();
+    nosMovemosEnSubte = new Comunidad(servicioMapas);
   }
 
   @Test
