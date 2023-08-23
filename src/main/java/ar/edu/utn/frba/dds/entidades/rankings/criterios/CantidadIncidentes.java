@@ -6,11 +6,12 @@ import ar.edu.utn.frba.dds.entidades.Servicio;
 import ar.edu.utn.frba.dds.entidades.rankings.CriterioDeOrdenamiento;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class CantidadIncidentes implements CriterioDeOrdenamiento {
 
@@ -49,32 +50,47 @@ public class CantidadIncidentes implements CriterioDeOrdenamiento {
         .sum();
   }
 
-  public double calcularIncidentesPorServicio(List<Incidente> incidentes) {
-    // Hago un stream de los indices desde el segundo al ultimo para iterar el acual con el anterior
-    return IntStream.range(1, incidentes.size())
-        .mapToDouble(i -> contarIncidentes(incidentes.get(i - 1), incidentes.get(i))).sum() + 1.0;
-  }
-
   private Map<Servicio, List<Incidente>> agruparIncidentesPorServicio(List<Incidente> incidentes) {
+    incidentes.sort(Comparator.comparing(Incidente::getFecha));
     return incidentes.stream().collect(Collectors.groupingBy(Incidente::getServicio));
   }
 
-  private double contarIncidentes(Incidente incidenteAnterior, Incidente incidenteActual) {
-    // Si el anterior esta resuelto y el actual se abrio despues del cierre, se suma uno
-    if (debeIncrementarPorResolucion(incidenteAnterior, incidenteActual)) {
+  public double calcularIncidentesPorServicio(List<Incidente> incidentes) {
+    double cantidadIncidentes = 1.0; // No puede llegar con 0
+    LocalDateTime ultimoCierre = null;
+
+    for (int i = 1; i < incidentes.size(); i++) {
+      Incidente anterior = incidentes.get(i - 1);
+      Incidente actual = incidentes.get(i);
+
+      if (anterior.estaResuelto()) {
+        ultimoCierre = anterior.getFechaResolucion();
+      }
+
+      cantidadIncidentes += contarIncidentes(anterior, actual, ultimoCierre);
+    }
+
+    return cantidadIncidentes;
+  }
+
+  private double contarIncidentes(Incidente anterior, Incidente actual, LocalDateTime ultCierre) {
+    // Si se abrio después del ultimo cierre, se suma 1
+    if(sumaPorCierre(anterior, actual, ultCierre)) {
       return 1.0;
     }
 
     // Si el anterior esta abierto y hay mas de 24hs de diferencia con el actual se suma uno
-    if (pasaronMasDe24Horas(incidenteAnterior, incidenteActual)) {
+    if (pasaronMasDe24Horas(anterior, actual)) {
       return 1.0;
     }
 
     return 0.0;
   }
 
-  private boolean debeIncrementarPorResolucion(Incidente anterior, Incidente actual) {
-    return anterior.estaResuelto() && anterior.getFechaResolucion().isBefore(actual.getFecha());
+  private boolean sumaPorCierre(Incidente anterior, Incidente actual, LocalDateTime ultCierre) {
+    return ultCierre != null
+        && !anterior.getFecha().isAfter(ultCierre) // No se abrio antes del ultimo cierre
+        && actual.getFecha().isAfter(ultCierre); // Se abrio despues del ultimo cierre
   }
 
   private boolean pasaronMasDe24Horas(Incidente anterior, Incidente actual) {
