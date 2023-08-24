@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.entidades;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,8 @@ public class Comunidad {
     miembros.add(usuario);
   }
 
-  public Incidente reportarIncidente(Incidente incidente) {
+  public Incidente reportarIncidente(Servicio servicio, String observaciones, LocalDateTime ahora) {
+    var incidente = new Incidente(servicio, observaciones, ahora);
     agregarIncidente(incidente);
     notificarReporteDeIncidente(incidente);
     return incidente;

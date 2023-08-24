@@ -17,11 +17,9 @@ public class Incidente {
     this.observaciones = observaciones;
   }
 
-  public Incidente(Servicio servicio, String observaciones, LocalDateTime fecha, boolean resuelto) {
-    this.resuelto = resuelto;
+  public Incidente(Servicio servicio, String observaciones, LocalDateTime fecha) {
+    this(servicio, observaciones);
     this.fecha = fecha;
-    this.servicio = servicio;
-    this.observaciones = observaciones;
   }
 
   public boolean estaResuelto() {
@@ -42,10 +40,6 @@ public class Incidente {
 
   public String getObservaciones() {
     return observaciones;
-  }
-
-  public Incidente copiar() {
-    return new Incidente(this.servicio, this.observaciones, this.fecha, this.resuelto);
   }
 
   public void cerrar() {

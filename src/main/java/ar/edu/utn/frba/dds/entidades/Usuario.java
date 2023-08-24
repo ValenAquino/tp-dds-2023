@@ -42,13 +42,10 @@ public class Usuario {
   }
 
   public void reportarIncidente(Servicio servicio, String observaciones) {
-    var comunidades = getComunidadesInteresadas(servicio);
-
-    var incidente = new Incidente(servicio, observaciones);
-
-    for (var comunidad : comunidades) {
-      comunidad.reportarIncidente(incidente.copiar());
-    }
+    var ahora = LocalDateTime.now();
+    getComunidadesInteresadas(servicio).forEach(c ->
+        c.reportarIncidente(servicio, observaciones, ahora)
+    );
   }
 
   public void cerrarIncidente(Comunidad comunidad, Incidente incidente) {
