@@ -83,10 +83,10 @@ public class RankingTest {
   @Test
   public void elRankingPorMayorCantidadDeIncidentesDevuelveLaListaEnElOrdenCorrecto(){
 
-    Incidente seRompeLaCadenaEnEstacionCaballito = lineaSarmiento.abrirIncidente(banioDeHombres,"No anda la cadena");
-    Incidente seRompeLaCanillaEnEstacionOnce = lineaSarmiento.abrirIncidente(banioDeMujeres,"No anda la canilla");
+    Incidente seRompeLaCadenaEnEstacionCaballito = lineaSarmiento.reportarIncidente(banioDeHombres,"No anda la cadena");
+    Incidente seRompeLaCanillaEnEstacionOnce = lineaSarmiento.reportarIncidente(banioDeMujeres,"No anda la canilla");
 
-    Incidente seRompeElAscensor = subteA.abrirIncidente(ascensorALaCalle,"No sube el ascensor");
+    Incidente seRompeElAscensor = subteA.reportarIncidente(ascensorALaCalle,"No sube el ascensor");
 
     seRompeLaCadenaEnEstacionCaballito.cerrar();
     seRompeLaCanillaEnEstacionOnce.cerrar();
@@ -116,7 +116,7 @@ public class RankingTest {
     when(seRompeLaCadenaEnEstacionCaballito.getFechaResolucion()).thenReturn(LocalDateTime.of(2023,7,8,10,0,0));
     when(seRompeLaCanillaEnEstacionOnce.getFechaResolucion()).thenReturn(LocalDateTime.of(2023,7,8,11,0,0));
     when(seRompeElAscensor.getFechaResolucion()).thenReturn(LocalDateTime.of(2023,7,7,23,50,0));
-    
+
 
     seRompeLaCadenaEnEstacionCaballito.cerrar();
     seRompeLaCanillaEnEstacionOnce.cerrar();
