@@ -9,6 +9,7 @@ public class Incidente {
   LocalDateTime fechaResolucion;
   Servicio servicio;
   String observaciones;
+  Usuario reportante;
 
   public Incidente(Servicio servicio, String observaciones) {
     this.resuelto = false;
@@ -17,9 +18,11 @@ public class Incidente {
     this.observaciones = observaciones;
   }
 
-  public Incidente(Servicio servicio, String observaciones, LocalDateTime fecha) {
+  public Incidente(Servicio servicio, String observaciones, LocalDateTime fecha,
+                   Usuario reportante) {
     this(servicio, observaciones);
     this.fecha = fecha;
+    this.reportante = reportante;
   }
 
   public boolean estaResuelto() {
@@ -40,6 +43,10 @@ public class Incidente {
 
   public String getObservaciones() {
     return observaciones;
+  }
+
+  public Usuario getReportante() {
+    return reportante;
   }
 
   public void cerrar() {

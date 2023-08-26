@@ -21,6 +21,7 @@ import java.util.Map;
 public class IncidentesTest {
 
   private Usuario usuarioQueUsaSubte;
+  private Usuario reportante;
   private MedioDeComunicacion medioDeComunicacion;
   private WhatsAppSender whatsAppSender;
   private MailSender mailSender;
@@ -44,6 +45,14 @@ public class IncidentesTest {
         "subtemaster@gmail.com"
     );
 
+    reportante = new Usuario(
+        "subte.reportante",
+        "",
+        "Subte",
+        "Reportante",
+        "subtereportante@gmail.com"
+    );
+
     medioDeComunicacion = mock(MedioDeComunicacion.class);
     whatsAppSender = mock(WhatsAppSender.class);
     mailSender = mock(MailSender.class);
@@ -52,6 +61,7 @@ public class IncidentesTest {
 
     nosMovemosEnSubte = new Comunidad();
     nosMovemosEnSubte.agregarMiembro(usuarioQueUsaSubte);
+    nosMovemosEnSubte.agregarMiembro(reportante);
 
     RepositorioComunidades.getInstance().agregarComunidad(nosMovemosEnSubte);
   }
@@ -59,7 +69,7 @@ public class IncidentesTest {
   @Test
   public void unUsuarioPuedeReportarUnIncidente() {
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
-    usuarioQueUsaSubte.reportarIncidente(ascensor, "Fuera de servicio");
+    reportante.reportarIncidente(ascensor, "Fuera de servicio");
 
     assertEquals(1, nosMovemosEnSubte.getIncidentes().size());
   }
@@ -67,7 +77,7 @@ public class IncidentesTest {
   @Test
   public void unUsuarioPuedeCerrarUnIncidenteEnUnaComunidad() {
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
-    usuarioQueUsaSubte.reportarIncidente(ascensor, "Fuera de servicio");
+    reportante.reportarIncidente(ascensor, "Fuera de servicio");
 
     var incidente = nosMovemosEnSubte.getIncidentes().get(0);
 
@@ -82,8 +92,8 @@ public class IncidentesTest {
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
     nosMovemosEnSubte.agregarServicioDeInteres(escaleraMecanica);
 
-    usuarioQueUsaSubte.reportarIncidente(ascensor, "Fuera de servicio");
-    usuarioQueUsaSubte.reportarIncidente(escaleraMecanica, "Fuera de servicio");
+    reportante.reportarIncidente(ascensor, "Fuera de servicio");
+    reportante.reportarIncidente(escaleraMecanica, "Fuera de servicio");
 
     var incidenteAscensor = nosMovemosEnSubte.getIncidentesAbiertos().get(0);
     var incidenteEscalera = nosMovemosEnSubte.getIncidentesAbiertos().get(1);
@@ -97,21 +107,30 @@ public class IncidentesTest {
   }
 
   @Test
+  public void elUsuarioReportanteNoEsNotificado() {
+    nosMovemosEnSubte.agregarServicioDeInteres(escaleraMecanica);
+    usuarioQueUsaSubte.setMedioDeComunicacion(mailSender);
+
+    reportante.reportarIncidente(escaleraMecanica, "Fuera de servicio");
+
+    verify(medioDeComunicacion, never()).notificarReporteDeIncidente(any(), eq(reportante));
+  }
+
+  @Test
   public void seLlamaElMetodoDeMailCuandoElUsuarioEligeMail() {
     nosMovemosEnSubte.agregarServicioDeInteres(escaleraMecanica);
     usuarioQueUsaSubte.setMedioDeComunicacion(mailSender);
 
-    usuarioQueUsaSubte.reportarIncidente(escaleraMecanica, "Fuera de servicio");
+    reportante.reportarIncidente(escaleraMecanica, "Fuera de servicio");
 
     verify(mailSender).notificarReporteDeIncidente(any(), eq(usuarioQueUsaSubte));
   }
-
   @Test
   public void seLlamaElMetodoDeWhatsappCuandoElUsuarioEligeWhatsapp() {
     nosMovemosEnSubte.agregarServicioDeInteres(escaleraMecanica);
     usuarioQueUsaSubte.setMedioDeComunicacion(whatsAppSender);
 
-    usuarioQueUsaSubte.reportarIncidente(escaleraMecanica, "Fuera de servicio");
+    reportante.reportarIncidente(escaleraMecanica, "Fuera de servicio");
 
     verify(whatsAppSender).notificarReporteDeIncidente(any(), eq(usuarioQueUsaSubte));
   }
@@ -129,7 +148,7 @@ public class IncidentesTest {
     usuarioQueUsaSubte.setCalendarioNotificaciones(calendarioNotificaciones);
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
 
-    usuarioQueUsaSubte.reportarIncidente(ascensor, "Fuera de servicio");
+    reportante.reportarIncidente(ascensor, "Fuera de servicio");
 
     verify(medioDeComunicacion).notificarReporteDeIncidente(any(), eq(usuarioQueUsaSubte));
   }
@@ -148,7 +167,7 @@ public class IncidentesTest {
     nosMovemosEnSubte.agregarMiembro(usuarioQueUsaSubte);
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
 
-    usuarioQueUsaSubte.reportarIncidente(ascensor, "Fuera de servicio");
+    reportante.reportarIncidente(ascensor, "Fuera de servicio");
 
     verify(medioDeComunicacion, never()).notificarReporteDeIncidente(any(), eq(usuarioQueUsaSubte));
   }
@@ -158,7 +177,7 @@ public class IncidentesTest {
     usuarioQueUsaSubte.setCalendarioNotificaciones(null);
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
 
-    usuarioQueUsaSubte.reportarIncidente(ascensor, "Fuera de servicio");
+    reportante.reportarIncidente(ascensor, "Fuera de servicio");
 
     verify(medioDeComunicacion).notificarReporteDeIncidente(any(), eq(usuarioQueUsaSubte));
   }

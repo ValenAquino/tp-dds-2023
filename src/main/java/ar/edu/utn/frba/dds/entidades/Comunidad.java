@@ -27,8 +27,9 @@ public class Comunidad {
     miembros.add(usuario);
   }
 
-  public Incidente reportarIncidente(Servicio servicio, String observaciones, LocalDateTime ahora) {
-    var incidente = new Incidente(servicio, observaciones, ahora);
+  public Incidente reportarIncidente(Servicio servicio, String observaciones,
+                                     LocalDateTime ahora, Usuario reportante) {
+    var incidente = new Incidente(servicio, observaciones, ahora, reportante);
     agregarIncidente(incidente);
     notificarReporteDeIncidente(incidente);
     return incidente;
@@ -63,7 +64,8 @@ public class Comunidad {
   }
 
   public void notificarReporteDeIncidente(Incidente incidente) {
-    miembros.forEach(m -> m.notificarReporteDeIncidente(incidente));
+    getMiembrosANotificar(incidente)
+        .forEach(m -> m.notificarReporteDeIncidente(incidente));
   }
 
   public boolean tieneMiembro(Usuario usuario) {
@@ -72,5 +74,12 @@ public class Comunidad {
 
   public boolean tieneIncidente(Incidente incidente) {
     return incidentes.contains(incidente);
+  }
+
+  public List<Usuario> getMiembrosANotificar(Incidente incidente) {
+    return miembros
+        .stream()
+        .filter(m -> !m.esReportante(incidente))
+        .toList();
   }
 }

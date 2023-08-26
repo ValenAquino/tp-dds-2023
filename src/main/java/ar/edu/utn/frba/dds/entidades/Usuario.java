@@ -44,7 +44,7 @@ public class Usuario {
   public void reportarIncidente(Servicio servicio, String observaciones) {
     var ahora = LocalDateTime.now();
     getComunidadesInteresadas(servicio).forEach(c ->
-        c.reportarIncidente(servicio, observaciones, ahora)
+        c.reportarIncidente(servicio, observaciones, ahora, this)
     );
   }
 
@@ -68,6 +68,10 @@ public class Usuario {
     if (puedeRecibirNotificacion()) {
       medioDeComunicacion.sugerirRevisionDeIncidente(incidente, this);
     }
+  }
+
+  public boolean esReportante(Incidente incidente) {
+    return this.equals(incidente.getReportante());
   }
 
   private boolean puedeRecibirNotificacion() {
