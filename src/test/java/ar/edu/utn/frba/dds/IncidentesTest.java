@@ -109,7 +109,6 @@ public class IncidentesTest {
   @Test
   public void elUsuarioReportanteNoEsNotificado() {
     nosMovemosEnSubte.agregarServicioDeInteres(escaleraMecanica);
-    usuarioQueUsaSubte.setMedioDeComunicacion(mailSender);
 
     reportante.reportarIncidente(escaleraMecanica, "Fuera de servicio");
 
