@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.LinkedHashMap;
 
 public class MayorPromedioCierre implements CriterioDeOrdenamiento {
   @Override
@@ -22,13 +23,14 @@ public class MayorPromedioCierre implements CriterioDeOrdenamiento {
     return entidades
         .entrySet()
         .stream()
-        .sorted(Map.Entry.comparingByValue())
+        .sorted(Map.Entry.<Entidad, Double>comparingByValue().reversed()) // Ordenar de mayor a menor
         .collect(
             Collectors.toMap(
                 Map.Entry::getKey,
                 Map.Entry::getValue,
                 (oldValue, newValue) -> oldValue,
-                HashMap::new));
+                LinkedHashMap::new)); // Usar LinkedHashMap para mantener el orden
+
   }
 
   @Override
