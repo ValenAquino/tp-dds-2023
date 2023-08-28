@@ -11,11 +11,13 @@ import java.util.Map;
 public class Ranking {
   LocalDateTime fecha;
   CriterioDeOrdenamiento criterio;
+  RepositorioIncidentes repo;
   Map<Entidad, Double> entidades;
 
-  public Ranking(CriterioDeOrdenamiento criterio) {
+  public Ranking(RepositorioIncidentes repo, CriterioDeOrdenamiento criterio) {
     this.fecha = LocalDateTime.now();
     this.criterio = criterio;
+    this.repo = repo;
   }
 
   public LocalDateTime getFecha() {
@@ -23,7 +25,7 @@ public class Ranking {
   }
 
   public void generarRanking() {
-    List<Incidente> incidentesUltimaSemana = RepositorioIncidentes.getInstance().ultimaSemana();
+    List<Incidente> incidentesUltimaSemana = repo.ultimaSemana();
     this.entidades = criterio.getEntidadesOrdenadas(incidentesUltimaSemana);
   }
 
