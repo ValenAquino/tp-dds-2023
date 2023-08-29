@@ -48,6 +48,7 @@ public class UbicacionTest {
     nosLiberamos = new Comunidad();
     nosLiberamos.agregarMiembro(cornelioSaavedra);
     cornelioSaavedra.setMedioDeComunicacion(medioDeComunicacion);
+    RepositorioComunidades.getInstance().agregarComunidad(nosLiberamos);
   }
 
   @Test
@@ -59,8 +60,13 @@ public class UbicacionTest {
 
     nosLiberamos.agregarServicioDeInteres(ascensorMock);
     nosLiberamos.agregarServicioDeInteres(escaleraMecanica);
-    Incidente incidenteAbierto = nosLiberamos.abrirIncidente(ascensorMock, "Fuera de servicio");
-    Incidente incidenteACerrar = nosLiberamos.abrirIncidente(escaleraMecanica, "Fuera de servicio");
+
+    cornelioSaavedra.reportarIncidente(ascensorMock, "Fuera de servicio");
+    cornelioSaavedra.reportarIncidente(escaleraMecanica, "Fuera de servicio");
+
+    var incidenteAbierto = nosLiberamos.getIncidentesAbiertos().get(0);
+    var incidenteACerrar = nosLiberamos.getIncidentesAbiertos().get(1);
+
     incidenteACerrar.cerrar();
 
     when(servicioMapas.estanCerca(

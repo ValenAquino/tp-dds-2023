@@ -154,7 +154,7 @@ public class RankingTest {
 
   public List<Incidente> getIncidentesConPromedio1y2() {
     LocalDateTime fecha = LocalDateTime.now();
-
+    
     // Incidentes de LineaSarmiento
     Incidente incidente1 = new Incidente(banioDeHombres, "banioDeHombres");
     incidente1.cerrar();

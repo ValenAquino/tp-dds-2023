@@ -1,12 +1,18 @@
 package ar.edu.utn.frba.dds.entidades.repositorios;
 
 import ar.edu.utn.frba.dds.entidades.Comunidad;
+import ar.edu.utn.frba.dds.entidades.Servicio;
 import ar.edu.utn.frba.dds.entidades.Usuario;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RepositorioComunidades {
   private static RepositorioComunidades instance;
   private List<Comunidad> comunidades;
+
+  private  RepositorioComunidades() {
+    this.comunidades = new ArrayList<>();
+  }
 
   public List<Comunidad> todas() {
     return this.comunidades;
@@ -19,9 +25,19 @@ public class RepositorioComunidades {
     return instance;
   }
 
+  public void agregarComunidad(Comunidad comunidad) {
+    comunidades.add(comunidad);
+  }
+
   public List<Comunidad> getComunidadesDe(Usuario usuario) {
     return todas().stream()
         .filter(c -> c.tieneMiembro(usuario))
+        .toList();
+  }
+
+  public List<Comunidad> getComunidadesInteresadas(Usuario usuario, Servicio servicio) {
+    return getComunidadesDe(usuario).stream()
+        .filter(c -> c.leInteresaServicio(servicio))
         .toList();
   }
 }
