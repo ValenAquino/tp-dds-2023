@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 import ar.edu.utn.frba.dds.entidades.Comunidad;
@@ -10,6 +11,8 @@ import ar.edu.utn.frba.dds.entidades.Ubicacion;
 import ar.edu.utn.frba.dds.entidades.Usuario;
 import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioComunidades;
 import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
+import ar.edu.utn.frba.dds.notificaciones.Notificacion;
+import ar.edu.utn.frba.dds.notificaciones.NotificacionRevisionIncidente;
 import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -17,6 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 public class UbicacionTest {
 

@@ -1,9 +1,11 @@
 package ar.edu.utn.frba.dds;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 import ar.edu.utn.frba.dds.entidades.Entidad;
@@ -12,6 +14,7 @@ import ar.edu.utn.frba.dds.entidades.Incidente;
 import ar.edu.utn.frba.dds.entidades.Servicio;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeEntidad;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
+import ar.edu.utn.frba.dds.notificaciones.NotificacionNuevoIncidente;
 import java.time.LocalDateTime;
 import ar.edu.utn.frba.dds.entidades.Usuario;
 import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
@@ -19,6 +22,7 @@ import ar.edu.utn.frba.dds.notificaciones.medios.MailSender;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 public class EntidadTest {
   private Entidad entidad;
@@ -91,7 +95,7 @@ public class EntidadTest {
   public void unaEntidadPuedeReportarUnIncidenteEnUnServicioSuyo() {
     entidad.reportarIncidente(servicio1, "No anda la cadena");
     entidad.reportarIncidente(servicio2, "No funciona botón de piso 3");
-    Assertions.assertEquals(2, entidad.getIncidentesAbiertos().size());
+    assertEquals(2, entidad.getIncidentesAbiertos().size());
   }
 
   @Test
@@ -105,13 +109,23 @@ public class EntidadTest {
     usuarioQueUsaSubte.setMedioDeComunicacion(mailSender);
     entidad.agregarUsuarioInteresado(usuarioQueUsaSubte);
     entidad.reportarIncidente(servicio1, "No anda la cadena");
-    verify(mailSender).notificarReporteDeIncidente(any(), eq(usuarioQueUsaSubte));
+
+    ArgumentCaptor<NotificacionNuevoIncidente> argumentCaptor = ArgumentCaptor.forClass(NotificacionNuevoIncidente.class);
+    verify(medioDeComunicacion).notificar(argumentCaptor.capture());
+
+    NotificacionNuevoIncidente notificacionCapturada = argumentCaptor.getValue();
+    Incidente incidenteEnNotificacion = notificacionCapturada.getIncidente();
+    assertEquals("No anda la cadena", incidenteEnNotificacion.getObservaciones());
+
+    //verify(mailSender).notificarReporteDeIncidente(any(), eq(usuarioQueUsaSubte));
   }
 
   @Test
   public void unUsuarioNoEsNotificadoPorLaAperturaDeUnIncidenteQueNoLeInteresa() {
-    usuarioQueUsaSubte.setMedioDeComunicacion(mailSender);
+    Usuario usuarioQueUsaSubteSpy = spy(usuarioQueUsaSubte);
+
+    usuarioQueUsaSubteSpy.setMedioDeComunicacion(mailSender);
     entidad.reportarIncidente(servicio1, "No anda la cadena");
-    verify(medioDeComunicacion, never()).notificarReporteDeIncidente(any(), eq(usuarioQueUsaSubte));
+    verify(usuarioQueUsaSubteSpy, never()).notificar(any());
   }
 }
