@@ -79,7 +79,7 @@ public class Comunidad {
   public List<Usuario> getMiembrosANotificar(Incidente incidente) {
     return miembros
         .stream()
-        .filter(m -> !m.esReportante(incidente))
+        .filter(m -> incidente.getReportante() != m)
         .toList();
   }
 }

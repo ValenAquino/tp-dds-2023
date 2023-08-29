@@ -70,10 +70,6 @@ public class Usuario {
     }
   }
 
-  public boolean esReportante(Incidente incidente) {
-    return this.equals(incidente.getReportante());
-  }
-
   private boolean puedeRecibirNotificacion() {
     return calendarioNotificaciones == null
         || calendarioNotificaciones.abarcaA(LocalDateTime.now());

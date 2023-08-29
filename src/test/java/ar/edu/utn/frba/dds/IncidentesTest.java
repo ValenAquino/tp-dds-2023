@@ -149,7 +149,7 @@ public class IncidentesTest {
 
     reportante.reportarIncidente(ascensor, "Fuera de servicio");
 
-    verify(medioDeComunicacion).notificarReporteDeIncidente(any(), eq(usuarioQueUsaSubte));
+    verifyNoInteractions(medioDeComunicacion);
   }
 
   @Test
