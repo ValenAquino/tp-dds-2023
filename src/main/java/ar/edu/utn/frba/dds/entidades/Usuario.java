@@ -2,6 +2,9 @@ package ar.edu.utn.frba.dds.entidades;
 
 import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioComunidades;
 import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
+import ar.edu.utn.frba.dds.notificaciones.Notificacion;
+import ar.edu.utn.frba.dds.notificaciones.NotificacionNuevoIncidente;
+import ar.edu.utn.frba.dds.notificaciones.NotificacionRevisionIncidente;
 import ar.edu.utn.frba.dds.notificaciones.horarios.CalendarioNotificaciones;
 import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
 import java.time.LocalDateTime;
@@ -57,16 +60,18 @@ public class Usuario {
   }
 
   public void notificarReporteDeIncidente(Incidente incidente) {
-    if (puedeRecibirNotificacion()) {
-      medioDeComunicacion.notificarReporteDeIncidente(incidente, this);
-    }
-    // TODO: si no puede recibir la notificación ahora,
-    //  almacenarla para luego recibir un resumen de todas las notificaciones pendientes
+    NotificacionNuevoIncidente notificacion = new NotificacionNuevoIncidente(this, incidente);
+    this.notificar(notificacion);
   }
 
   public void sugerirRevisionDeIncidente(Incidente incidente) {
+    NotificacionRevisionIncidente notificacion = new NotificacionRevisionIncidente(this, incidente);
+    this.notificar(notificacion);
+  }
+
+  public void notificar(Notificacion notificacion) {
     if (puedeRecibirNotificacion()) {
-      medioDeComunicacion.sugerirRevisionDeIncidente(incidente, this);
+      medioDeComunicacion.notificar(notificacion);
     }
   }
 

@@ -3,15 +3,10 @@ package ar.edu.utn.frba.dds.notificaciones.medios;
 import ar.edu.utn.frba.dds.entidades.Incidente;
 import ar.edu.utn.frba.dds.entidades.Usuario;
 import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
+import ar.edu.utn.frba.dds.notificaciones.Notificacion;
 
-public class WhatsAppSender implements MedioDeComunicacion {
+public class WhatsAppSender extends MedioDeComunicacion {
   @Override
-  public void notificarReporteDeIncidente(Incidente incidente, Usuario destinatario) {
-
-  }
-
-  @Override
-  public void sugerirRevisionDeIncidente(Incidente incidente, Usuario destinatario) {
-
+  public void procesarNotificacion(Notificacion notificacion) {
   }
 }

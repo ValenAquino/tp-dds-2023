@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.notificaciones.medios;
 import ar.edu.utn.frba.dds.entidades.Incidente;
 import ar.edu.utn.frba.dds.entidades.Usuario;
 import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
+import ar.edu.utn.frba.dds.notificaciones.Notificacion;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -13,7 +14,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
-public class MailSender implements MedioDeComunicacion {
+public class MailSender extends MedioDeComunicacion {
   private final Properties propiedades = new Properties();
 
   public MailSender() {
@@ -27,28 +28,11 @@ public class MailSender implements MedioDeComunicacion {
   }
 
   @Override
-  public void notificarReporteDeIncidente(Incidente incidente, Usuario destinatario) {
+  public void procesarNotificacion(Notificacion notificacion) {
     enviarEmail(new Mail(
-        destinatario.getCorreoElectronico(),
-        "Nuevo incidente!",
-        String.format(
-            "Se ha abierto un nuevo incidente en el servicio %s a las %s",
-            incidente.getServicio(),
-            incidente.getFecha()
-        )
-    ));
-  }
-
-  @Override
-  public void sugerirRevisionDeIncidente(Incidente incidente, Usuario destinatario) {
-    enviarEmail(new Mail(
-        destinatario.getCorreoElectronico(),
-        "Sugerencia de revisión de incidente",
-        String.format(
-            "Le sugerimos revisar el servicio %s con incidente: %s",
-            incidente.getServicio(),
-            incidente.getObservaciones()
-        )
+        notificacion.getAsunto(),
+        notificacion.getMensaje(),
+        notificacion.getReceptor().getCorreoElectronico()
     ));
   }
 
