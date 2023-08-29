@@ -88,30 +88,30 @@ public class EntidadTest {
   }
 
   @Test
-  public void unaEntidadPuedeAbrirUnIncidenteEnUnServicioSuyo() {
-    entidad.abrirIncidente(servicio1, "No anda la cadena");
-    entidad.abrirIncidente(servicio2, "No funciona botón de piso 3");
+  public void unaEntidadPuedeReportarUnIncidenteEnUnServicioSuyo() {
+    entidad.reportarIncidente(servicio1, "No anda la cadena");
+    entidad.reportarIncidente(servicio2, "No funciona botón de piso 3");
     Assertions.assertEquals(2, entidad.getIncidentesAbiertos().size());
   }
 
   @Test
-  public void unaEntidadNoPuedeAbrirUnIncidenteEnUnServicioAjeno() {
+  public void unaEntidadNoPuedeReportarUnIncidenteEnUnServicioAjeno() {
     Assertions.assertThrows(RuntimeException.class, () ->
-        entidad.abrirIncidente(servicio3, "No funciona la escalera mecanica"));
+        entidad.reportarIncidente(servicio3, "No funciona la escalera mecanica"));
   }
 
   @Test
   public void unUsuarioEsNotificadoPorLaAperturaDeUnIncidenteQueLeInteresa() {
     usuarioQueUsaSubte.setMedioDeComunicacion(mailSender);
     entidad.agregarUsuarioInteresado(usuarioQueUsaSubte);
-    entidad.abrirIncidente(servicio1, "No anda la cadena");
-    verify(mailSender).notificarAperturaDeIncidente(any(), eq(usuarioQueUsaSubte));
+    entidad.reportarIncidente(servicio1, "No anda la cadena");
+    verify(mailSender).notificarReporteDeIncidente(any(), eq(usuarioQueUsaSubte));
   }
 
   @Test
   public void unUsuarioNoEsNotificadoPorLaAperturaDeUnIncidenteQueNoLeInteresa() {
     usuarioQueUsaSubte.setMedioDeComunicacion(mailSender);
-    entidad.abrirIncidente(servicio1, "No anda la cadena");
-    verify(medioDeComunicacion, never()).notificarAperturaDeIncidente(any(), eq(usuarioQueUsaSubte));
+    entidad.reportarIncidente(servicio1, "No anda la cadena");
+    verify(medioDeComunicacion, never()).notificarReporteDeIncidente(any(), eq(usuarioQueUsaSubte));
   }
 }

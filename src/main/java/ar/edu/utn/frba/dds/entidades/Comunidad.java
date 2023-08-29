@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.entidades;
 
 import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,14 +31,17 @@ public class Comunidad {
     miembros.add(usuario);
   }
 
-  public Incidente abrirIncidente(Servicio servicio, String observaciones) {
-    if (this.leInteresaServicio(servicio)) {
-      Incidente incidente = new Incidente(servicio, observaciones);
-      agregarIncidente(incidente);
-      notificarAperturaDeIncidente(incidente);
-      return incidente;
-    } else {
-      throw new RuntimeException("El servicio debe ser de interés para abrir un incidente");
+  public Incidente reportarIncidente(Servicio servicio, String observaciones,
+                                     LocalDateTime ahora, Usuario reportante) {
+    var incidente = new Incidente(servicio, observaciones, ahora, reportante);
+    agregarIncidente(incidente);
+    notificarReporteDeIncidente(incidente);
+    return incidente;
+  }
+
+  public void cerrarIncidente(Incidente incidente) {
+    if (!incidente.estaResuelto()) {
+      incidente.cerrar();
     }
   }
 
@@ -63,8 +67,9 @@ public class Comunidad {
         .toList();
   }
 
-  public void notificarAperturaDeIncidente(Incidente incidente) {
-    miembros.forEach(m -> m.notificarAperturaDeIncidente(incidente));
+  public void notificarReporteDeIncidente(Incidente incidente) {
+    getMiembrosANotificar(incidente)
+        .forEach(m -> m.notificarReporteDeIncidente(incidente));
   }
   public List<Incidente> getIncidentesAbiertosCercanosA(Usuario usuario){
     return this.getIncidentesAbiertos().stream().filter(i ->
@@ -77,5 +82,16 @@ public class Comunidad {
   }
   public boolean tieneMiembro(Usuario usuario) {
     return miembros.contains(usuario);
+  }
+
+  public boolean tieneIncidente(Incidente incidente) {
+    return incidentes.contains(incidente);
+  }
+
+  public List<Usuario> getMiembrosANotificar(Incidente incidente) {
+    return miembros
+        .stream()
+        .filter(m -> incidente.getReportante() != m)
+        .toList();
   }
 }

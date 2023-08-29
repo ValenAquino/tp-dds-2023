@@ -31,11 +31,11 @@ public class Entidad {
     usuariosInteresados.add(usuario);
   }
 
-  public Incidente abrirIncidente(Servicio servicio, String observaciones) {
+  public Incidente reportarIncidente(Servicio servicio, String observaciones) {
     if (this.tieneServicio(servicio)) {
       Incidente incidente = new Incidente(servicio, observaciones);
       agregarIncidente(incidente);
-      notificarAperturaDeIncidente(incidente);
+      notificarReporteDeIncidente(incidente);
       return incidente;
     } else {
       throw new RuntimeException("El servicio debe pertenecer a algún establecimiento de la entidad");
@@ -51,8 +51,8 @@ public class Entidad {
     incidentes.add(incidente);
   }
 
-  public void notificarAperturaDeIncidente(Incidente incidente) {
-    usuariosInteresados.forEach(m -> m.notificarAperturaDeIncidente(incidente));
+  public void notificarReporteDeIncidente(Incidente incidente) {
+    usuariosInteresados.forEach(m -> m.notificarReporteDeIncidente(incidente));
   }
 
   public List<Incidente> getIncidentesResueltos() {

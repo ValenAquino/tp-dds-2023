@@ -11,6 +11,7 @@ import ar.edu.utn.frba.dds.entidades.Usuario;
 import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioComunidades;
 import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
 import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -80,9 +81,9 @@ public class UbicacionTest {
             nosLiberamos
         )
     );  // Set comunidades del usuario
-    nosLiberamos.abrirIncidente(ascensor, "Fuera de servicio");
-    incidenteACerrar = nosLiberamos.abrirIncidente(escaleraMecanica, "Fuera de servicio");
-    nosLiberamos.abrirIncidente(banioDeHombres, "Fuera de servicio");
+    nosLiberamos.reportarIncidente(ascensor, "Fuera de servicio", LocalDateTime.now(),cornelioSaavedra);
+    incidenteACerrar = nosLiberamos.reportarIncidente(escaleraMecanica, "Fuera de servicio", LocalDateTime.now(),cornelioSaavedra);
+    nosLiberamos.reportarIncidente(banioDeHombres, "Fuera de servicio", LocalDateTime.now(),cornelioSaavedra);
   }
 
   @Test
