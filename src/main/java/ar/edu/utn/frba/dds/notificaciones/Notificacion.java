@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 public abstract class Notificacion {
   private Usuario receptor;
   private LocalDateTime fechaEnvio;
-
   private LocalDateTime fecha;
 
   public Notificacion(Usuario receptor) {
@@ -15,7 +14,9 @@ public abstract class Notificacion {
   }
 
   public abstract String getAsunto();
+
   public abstract String getMensaje();
+
   public Usuario getReceptor() {
     return this.receptor;
   }
@@ -26,5 +27,9 @@ public abstract class Notificacion {
 
   public void marcarComoEnviada() {
     this.fechaEnvio = LocalDateTime.now();
+  }
+
+  public void enviar() {
+    receptor.notificar(this);
   }
 }
