@@ -20,7 +20,7 @@ public abstract class Notificacion {
     return this.receptor;
   }
 
-  public boolean fueEnviado() {
+  public boolean fueEnviada() {
     return this.fechaEnvio != null;
   }
 
