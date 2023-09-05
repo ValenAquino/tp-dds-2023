@@ -2,7 +2,6 @@ package ar.edu.utn.frba.dds;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
@@ -12,17 +11,17 @@ import ar.edu.utn.frba.dds.entidades.Entidad;
 import ar.edu.utn.frba.dds.entidades.Establecimiento;
 import ar.edu.utn.frba.dds.entidades.Incidente;
 import ar.edu.utn.frba.dds.entidades.Servicio;
+import ar.edu.utn.frba.dds.entidades.Usuario;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeEntidad;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
-import ar.edu.utn.frba.dds.notificaciones.NotificacionNuevoIncidente;
-import java.time.LocalDateTime;
-import ar.edu.utn.frba.dds.entidades.Usuario;
 import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
+import ar.edu.utn.frba.dds.notificaciones.NotificacionNuevoIncidente;
 import ar.edu.utn.frba.dds.notificaciones.medios.MailSender;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import java.time.LocalDateTime;
 
 public class EntidadTest {
   private Entidad entidad;

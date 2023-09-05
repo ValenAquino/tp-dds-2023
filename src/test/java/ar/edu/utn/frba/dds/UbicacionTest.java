@@ -1,26 +1,25 @@
 package ar.edu.utn.frba.dds;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import ar.edu.utn.frba.dds.entidades.Comunidad;
 import ar.edu.utn.frba.dds.entidades.Incidente;
 import ar.edu.utn.frba.dds.entidades.Servicio;
-import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
 import ar.edu.utn.frba.dds.entidades.Ubicacion;
 import ar.edu.utn.frba.dds.entidades.Usuario;
 import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioComunidades;
 import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
-import ar.edu.utn.frba.dds.notificaciones.Notificacion;
-import ar.edu.utn.frba.dds.notificaciones.NotificacionRevisionIncidente;
 import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 
 public class UbicacionTest {
 
@@ -101,7 +100,7 @@ public class UbicacionTest {
 
     listaIncidentesCercanosAbiertos.forEach(cornelioSaavedra::sugerirRevisionDeIncidente);
     verify(medioDeComunicacion, times(2))
-        .sugerirRevisionDeIncidente(any(), eq(cornelioSaavedra));
+        .notificar(any());
   }
   @Test
   public void unUsuarioNoRecibeSugerenciaDeIncidenteCerrado() {
@@ -116,7 +115,7 @@ public class UbicacionTest {
 
     listaIncidentesCercanosAbiertos.forEach(cornelioSaavedra::sugerirRevisionDeIncidente);
     verify(medioDeComunicacion, times(1))
-        .sugerirRevisionDeIncidente(any(), eq(cornelioSaavedra));
+        .notificar(any());
   }
   @Test
   public void unUsuarioNoRecibeSugerenciaDeIncidenteLejano() {
@@ -129,6 +128,6 @@ public class UbicacionTest {
 
     listaIncidentesCercanosAbiertos.forEach(cornelioSaavedra::sugerirRevisionDeIncidente);
     verify(medioDeComunicacion, times(2))
-        .sugerirRevisionDeIncidente(any(), eq(cornelioSaavedra));
+        .notificar(any());
   }
 }
