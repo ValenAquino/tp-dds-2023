@@ -21,8 +21,8 @@ public class CantidadIncidentesTest {
   Entidad entidadB = new Entidad("Entidad B", TipoDeEntidad.BANCO);
   Servicio servicio1 = new Servicio("Servicio 1", TipoDeServicio.ESCALERAS_MECANICAS);
   Servicio servicio2 = new Servicio("Servicio 2", TipoDeServicio.BANIOS);
-  Establecimiento establecimiento1 = new Establecimiento();
-  Establecimiento establecimiento2 = new Establecimiento();
+  Establecimiento establecimiento1 = new Establecimiento(entidadA);
+  Establecimiento establecimiento2 = new Establecimiento(entidadB);
   Incidente incidente1 = new Incidente(servicio1, "Observación 1");
   Incidente incidente2 = new Incidente(servicio2, "Observación 2");
   Incidente incidente3 = new Incidente(servicio2, "Observación 3");
@@ -34,9 +34,6 @@ public class CantidadIncidentesTest {
 
     establecimiento1.agregarServicio(servicio1);
     establecimiento2.agregarServicio(servicio2);
-
-    establecimiento1.setEntidad(entidadA);
-    establecimiento2.setEntidad(entidadB);
 
     servicio1.setEstablecimiento(establecimiento1);
     servicio2.setEstablecimiento(establecimiento2);

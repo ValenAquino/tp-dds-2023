@@ -12,7 +12,9 @@ import ar.edu.utn.frba.dds.entidades.Incidente;
 import ar.edu.utn.frba.dds.entidades.Servicio;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeEntidad;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
+
 import java.time.LocalDateTime;
+
 import ar.edu.utn.frba.dds.entidades.Usuario;
 import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
 import ar.edu.utn.frba.dds.notificaciones.medios.MailSender;
@@ -35,9 +37,9 @@ public class EntidadTest {
   @BeforeEach
   public void setUp() {
     entidad = new Entidad("entidad", TipoDeEntidad.SUBTERRANEO);
-    establecimiento1 = new Establecimiento();
-    establecimiento2 = new Establecimiento();
-    establecimiento3 = new Establecimiento();
+    establecimiento1 = new Establecimiento(entidad);
+    establecimiento2 = new Establecimiento(entidad);
+    establecimiento3 = new Establecimiento(entidad);
     servicio1 = new Servicio("servicioInestable", TipoDeServicio.BANIOS);
     servicio2 = new Servicio("ascensorInestable", TipoDeServicio.ASCENSORES);
     servicio3 = new Servicio("escalerasInestables", TipoDeServicio.ESCALERAS_MECANICAS);

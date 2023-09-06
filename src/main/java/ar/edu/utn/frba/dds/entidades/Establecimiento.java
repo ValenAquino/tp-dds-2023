@@ -9,6 +9,10 @@ public class Establecimiento {
   private Entidad entidad;
   private Ubicacion ubicacion;
 
+  public Establecimiento(Entidad entidad) {
+    this.entidad = entidad;
+  }
+
   public void agregarServicio(Servicio servicio) {
     this.servicios.add(servicio);
   }
@@ -29,7 +33,4 @@ public class Establecimiento {
     return ubicacion;
   }
 
-  public void setEntidad(Entidad entidad) {
-    this.entidad = entidad;
-  }
 }

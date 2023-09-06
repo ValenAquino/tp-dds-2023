@@ -48,8 +48,8 @@ public class RankingTest {
     ascensorALaCalle = new Servicio("ascensorALaCalle", TipoDeServicio.ASCENSORES);
     escaleraMecanica = new Servicio("escaleraMecanica", TipoDeServicio.ESCALERAS_MECANICAS);
 
-    Establecimiento estacionCarabobo = new Establecimiento();
-    Establecimiento estacionFlores = new Establecimiento();
+    Establecimiento estacionCarabobo = new Establecimiento(subteA);
+    Establecimiento estacionFlores = new Establecimiento(subteA);
 
     estacionCarabobo.agregarServicio(escaleraMecanica);
     estacionFlores.agregarServicio(ascensorALaCalle);
@@ -59,16 +59,13 @@ public class RankingTest {
 
     subteA.agregarEstablecimiento(estacionCarabobo);
     subteA.agregarEstablecimiento(estacionFlores);
-
-    estacionCarabobo.setEntidad(subteA);
-    estacionFlores.setEntidad(subteA);
   }
 
   private void setUpLineaSarmiento() {
     lineaSarmiento = new Entidad("lineaSarmiento", TipoDeEntidad.FERROCARRIL);
 
-    Establecimiento estacionCaballito = new Establecimiento();
-    Establecimiento estacionOnce = new Establecimiento();
+    Establecimiento estacionCaballito = new Establecimiento(lineaSarmiento);
+    Establecimiento estacionOnce = new Establecimiento(lineaSarmiento);
 
     banioDeMujeres = new Servicio("banioDeMujeres", TipoDeServicio.BANIOS);
     banioDeHombres = new Servicio("banioDeHombres", TipoDeServicio.BANIOS);
@@ -81,9 +78,6 @@ public class RankingTest {
 
     lineaSarmiento.agregarEstablecimiento(estacionCaballito);
     lineaSarmiento.agregarEstablecimiento(estacionOnce);
-
-    estacionCaballito.setEntidad(lineaSarmiento);
-    estacionOnce.setEntidad(lineaSarmiento);
   }
 
   @Test
@@ -154,7 +148,7 @@ public class RankingTest {
 
   public List<Incidente> getIncidentesConPromedio1y2() {
     LocalDateTime fecha = LocalDateTime.now();
-    
+
     // Incidentes de LineaSarmiento
     Incidente incidente1 = new Incidente(banioDeHombres, "banioDeHombres");
     incidente1.cerrar();
