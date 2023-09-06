@@ -113,10 +113,10 @@ public class IncidentesTest {
   @Test
   public void elUsuarioReportanteNoEsNotificado() {
     nosMovemosEnSubte.agregarServicioDeInteres(escaleraMecanica);
+    Usuario reportanteMock = mock(Usuario.class);
+    reportanteMock.reportarIncidente(escaleraMecanica, "Fuera de servicio");
 
-    reportante.reportarIncidente(escaleraMecanica, "Fuera de servicio");
-
-    verify(medioDeComunicacion, never()).notificarReporteDeIncidente(any(), eq(reportante));
+    verify(reportanteMock, never()).notificar(any());
   }
 
   @Test
@@ -126,7 +126,7 @@ public class IncidentesTest {
 
     reportante.reportarIncidente(escaleraMecanica, "Fuera de servicio");
 
-    verify(mailSender).notificarReporteDeIncidente(any(), eq(usuarioQueUsaSubte));
+    verify(mailSender).procesarNotificacion(any(NotificacionNuevoIncidente.class));
   }
   @Test
   public void seLlamaElMetodoDeWhatsappCuandoElUsuarioEligeWhatsapp() {
@@ -135,7 +135,7 @@ public class IncidentesTest {
 
     reportante.reportarIncidente(escaleraMecanica, "Fuera de servicio");
 
-    verify(whatsAppSender).notificarReporteDeIncidente(any(), eq(usuarioQueUsaSubte));
+    verify(whatsAppSender).procesarNotificacion(any(NotificacionNuevoIncidente.class));
   }
 
   @Test
@@ -153,7 +153,7 @@ public class IncidentesTest {
 
     reportante.reportarIncidente(ascensor, "Fuera de servicio");
 
-    verify(medioDeComunicacion).notificarReporteDeIncidente(any(), eq(usuarioQueUsaSubte));
+    verify(medioDeComunicacion).procesarNotificacion(any());
   }
 
   @Test
@@ -172,7 +172,7 @@ public class IncidentesTest {
 
     reportante.reportarIncidente(ascensor, "Fuera de servicio");
 
-    verify(medioDeComunicacion, never()).notificarReporteDeIncidente(any(), eq(usuarioQueUsaSubte));
+    verify(medioDeComunicacion, never()).procesarNotificacion(any());
   }
 
   @Test
@@ -182,6 +182,6 @@ public class IncidentesTest {
 
     reportante.reportarIncidente(ascensor, "Fuera de servicio");
 
-    verify(medioDeComunicacion).notificarReporteDeIncidente(any(), eq(usuarioQueUsaSubte));
+    verify(medioDeComunicacion).procesarNotificacion(any());
   }
 }
