@@ -100,7 +100,7 @@ public class UbicacionTest {
 
     listaIncidentesCercanosAbiertos.forEach(cornelioSaavedra::sugerirRevisionDeIncidente);
     verify(medioDeComunicacion, times(2))
-        .notificar(any());
+        .procesarNotificacion(any());
   }
   @Test
   public void unUsuarioNoRecibeSugerenciaDeIncidenteCerrado() {
@@ -115,7 +115,7 @@ public class UbicacionTest {
 
     listaIncidentesCercanosAbiertos.forEach(cornelioSaavedra::sugerirRevisionDeIncidente);
     verify(medioDeComunicacion, times(1))
-        .notificar(any());
+        .procesarNotificacion(any());
   }
   @Test
   public void unUsuarioNoRecibeSugerenciaDeIncidenteLejano() {
@@ -128,6 +128,6 @@ public class UbicacionTest {
 
     listaIncidentesCercanosAbiertos.forEach(cornelioSaavedra::sugerirRevisionDeIncidente);
     verify(medioDeComunicacion, times(2))
-        .notificar(any());
+        .procesarNotificacion(any());
   }
 }

@@ -126,7 +126,7 @@ public class IncidentesTest {
 
     reportante.reportarIncidente(escaleraMecanica, "Fuera de servicio");
 
-    verify(mailSender).notificar(any(NotificacionNuevoIncidente.class));
+    verify(mailSender).procesarNotificacion(any(NotificacionNuevoIncidente.class));
   }
   @Test
   public void seLlamaElMetodoDeWhatsappCuandoElUsuarioEligeWhatsapp() {
@@ -135,7 +135,7 @@ public class IncidentesTest {
 
     reportante.reportarIncidente(escaleraMecanica, "Fuera de servicio");
 
-    verify(whatsAppSender).notificar(any(NotificacionNuevoIncidente.class));
+    verify(whatsAppSender).procesarNotificacion(any(NotificacionNuevoIncidente.class));
   }
 
   @Test
@@ -153,7 +153,7 @@ public class IncidentesTest {
 
     reportante.reportarIncidente(ascensor, "Fuera de servicio");
 
-    verify(medioDeComunicacion).notificar(any());
+    verify(medioDeComunicacion).procesarNotificacion(any());
   }
 
   @Test
@@ -172,7 +172,7 @@ public class IncidentesTest {
 
     reportante.reportarIncidente(ascensor, "Fuera de servicio");
 
-    verify(medioDeComunicacion, never()).notificar(any());
+    verify(medioDeComunicacion, never()).procesarNotificacion(any());
   }
 
   @Test
@@ -182,6 +182,6 @@ public class IncidentesTest {
 
     reportante.reportarIncidente(ascensor, "Fuera de servicio");
 
-    verify(medioDeComunicacion).notificar(any());
+    verify(medioDeComunicacion).procesarNotificacion(any());
   }
 }
