@@ -4,8 +4,12 @@ import ar.edu.utn.frba.dds.entidades.Entidad;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeEntidad;
 import ar.edu.utn.frba.dds.entidades.rankings.Ranking;
 import ar.edu.utn.frba.dds.exportadores.ExportadorRankingCsv;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,13 +23,27 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ExportadorRankingCsvTest {
+  private static final String DIRECTORIO_TEMPORAL = "reportes";
+  private static Path PathDirectorioTemporal;
   Ranking ranking = mock(Ranking.class);
   Entidad subteA = new Entidad("subteA", TipoDeEntidad.SUBTERRANEO);
   Entidad lineaSarmiento = new Entidad("lineaSarmiento", TipoDeEntidad.FERROCARRIL);
 
-  /*
-  * afterEach cleanUp() borrar directorio reportes ??
-  * */
+  @BeforeAll
+  static void setUp() throws IOException {
+    // Configurar el directorio temporal antes de que se ejecuten los tests
+    PathDirectorioTemporal = Paths.get(DIRECTORIO_TEMPORAL);
+    Files.createDirectories(PathDirectorioTemporal);
+  }
+
+  @AfterAll
+  static void tearDown() throws IOException {
+    Files.walk(PathDirectorioTemporal)
+        .map(Path::toFile)
+        .forEach(File::delete);
+
+    Files.delete(PathDirectorioTemporal);
+  }
 
   @Test
   void seExportaUnRankingAcsv() {
@@ -66,6 +84,6 @@ public class ExportadorRankingCsvTest {
   }
 
   public Path obtenerPathAbsoluto(String nombreArchivo) {
-    return Paths.get("reportes", nombreArchivo).toAbsolutePath();
+    return Paths.get(DIRECTORIO_TEMPORAL, nombreArchivo).toAbsolutePath();
   }
 }
