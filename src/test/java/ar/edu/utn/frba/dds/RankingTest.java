@@ -1,9 +1,6 @@
 package ar.edu.utn.frba.dds;
 
-import ar.edu.utn.frba.dds.entidades.Entidad;
-import ar.edu.utn.frba.dds.entidades.Establecimiento;
-import ar.edu.utn.frba.dds.entidades.Incidente;
-import ar.edu.utn.frba.dds.entidades.Servicio;
+import ar.edu.utn.frba.dds.entidades.*;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeEntidad;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
 import ar.edu.utn.frba.dds.entidades.rankings.Ranking;
@@ -124,24 +121,28 @@ public class RankingTest {
 
   public List<Incidente> getIncidentes() {
     // Incidentes de LineaSarmiento
-    Incidente incidente1 = new Incidente(banioDeHombres, "banioDeHombres");
-    Incidente incidente2 = new Incidente(banioDeMujeres, "banioDeMujeres");
+    Incidente incidente1 = crearIncidente(
+        banioDeHombres, "banioDeHombres", LocalDateTime.now().minusDays(1)
+    );
 
-    incidente1.setFechaApertura(LocalDateTime.now().minusDays(1));
-    incidente2.setFechaApertura(LocalDateTime.now().minusDays(1));
+    Incidente incidente2 = crearIncidente(
+        banioDeMujeres, "banioDeMujeres", LocalDateTime.now().minusDays(1)
+    );
 
     incidente1.cerrar();
     incidente2.cerrar();
 
     // Incidentes de SubteA
-    Incidente incidente3 = new Incidente(escaleraMecanica, "escaleraMecanica");
-    Incidente incidente4 = new Incidente(ascensorALaCalle, "ascensorALaCalle");
+    Incidente incidente3 = crearIncidente(
+        escaleraMecanica, "escaleraMecanica", LocalDateTime.now().minusDays(1)
+    );
+
+    Incidente incidente4 = crearIncidente(
+        ascensorALaCalle, "ascensorALaCalle", LocalDateTime.now().minusDays(1)
+    );
 
     incidente3.cerrar();
     incidente4.cerrar();
-
-    incidente3.setFechaApertura(LocalDateTime.now().minusDays(1));
-    incidente4.setFechaApertura(LocalDateTime.now().minusDays(1));
 
     return List.of(incidente1, incidente2, incidente3, incidente4);
   }
@@ -150,25 +151,34 @@ public class RankingTest {
     LocalDateTime fecha = LocalDateTime.now();
 
     // Incidentes de LineaSarmiento
-    Incidente incidente1 = new Incidente(banioDeHombres, "banioDeHombres");
-    incidente1.cerrar();
+    Incidente incidente1 = crearIncidente(
+        banioDeHombres, "banioDeHombres", fecha.minusDays(1)
+    );
 
-    Incidente incidente2 = new Incidente(banioDeMujeres, "banioDeMujeres");
+    Incidente incidente2 = crearIncidente(
+        banioDeMujeres, "banioDeMujeres", fecha.minusDays(1)
+    );
+
+    incidente1.cerrar();
     incidente2.cerrar();
 
-    incidente1.setFechaApertura(LocalDateTime.now().minusDays(1));
-    incidente2.setFechaApertura(LocalDateTime.now().minusDays(1));
-
     // Incidentes de SubteA
-    Incidente incidente3 = new Incidente(escaleraMecanica, "escaleraMecanica");
-    incidente3.cerrar();
+    Incidente incidente3 = crearIncidente(
+        escaleraMecanica, "escaleraMecanica", LocalDateTime.now().minusDays(2)
+    );
 
-    Incidente incidente4 = new Incidente(ascensorALaCalle, "ascensorALaCalle");
+    Incidente incidente4 = crearIncidente(
+        ascensorALaCalle, "ascensorALaCalle", LocalDateTime.now().minusDays(2)
+    );
+
+    incidente3.cerrar();
     incidente4.cerrar();
 
-    incidente3.setFechaApertura(LocalDateTime.now().minusDays(2));
-    incidente4.setFechaApertura(LocalDateTime.now().minusDays(2));
-
     return List.of(incidente1, incidente2, incidente3, incidente4);
+  }
+
+  public Incidente crearIncidente(Servicio s, String obs, LocalDateTime fecha) {
+    Usuario usuario = new Usuario("usr", "pw", "unNombre", "unApellido", "usr@mail");
+    return new Incidente(s, obs, fecha, usuario);
   }
 }

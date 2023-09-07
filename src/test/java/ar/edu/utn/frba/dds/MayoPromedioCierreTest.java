@@ -1,43 +1,33 @@
 package ar.edu.utn.frba.dds;
 
 import ar.edu.utn.frba.dds.entidades.Entidad;
-import ar.edu.utn.frba.dds.entidades.Establecimiento;
 import ar.edu.utn.frba.dds.entidades.Incidente;
-import ar.edu.utn.frba.dds.entidades.Servicio;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeEntidad;
-import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
 import ar.edu.utn.frba.dds.entidades.rankings.criterios.MayorPromedioCierre;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class MayoPromedioCierreTest {
   Entidad entidadA = new Entidad("Entidad A", TipoDeEntidad.SUPERMERCADO);
   Entidad entidadB = new Entidad("Entidad B", TipoDeEntidad.BANCO);
-  Servicio servicio1 = new Servicio("Servicio 1", TipoDeServicio.ESCALERAS_MECANICAS);
-  Servicio servicio2 = new Servicio("Servicio 2", TipoDeServicio.BANIOS);
-  Establecimiento establecimiento1 = new Establecimiento(entidadA);
-  Establecimiento establecimiento2 = new Establecimiento(entidadB);
-  Incidente incidente1 = new Incidente(servicio1, "Observación 1");
-  Incidente incidente2 = new Incidente(servicio2, "Observación 2");
-  Incidente incidente3 = new Incidente(servicio2, "Observación 3");
   MayorPromedioCierre criterio = new MayorPromedioCierre();
+  Incidente incidente1 = mock(Incidente.class);
+  Incidente incidente2 = mock(Incidente.class);
+  Incidente incidente3 = mock(Incidente.class);
 
   @BeforeEach
   public void setUp() {
-    entidadA.agregarEstablecimiento(establecimiento1);
-    entidadB.agregarEstablecimiento(establecimiento2);
-
-    establecimiento1.agregarServicio(servicio1);
-    establecimiento2.agregarServicio(servicio2);
-
-    servicio1.setEstablecimiento(establecimiento1);
-    servicio2.setEstablecimiento(establecimiento2);
+    when(incidente1.getEntidad()).thenReturn(entidadA);
+    when(incidente2.getEntidad()).thenReturn(entidadB);
+    when(incidente3.getEntidad()).thenReturn(entidadB);
   }
 
   private void assertOrdenEntidades(List<Incidente> incidentes, Entidad[] entidadesEsperadas) {
@@ -73,6 +63,10 @@ public class MayoPromedioCierreTest {
 
   @Test
   public void SinNoHayIncidentesCerradosElResultadoEsVacio() {
+    when(incidente1.estaResuelto()).thenReturn(false);
+    when(incidente2.estaResuelto()).thenReturn(false);
+    when(incidente3.estaResuelto()).thenReturn(false);
+
     List<Incidente> incidentesAbiertos = List.of(incidente1, incidente2, incidente3);
     Map<Entidad, Double> resultado = criterio.getEntidadesOrdenadas(incidentesAbiertos);
 
@@ -80,31 +74,31 @@ public class MayoPromedioCierreTest {
   }
 
   public List<Incidente> entidadBtienePromedioDe2yEntidadAtienePromedio1() {
-    LocalDateTime fecha = LocalDateTime.now();
+    when(incidente1.estaResuelto()).thenReturn(true);
+    when(incidente2.estaResuelto()).thenReturn(true);
+    when(incidente3.estaResuelto()).thenReturn(true);
+
     // Promedio de cierre de 1 dia Entidad A
-    incidente1.cerrar();
-    incidente1.setFechaResolucion(fecha.plusDays(1));
+    when(incidente1.tiempoDeCierre()).thenReturn(Duration.ofDays(1).toMillis());
 
     // Promedio de cierre de 2 dias Entidad B
-    incidente2.cerrar();
-    incidente3.cerrar();
-    incidente2.setFechaResolucion(fecha.plusDays(2));
-    incidente3.setFechaResolucion(fecha.plusDays(2));
+    when(incidente2.tiempoDeCierre()).thenReturn(Duration.ofDays(2).toMillis());
+    when(incidente3.tiempoDeCierre()).thenReturn(Duration.ofDays(2).toMillis());
 
     return List.of(incidente1, incidente2, incidente3);
   }
 
   public List<Incidente> entidadAtienePromedioDe2yEntidadBtienePromedio1() {
-    LocalDateTime fecha = LocalDateTime.now();
+    when(incidente1.estaResuelto()).thenReturn(true);
+    when(incidente2.estaResuelto()).thenReturn(true);
+    when(incidente3.estaResuelto()).thenReturn(true);
+
     // Promedio de cierre de 2 dia Entidad A
-    incidente1.cerrar();
-    incidente1.setFechaResolucion(fecha.plusDays(2));
+    when(incidente1.tiempoDeCierre()).thenReturn(Duration.ofDays(2).toMillis());
 
     // Promedio de cierre de 1 dias Entidad B
-    incidente2.cerrar();
-    incidente3.cerrar();
-    incidente2.setFechaResolucion(fecha.plusDays(1));
-    incidente3.setFechaResolucion(fecha.plusDays(1));
+    when(incidente2.tiempoDeCierre()).thenReturn(Duration.ofDays(1).toMillis());
+    when(incidente3.tiempoDeCierre()).thenReturn(Duration.ofDays(1).toMillis());
 
     return List.of(incidente1, incidente2, incidente3);
   }

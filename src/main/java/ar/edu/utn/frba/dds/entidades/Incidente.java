@@ -65,12 +65,4 @@ public class Incidente {
   public Ubicacion getUbicacion() {
     return servicio.getUbicacion();
   }
-
-  public void setFechaApertura(LocalDateTime fecha) {
-    this.fecha = fecha;
-  }
-
-  public void setFechaResolucion(LocalDateTime fechaResolucion) {
-    this.fechaResolucion = fechaResolucion;
-  }
 }
