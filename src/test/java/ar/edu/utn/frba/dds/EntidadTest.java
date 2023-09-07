@@ -1,26 +1,36 @@
 package ar.edu.utn.frba.dds;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 import ar.edu.utn.frba.dds.entidades.Entidad;
 import ar.edu.utn.frba.dds.entidades.Establecimiento;
 import ar.edu.utn.frba.dds.entidades.Incidente;
 import ar.edu.utn.frba.dds.entidades.Servicio;
+import ar.edu.utn.frba.dds.entidades.Usuario;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeEntidad;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
 
-import java.time.LocalDateTime;
+import ar.edu.utn.frba.dds.notificaciones.Notificacion;
+import ar.edu.utn.frba.dds.notificaciones.horarios.CalendarioNotificaciones;
+import ar.edu.utn.frba.dds.notificaciones.horarios.RangoHorario;
 
-import ar.edu.utn.frba.dds.entidades.Usuario;
-import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
 import ar.edu.utn.frba.dds.notificaciones.medios.MailSender;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EntidadTest {
   private Entidad entidad;
@@ -31,8 +41,15 @@ public class EntidadTest {
   private Servicio servicio2;
   private Servicio servicio3;
   private Usuario usuarioQueUsaSubte;
-  private MedioDeComunicacion medioDeComunicacion;
+
   private MailSender mailSender;
+
+  private CalendarioNotificaciones calendarioQuePermite;
+  private CalendarioNotificaciones calendarioQueNoPermite;
+  private RangoHorario rangoHorarioCompleto;
+  private RangoHorario rangoHorarioVacio;
+  private Map<DayOfWeek, RangoHorario> horarios;
+  private Map<DayOfWeek, RangoHorario> horariosVacios;
 
   @BeforeEach
   public void setUp() {
@@ -51,6 +68,9 @@ public class EntidadTest {
     entidad.agregarEstablecimiento(establecimiento1);
     entidad.agregarEstablecimiento(establecimiento2);
 
+    horarios = new HashMap<>();
+    horariosVacios = new HashMap<>();
+
     usuarioQueUsaSubte = new Usuario(
         "subte.master",
         "",
@@ -58,8 +78,23 @@ public class EntidadTest {
         "Master",
         "subtemaster@gmail.com"
     );
-    medioDeComunicacion = mock(MedioDeComunicacion.class);
-    mailSender = mock(MailSender.class);
+
+    rangoHorarioCompleto = new RangoHorario(LocalTime.MIN,LocalTime.MAX);
+    rangoHorarioVacio = new RangoHorario(LocalTime.MIN,LocalTime.MIN);
+
+    horariosVacios.put(DayOfWeek.THURSDAY,rangoHorarioVacio);
+
+    calendarioQueNoPermite = new CalendarioNotificaciones(horariosVacios);
+
+    horarios.put(DayOfWeek.MONDAY,rangoHorarioCompleto);
+    horarios.put(DayOfWeek.TUESDAY,rangoHorarioCompleto);
+    horarios.put(DayOfWeek.WEDNESDAY,rangoHorarioCompleto);
+    horarios.put(DayOfWeek.THURSDAY,rangoHorarioCompleto);
+    horarios.put(DayOfWeek.FRIDAY,rangoHorarioCompleto);
+    horarios.put(DayOfWeek.SATURDAY,rangoHorarioCompleto);
+    horarios.put(DayOfWeek.SUNDAY,rangoHorarioCompleto);
+
+    calendarioQuePermite = new CalendarioNotificaciones(horarios);
   }
 
   @Test
@@ -93,7 +128,7 @@ public class EntidadTest {
   public void unaEntidadPuedeReportarUnIncidenteEnUnServicioSuyo() {
     entidad.reportarIncidente(servicio1, "No anda la cadena");
     entidad.reportarIncidente(servicio2, "No funciona botón de piso 3");
-    Assertions.assertEquals(2, entidad.getIncidentesAbiertos().size());
+    assertEquals(2, entidad.getIncidentesAbiertos().size());
   }
 
   @Test
@@ -104,16 +139,44 @@ public class EntidadTest {
 
   @Test
   public void unUsuarioEsNotificadoPorLaAperturaDeUnIncidenteQueLeInteresa() {
+    mailSender = mock(MailSender.class);
     usuarioQueUsaSubte.setMedioDeComunicacion(mailSender);
+    usuarioQueUsaSubte.setCalendarioNotificaciones(calendarioQuePermite);
     entidad.agregarUsuarioInteresado(usuarioQueUsaSubte);
+
     entidad.reportarIncidente(servicio1, "No anda la cadena");
-    verify(mailSender).notificarReporteDeIncidente(any(), eq(usuarioQueUsaSubte));
+
+    ArgumentCaptor<Notificacion> notificacionCaptor = ArgumentCaptor.forClass(Notificacion.class);
+
+    // Verificar que el medio de comunicacion llega a procesar la notificacion y que el receptor es el correcto
+    verify(mailSender, times(1)).procesarNotificacion(notificacionCaptor.capture());
+    assertEquals(usuarioQueUsaSubte, notificacionCaptor.getValue().getReceptor());
+
   }
 
   @Test
   public void unUsuarioNoEsNotificadoPorLaAperturaDeUnIncidenteQueNoLeInteresa() {
-    usuarioQueUsaSubte.setMedioDeComunicacion(mailSender);
+    Usuario usuarioQueUsaSubteSpy = spy(usuarioQueUsaSubte);
+    usuarioQueUsaSubteSpy.setCalendarioNotificaciones(calendarioQuePermite);
+    usuarioQueUsaSubteSpy.setMedioDeComunicacion(mailSender);
     entidad.reportarIncidente(servicio1, "No anda la cadena");
-    verify(medioDeComunicacion, never()).notificarReporteDeIncidente(any(), eq(usuarioQueUsaSubte));
+    verify(usuarioQueUsaSubteSpy, never()).notificar(any());
   }
+
+  @Test
+  public void unUsuarioNoEsNotificadoPorLaAperturaDeUnIncidenteCuandoNoEsHorarioDisponible() {
+    mailSender = mock(MailSender.class);
+    usuarioQueUsaSubte.setMedioDeComunicacion(mailSender);
+    usuarioQueUsaSubte.setCalendarioNotificaciones(calendarioQueNoPermite);
+    entidad.agregarUsuarioInteresado(usuarioQueUsaSubte);
+
+    entidad.reportarIncidente(servicio1, "No anda la cadena");
+
+    ArgumentCaptor<Notificacion> notificacionCaptor = ArgumentCaptor.forClass(Notificacion.class);
+
+    // Verificar que el medio de comunicacion llega a procesar la notificacion y que el receptor es el correcto
+    verifyNoInteractions(mailSender);
+  }
+
+
 }
