@@ -2,57 +2,58 @@ package ar.edu.utn.frba.dds.exportadores;
 
 import ar.edu.utn.frba.dds.entidades.rankings.Ranking;
 import ar.edu.utn.frba.dds.excepciones.GeneradorCsvException;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.format.DateTimeFormatter;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ExportadorRankingCsv {
-  private String path = "./reportes/";
   private final Ranking ranking;
+  private final String[] header = {"Nro", "Entidad", "Valor"};
 
   public ExportadorRankingCsv(Ranking ranking) {
     this.ranking = ranking;
   }
 
-  public void setPath(String path) {
-    this.path = path;
-  }
-
-  private String getNombreArchivo() {
+  public String getNombreArchivo() {
     return String.format(
         "Ranking_%s_%s.csv",
-        ranking.getDescripcionCriterio(),
-        ranking.getFecha());
+        ranking.getDescripcionCriterio().replace(" ", "_"),
+        ranking.getFecha().format(DateTimeFormatter.ofPattern("yyyy_MM_dd"))
+    );
   }
 
-  private void exportar() {
-    try {
-      FileWriter fileWriter = new FileWriter(path + getNombreArchivo());
-      BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-
-      String header = "Posicion,Nombre,Valor";
-      bufferedWriter.write(header);
-      bufferedWriter.newLine();
-
-      int posicion = 1;
-
-      for (var entry : ranking.getEntidades().entrySet()) {
-        var entidad = entry.getKey();
-        var valor = entry.getValue();
-
-        var data = new String[]
-            {Integer.toString(posicion), entidad.getNombre(), valor.toString()};
-
-        var dataLine = String.join(",", data);
-
-        bufferedWriter.write(dataLine);
-        bufferedWriter.newLine();
-
-        posicion++;
-      }
-
-      bufferedWriter.close();
+  public void exportar() {
+    try (CSVPrinter csvPrinter = generarCsvPrinter()) {
+      AtomicInteger puesto = new AtomicInteger(1);
+      ranking.getEntidades().forEach((entidad, valor) ->
+          {
+            try {
+              csvPrinter.printRecord(puesto.getAndIncrement(), entidad.getNombre(), valor);
+            } catch (IOException e) {
+              throw new GeneradorCsvException("Error al escribir en el archivo CSV: " + e.getMessage());
+            }
+          }
+      );
+      csvPrinter.flush();
     } catch (Exception e) {
-      throw new GeneradorCsvException("Ocurrió un error al generar el archivo csv");
+      throw new GeneradorCsvException("Falló la generación del archivo CSV: " + e.getMessage());
     }
+  }
+
+  private CSVPrinter generarCsvPrinter() throws IOException {
+    Path carpetaReportesPath = Paths.get("", "reportes");
+    Files.createDirectories(carpetaReportesPath);
+
+    return new CSVPrinter(
+        Files.newBufferedWriter(
+            Paths.get(carpetaReportesPath.resolve(getNombreArchivo()).toString())
+        ),
+        CSVFormat.Builder.create().setHeader(header).build()
+    );
   }
 }

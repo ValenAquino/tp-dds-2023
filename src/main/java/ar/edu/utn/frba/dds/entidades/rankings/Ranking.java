@@ -1,6 +1,9 @@
 package ar.edu.utn.frba.dds.entidades.rankings;
 
 import ar.edu.utn.frba.dds.entidades.Entidad;
+import ar.edu.utn.frba.dds.entidades.Incidente;
+import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioIncidentes;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -8,11 +11,13 @@ import java.util.Map;
 public class Ranking {
   LocalDateTime fecha;
   CriterioDeOrdenamiento criterio;
+  RepositorioIncidentes repo;
   Map<Entidad, Double> entidades;
 
-  public Ranking(CriterioDeOrdenamiento criterio) {
+  public Ranking(RepositorioIncidentes repo, CriterioDeOrdenamiento criterio) {
     this.fecha = LocalDateTime.now();
     this.criterio = criterio;
+    this.repo = repo;
   }
 
   public LocalDateTime getFecha() {
@@ -20,7 +25,8 @@ public class Ranking {
   }
 
   public void generarRanking() {
-    entidades = criterio.getEntidadesOrdenadas();
+    List<Incidente> incidentesUltimaSemana = repo.ultimaSemana();
+    this.entidades = criterio.getEntidadesOrdenadas(incidentesUltimaSemana);
   }
 
   public String getDescripcionCriterio() {

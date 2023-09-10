@@ -27,4 +27,8 @@ public class Servicio {
   public Entidad getEntidad() {
     return establecimiento.getEntidad();
   }
+
+  public void setEstablecimiento(Establecimiento establecimiento) {
+    this.establecimiento = establecimiento;
+  }
 }
