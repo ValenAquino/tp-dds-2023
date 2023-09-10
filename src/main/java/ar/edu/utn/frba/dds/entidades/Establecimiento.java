@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Establecimiento {
-  private String nombre;
   private final List<Servicio> servicios = new ArrayList<>();
-  private Entidad entidad;
+  private final Entidad entidad;
+  private String nombre;
   private Ubicacion ubicacion;
 
   public Establecimiento(Entidad entidad) {

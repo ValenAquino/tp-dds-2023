@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Entidad {
-  private String nombre;
-  private TipoDeEntidad tipoDeEntidad;
   private final List<Establecimiento> establecimientos;
   private final List<Usuario> usuariosInteresados;
   private final List<Incidente> incidentes;
+  private final String nombre;
+  private final TipoDeEntidad tipoDeEntidad;
 
   public Entidad(String nombre, TipoDeEntidad tipoDeEntidad) {
     this.nombre = nombre;

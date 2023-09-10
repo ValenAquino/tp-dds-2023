@@ -4,7 +4,7 @@ import ar.edu.utn.frba.dds.entidades.Incidente;
 import ar.edu.utn.frba.dds.entidades.Usuario;
 
 public class NotificacionNuevoIncidente extends Notificacion {
-  private Incidente incidente;
+  private final Incidente incidente;
 
   public NotificacionNuevoIncidente(Usuario receptor, Incidente incidente) {
     super(receptor);

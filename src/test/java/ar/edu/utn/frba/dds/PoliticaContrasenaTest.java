@@ -1,10 +1,10 @@
 package ar.edu.utn.frba.dds;
 
+import ar.edu.utn.frba.dds.excepciones.ValidacionContrasenaException;
 import ar.edu.utn.frba.dds.password.politicas.PoliticaContrasenasExcluidas;
 import ar.edu.utn.frba.dds.password.politicas.PoliticaLongitud;
 import ar.edu.utn.frba.dds.password.politicas.PoliticaRegex;
 import ar.edu.utn.frba.dds.password.validacion.PoliticaContrasena;
-import ar.edu.utn.frba.dds.excepciones.ValidacionContrasenaException;
 import ar.edu.utn.frba.dds.password.validacion.ValidadorContrasena;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -17,7 +17,11 @@ import java.util.HashSet;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PoliticaContrasenaTest {
 
@@ -27,6 +31,40 @@ public class PoliticaContrasenaTest {
       "La contraseña debe tener entre 8 y 16 caracteres.";
   private static final String regexMensajeError =
       "La contraseña debe tener al menos una letra minúscula, una mayúscula, un número y un caracter especial.";
+
+  private static ValidadorContrasena getValidador() {
+    List<PoliticaContrasena> politicasDefault = Arrays.asList(
+        new PoliticaLongitud(8, 16),
+        new PoliticaRegex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[-+_!@#$%^&*.,?]).+$",
+            regexMensajeError),
+        new PoliticaContrasenasExcluidas(new HashSet<>(Arrays.asList("contraseña", "123456", "aA1!")))
+    );
+
+    return getValidador(politicasDefault);
+  }
+
+  private static ValidadorContrasena getValidador(List<PoliticaContrasena> politicas) {
+    return new ValidadorContrasena(new ArrayList<>(politicas));
+  }
+
+  // TODO: de ser necesario, incorporarlo a PoliticaContrasenasExcluidas y parametrizar fileName
+  private static HashSet<String> cargarPeoresContrasenas() throws IOException {
+    var peoresContrasenas = new HashSet<String>();
+
+    String projectDir = System.getProperty("user.dir");
+    String filePath = Paths.get(projectDir, "src", "test", "resources", "top-10000-worst-passwords.txt").toString();
+
+    try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+      String contrasena;
+      while ((contrasena = reader.readLine()) != null) {
+        peoresContrasenas.add(contrasena);
+      }
+    } catch (IOException e) {
+      throw new IOException(e);
+    }
+
+    return peoresContrasenas;
+  }
 
   @Test
   public void testPoliticaLongitudValida() {
@@ -277,39 +315,5 @@ public class PoliticaContrasenaTest {
   @Test
   public void testValidadorContrasenaTodasLasPoliticasValida() {
     assertDoesNotThrow(() -> getValidador().validar("contraValida1+"));
-  }
-
-  private static ValidadorContrasena getValidador() {
-    List<PoliticaContrasena> politicasDefault = Arrays.asList(
-        new PoliticaLongitud(8, 16),
-        new PoliticaRegex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[-+_!@#$%^&*.,?]).+$",
-            regexMensajeError),
-        new PoliticaContrasenasExcluidas(new HashSet<>(Arrays.asList("contraseña", "123456", "aA1!")))
-    );
-
-    return getValidador(politicasDefault);
-  }
-
-  private static ValidadorContrasena getValidador(List<PoliticaContrasena> politicas) {
-    return new ValidadorContrasena(new ArrayList<>(politicas));
-  }
-
-  // TODO: de ser necesario, incorporarlo a PoliticaContrasenasExcluidas y parametrizar fileName
-  private static HashSet<String> cargarPeoresContrasenas() throws IOException {
-    var peoresContrasenas = new HashSet<String>();
-
-    String projectDir = System.getProperty("user.dir");
-    String filePath = Paths.get(projectDir, "src", "test", "resources", "top-10000-worst-passwords.txt").toString();
-
-    try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-      String contrasena;
-      while ((contrasena = reader.readLine()) != null) {
-        peoresContrasenas.add(contrasena);
-      }
-    } catch (IOException e) {
-      throw new IOException(e);
-    }
-
-    return peoresContrasenas;
   }
 }

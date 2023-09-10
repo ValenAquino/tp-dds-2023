@@ -6,14 +6,13 @@ import ar.edu.utn.frba.dds.entidades.Servicio;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeEntidad;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
 import ar.edu.utn.frba.dds.entidades.rankings.criterios.CantidadIncidentes;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

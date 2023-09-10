@@ -1,19 +1,22 @@
 package ar.edu.utn.frba.dds;
 
-import ar.edu.utn.frba.dds.entidades.*;
+import ar.edu.utn.frba.dds.entidades.Entidad;
+import ar.edu.utn.frba.dds.entidades.Establecimiento;
+import ar.edu.utn.frba.dds.entidades.Incidente;
+import ar.edu.utn.frba.dds.entidades.Servicio;
+import ar.edu.utn.frba.dds.entidades.Usuario;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeEntidad;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
 import ar.edu.utn.frba.dds.entidades.rankings.Ranking;
 import ar.edu.utn.frba.dds.entidades.rankings.criterios.CantidadIncidentes;
 import ar.edu.utn.frba.dds.entidades.rankings.criterios.MayorPromedioCierre;
 import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioIncidentes;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

@@ -1,16 +1,19 @@
 package ar.edu.utn.frba.dds;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 import ar.edu.utn.frba.dds.entidades.Localizacion;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeLocalizacion;
 import ar.edu.utn.frba.dds.excepciones.LocalizacionNoExistenteException;
-import ar.edu.utn.frba.dds.localizacion.implementaciones.ServicioLocalizacionGeoRef;
 import ar.edu.utn.frba.dds.localizacion.apis.GeoRefApiCliente;
+import ar.edu.utn.frba.dds.localizacion.implementaciones.ServicioLocalizacionGeoRef;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ServicioLocalizacionGeoRefTest {
 

@@ -4,7 +4,6 @@ import ar.edu.utn.frba.dds.entidades.Entidad;
 import ar.edu.utn.frba.dds.entidades.Incidente;
 import ar.edu.utn.frba.dds.entidades.Servicio;
 import ar.edu.utn.frba.dds.entidades.rankings.CriterioDeOrdenamiento;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Comparator;

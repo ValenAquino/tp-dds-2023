@@ -1,7 +1,5 @@
 package ar.edu.utn.frba.dds.notificaciones.medios;
 
-import ar.edu.utn.frba.dds.entidades.Incidente;
-import ar.edu.utn.frba.dds.entidades.Usuario;
 import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
 import ar.edu.utn.frba.dds.notificaciones.Notificacion;
 

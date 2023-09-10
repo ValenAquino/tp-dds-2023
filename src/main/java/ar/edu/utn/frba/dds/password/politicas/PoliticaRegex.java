@@ -4,8 +4,8 @@ import ar.edu.utn.frba.dds.password.validacion.PoliticaContrasena;
 import java.util.regex.Pattern;
 
 public class PoliticaRegex implements PoliticaContrasena {
-  private Pattern patron;
-  private String mensajeError;
+  private final Pattern patron;
+  private final String mensajeError;
 
   public PoliticaRegex(String regex, String mensajeError) {
     this.patron = Pattern.compile(regex);

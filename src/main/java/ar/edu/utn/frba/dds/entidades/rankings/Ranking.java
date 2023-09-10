@@ -3,7 +3,6 @@ package ar.edu.utn.frba.dds.entidades.rankings;
 import ar.edu.utn.frba.dds.entidades.Entidad;
 import ar.edu.utn.frba.dds.entidades.Incidente;
 import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioIncidentes;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;

@@ -71,7 +71,8 @@ public class Comunidad {
     getMiembrosANotificar(incidente)
         .forEach(m -> m.notificarReporteDeIncidente(incidente));
   }
-  public List<Incidente> getIncidentesAbiertosCercanosA(Usuario usuario){
+
+  public List<Incidente> getIncidentesAbiertosCercanosA(Usuario usuario) {
     return this.getIncidentesAbiertos().stream().filter(i ->
         servicioMapa.estanCerca(
             usuario.getUbicacionActual(servicioMapa),
@@ -80,6 +81,7 @@ public class Comunidad {
         )
     ).toList();
   }
+
   public boolean tieneMiembro(Usuario usuario) {
     return miembros.contains(usuario);
   }

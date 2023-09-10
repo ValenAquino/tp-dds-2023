@@ -9,18 +9,6 @@ import javax.ws.rs.core.MediaType;
 
 public class GeoRefApiCliente {
 
-  public Map<String, Object> getProvinciaFromApi(String nombre) {
-    return consultarApi("provincias", nombre, null);
-  }
-
-  public Map<String, Object> getMunicipioFromApi(String nombre, String provinciaNombre) {
-    return consultarApi("municipios", nombre, provinciaNombre);
-  }
-
-  public Map<String, Object> getDepartamentoFromApi(String nombre, String provinciaNombre) {
-    return consultarApi("departamentos", nombre, provinciaNombre);
-  }
-
   private static Map<String, Object> consultarApi(String path, String nombre, String provincia) {
     ArrayList responseBody;
 
@@ -48,5 +36,17 @@ public class GeoRefApiCliente {
     }
 
     return (Map<String, Object>) responseBody.get(0);
+  }
+
+  public Map<String, Object> getProvinciaFromApi(String nombre) {
+    return consultarApi("provincias", nombre, null);
+  }
+
+  public Map<String, Object> getMunicipioFromApi(String nombre, String provinciaNombre) {
+    return consultarApi("municipios", nombre, provinciaNombre);
+  }
+
+  public Map<String, Object> getDepartamentoFromApi(String nombre, String provinciaNombre) {
+    return consultarApi("departamentos", nombre, provinciaNombre);
   }
 }

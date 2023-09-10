@@ -3,11 +3,10 @@ package ar.edu.utn.frba.dds.entidades.rankings.criterios;
 import ar.edu.utn.frba.dds.entidades.Entidad;
 import ar.edu.utn.frba.dds.entidades.Incidente;
 import ar.edu.utn.frba.dds.entidades.rankings.CriterioDeOrdenamiento;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.LinkedHashMap;
 
 public class MayorPromedioCierre implements CriterioDeOrdenamiento {
   @Override

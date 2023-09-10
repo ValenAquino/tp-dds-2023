@@ -8,14 +8,10 @@ import java.util.List;
 
 public class RepositorioComunidades {
   private static RepositorioComunidades instance;
-  private List<Comunidad> comunidades;
+  private final List<Comunidad> comunidades;
 
-  private  RepositorioComunidades() {
+  private RepositorioComunidades() {
     this.comunidades = new ArrayList<>();
-  }
-
-  public List<Comunidad> todas() {
-    return this.comunidades;
   }
 
   public static RepositorioComunidades getInstance() {
@@ -23,6 +19,10 @@ public class RepositorioComunidades {
       instance = new RepositorioComunidades();
     }
     return instance;
+  }
+
+  public List<Comunidad> todas() {
+    return this.comunidades;
   }
 
   public void agregarComunidad(Comunidad comunidad) {

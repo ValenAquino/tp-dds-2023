@@ -6,8 +6,8 @@ import java.util.List;
 public class OrganismoDeControl {
   private final String nombre;
   private final String correoElectronico;
-  private Usuario usuarioResponsable;
   private final List<Entidad> entidadesControladas = new ArrayList<>();
+  private Usuario usuarioResponsable;
 
   public OrganismoDeControl(String nombre, String correoElectronico) {
     this.nombre = nombre;

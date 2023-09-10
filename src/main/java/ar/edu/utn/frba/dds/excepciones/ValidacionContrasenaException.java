@@ -5,11 +5,13 @@ import java.util.List;
 
 public class ValidacionContrasenaException extends RuntimeException {
   public List<PoliticaContrasena> politicasAValidar;
+
   public ValidacionContrasenaException(List<PoliticaContrasena> politicasAValidar, String message) {
     super(message);
     this.politicasAValidar = politicasAValidar;
 
   }
+
   public List<PoliticaContrasena> getPoliticasAValidar() {
     return politicasAValidar;
   }

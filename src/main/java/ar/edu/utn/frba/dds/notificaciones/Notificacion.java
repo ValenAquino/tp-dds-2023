@@ -4,9 +4,9 @@ import ar.edu.utn.frba.dds.entidades.Usuario;
 import java.time.LocalDateTime;
 
 public abstract class Notificacion {
-  private Usuario receptor;
+  private final Usuario receptor;
+  private final LocalDateTime fecha;
   private LocalDateTime fechaEnvio;
-  private LocalDateTime fecha;
 
   public Notificacion(Usuario receptor) {
     this.receptor = receptor;
