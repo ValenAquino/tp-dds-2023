@@ -10,8 +10,8 @@ class Entidad {
   usuariosInteresados: List<Usuario>
   incidentes: List<Incidente>
   --
-  abrirIncidente(Servicio, String)
-  notificarAperturaDeIncidente(Incidente)
+  reportarIncidente(Servicio, String)
+  notificarReporteDeIncidente(Incidente)
   getIncidentesAbiertos()
   getIncidentesResueltos()
 }
@@ -27,8 +27,6 @@ class Establecimiento {
   entidad: Entidad
   ubicacion: Ubicacion
   --
-  agregarServicio(Servicio)
-  removerServicio(Servicio)
   tieneServicio(Servicio)
 }
 
@@ -50,10 +48,12 @@ class Usuario {
   medioDeComunicacion: MedioDeComunicacion
   calendarioNotificaciones: CalendarioNotificaciones
   --
-  getUbicacionActual(ServicioUbicacion)
-  puedeRecibirNotificacion()
-  notificarAperturaDeIncidente(Incidente)
+  getUbicacionActual(ServicioMapas)
+  reportarIncidente(Servicio, String)
+  cerrarIncidente(Comunidad, Incidente)
+  notificarReporteDeIncidente(Incidente)
   sugerirRevisionDeIncidente(Incidente)
+  notificar(Notificacion)
 }
 
 Usuario -l-> MedioDeComunicacion
@@ -74,33 +74,53 @@ class RangoHorario {
   contieneHorario(LocalTime)
 }
 
-interface MedioDeComunicacion {
+abstract MedioDeComunicacion {
   --
-  notificarAperturaDeIncidente(Incidente)
-  sugerirRevisionDeIncidente(Incidente)
+  notificar(Notificacion)
+  procesarNotificacion(Notificacion)
 }
 
-class MedioWhatsApp implements MedioDeComunicacion {
+class MedioWhatsApp extends MedioDeComunicacion {
   --
-  notificarAperturaDeIncidente(Incidente)
-  sugerirRevisionDeIncidente(Incidente)
+  procesarNotificacion(Notificacion)
 }
 
-class MedioEmail implements MedioDeComunicacion {
+class MedioEmail extends MedioDeComunicacion {
   --
-  notificarAperturaDeIncidente(Incidente)
-  sugerirRevisionDeIncidente(Incidente)
+  procesarNotificacion(Notificacion)
 }
+
+abstract Notificacion {
+  usuario: Usuario
+  fecha: LocalDateTime
+  fechaEnvio: LocalDateTime
+  --
+  getAsunto()
+  getMensaje()
+}
+
+class NotificacionNuevoIncidente extends Notificacion {
+  incidente: Incidente
+}
+
+class NotificacionRevisionIncidente extends Notificacion {
+  incidente: Incidente
+}
+
+MedioDeComunicacion .l.> Notificacion
 
 class Comunidad {
   serviciosDeInteres: List<Servicio>
   incidentes: List<Incidente>
   miembros: List<Usuario>
   --
-  abrirIncidente(Servicio, String)
-  notificarAperturaDeIncidente(Incidente)
+  reportarIncidente(Servicio, String, LocalDateTime, Usuario)
+  cerrarIncidente(Incidente)
+  notificarReporteDeIncidente(Incidente)
   getIncidentesAbiertos()
+  getIncidentesAbiertosCercanosA(Usuario)
   getIncidentesResueltos()
+  getMiembrosANotificar(Incidente)
 }
 
 Comunidad ->"*" Servicio
@@ -113,13 +133,14 @@ class Incidente {
   fechaResolucion: DateTime
   servicio: Servicio
   observaciones: String
+  reportante: Usuario
   --
   cerrar()
   tiempoDeCierre()
-  getUbicacion()
 }
 
 Incidente -> Servicio
+Incidente -l-> Usuario
 
 class Ubicacion {
   latitud: double
@@ -129,10 +150,6 @@ class Ubicacion {
 'interface ServicioMapas {
 '  --
 '  estanCerca(Ubicacion, Ubicacion, long): boolean
-'}
-'
-'interface ServicioUbicacion {
-'  --
 '  ubicacionActual(String): Ubicacion
 '}
 
