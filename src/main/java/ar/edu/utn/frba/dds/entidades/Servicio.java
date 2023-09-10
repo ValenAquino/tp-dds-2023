@@ -1,9 +1,12 @@
 package ar.edu.utn.frba.dds.entidades;
 
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 public class Servicio {
   private final String descripcion;
+  @Enumerated(value = EnumType.STRING)
   private final TipoDeServicio tipoDeServicio;
   private Establecimiento establecimiento;
 

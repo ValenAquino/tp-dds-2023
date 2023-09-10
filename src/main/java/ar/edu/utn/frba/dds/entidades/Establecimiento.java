@@ -2,11 +2,16 @@ package ar.edu.utn.frba.dds.entidades;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
 
-public class Establecimiento {
+@Entity
+public class Establecimiento extends PersistentEntity {
   private final List<Servicio> servicios = new ArrayList<>();
   private final Entidad entidad;
   private String nombre;
+  @Embedded
   private Ubicacion ubicacion;
 
   public Establecimiento(Entidad entidad) {
