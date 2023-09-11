@@ -1,12 +1,25 @@
 package ar.edu.utn.frba.dds.entidades;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
-public class OrganismoDeControl {
+@Entity
+public class OrganismoDeControl extends PersistentEntity {
   private final String nombre;
   private final String correoElectronico;
-  private final List<Entidad> entidadesControladas = new ArrayList<>();
+  @ManyToMany
+  @JoinTable(
+      joinColumns = @JoinColumn(name = "organismo_id"),
+      inverseJoinColumns = @JoinColumn(name = "entidad_id")
+  )
+  private final Set<Entidad> entidadesControladas = new HashSet<>();
+  @ManyToOne
+  @JoinColumn(name = "responsable_id")
   private Usuario usuarioResponsable;
 
   public OrganismoDeControl(String nombre, String correoElectronico) {
@@ -30,7 +43,7 @@ public class OrganismoDeControl {
     entidadesControladas.add(nuevaEntidad);
   }
 
-  public List<Entidad> getEntidades() {
+  public Set<Entidad> getEntidades() {
     return entidadesControladas;
   }
 }
