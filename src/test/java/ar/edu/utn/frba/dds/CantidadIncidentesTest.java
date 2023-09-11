@@ -18,13 +18,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class CantidadIncidentesTest {
-  Entidad entidadA = new Entidad("Entidad A", TipoDeEntidad.SUPERMERCADO);
-  Entidad entidadB = new Entidad("Entidad B", TipoDeEntidad.BANCO);
-  Servicio servicio1 = new Servicio("Servicio 1", TipoDeServicio.ESCALERAS_MECANICAS);
-  Servicio servicio2 = new Servicio("Servicio 2", TipoDeServicio.BANIOS);
-  Incidente incidente1 = mock(Incidente.class);
-  Incidente incidente2 = mock(Incidente.class);
-  Incidente incidente3 = mock(Incidente.class);
+  final Entidad entidadA = new Entidad("Entidad A", TipoDeEntidad.SUPERMERCADO);
+  final Entidad entidadB = new Entidad("Entidad B", TipoDeEntidad.BANCO);
+  final Servicio servicio1 = new Servicio("Servicio 1", TipoDeServicio.ESCALERAS_MECANICAS);
+  final Servicio servicio2 = new Servicio("Servicio 2", TipoDeServicio.BANIOS);
+  final Incidente incidente1 = mock(Incidente.class);
+  final Incidente incidente2 = mock(Incidente.class);
+  final Incidente incidente3 = mock(Incidente.class);
 
   @BeforeEach
   public void setUp() {
@@ -41,9 +41,7 @@ public class CantidadIncidentesTest {
     CantidadIncidentes cantidadIncidentes = new CantidadIncidentes();
     Map<Entidad, Double> resultados = cantidadIncidentes.getEntidadesOrdenadas(incidentes);
 
-    resultados.forEach((entidad, count) -> {
-      System.out.println("Entidad: " + entidad.getNombre() + ", Incidentes: " + count);
-    });
+    resultados.forEach((entidad, count) -> System.out.println("Entidad: " + entidad.getNombre() + ", Incidentes: " + count));
 
     Assertions.assertEquals(resA, resultados.get(entidadA));
     Assertions.assertEquals(resB, resultados.get(entidadB));
@@ -101,7 +99,7 @@ public class CantidadIncidentesTest {
 
     LocalDateTime sieteDeMayoAlas8 = LocalDateTime.of(2023, 7, 5, 16, 0);
 
-    // Este cuenta porque se abrio + de 24hs después que el anterior
+    // Este cuenta por qué se abrio + de 24 hs después que el anterior
     Incidente incidenteT5 = crearIncidente(entidadB, servicio2, sieteDeMayoAlas8); // "Tribunales 5"
 
     when(incidenteT2.estaResuelto()).thenReturn(true);
@@ -130,12 +128,12 @@ public class CantidadIncidentesTest {
     when(incidente1.getFecha()).thenReturn(fecha);
     when(incidente1.getFechaResolucion()).thenReturn(fecha);
 
-    // Los incidente 2 y 3 pertenecen a la entidad B
+    // Los incidentes 2 y 3 pertenecen a la entidad B
     when(incidente2.estaResuelto()).thenReturn(true);
     when(incidente2.getFecha()).thenReturn(fecha.plusMinutes(10));
     when(incidente2.getFechaResolucion()).thenReturn(fecha.plusMinutes(15));
 
-    // Este se abre 5 minutos despues que se cierra el incidente anterior del mismo servicio
+    // Este se abre 5 minutos después que se cierra el incidente anterior del mismo servicio
     // Por lo que deberia contar como otro incidente
     when(incidente3.estaResuelto()).thenReturn(false);
     when(incidente3.getFecha()).thenReturn(fecha.plusMinutes(20));
@@ -151,7 +149,7 @@ public class CantidadIncidentesTest {
     when(incidente1.getFecha()).thenReturn(fecha);
     when(incidente1.getFechaResolucion()).thenReturn(fecha);
 
-    // Los incidente 2 y 3 pertenecen a la entidad B
+    // Los incidentes 2 y 3 pertenecen a la entidad B
     when(incidente2.estaResuelto()).thenReturn(true);
     when(incidente2.getFecha()).thenReturn(fecha.plusMinutes(10));
     when(incidente2.getFechaResolucion()).thenReturn(fecha.plusMinutes(15));
@@ -172,11 +170,11 @@ public class CantidadIncidentesTest {
     when(incidente1.getFecha()).thenReturn(fecha);
     when(incidente1.getFechaResolucion()).thenReturn(fecha);
 
-    // Los incidente 2 y 3 pertenecen a la entidad B
+    // Los incidentes 2 y 3 pertenecen a la entidad B
     when(incidente2.estaResuelto()).thenReturn(false);
     when(incidente2.getFecha()).thenReturn(fecha.plusMinutes(10));
 
-    // Este se abre 24hs Despues que se abre el incidente anterior del mismo servicio
+    // Este se abre 24 hs después que se abre el incidente anterior del mismo servicio
     // Por lo que deberia contar como otro incidente
     when(incidente3.estaResuelto()).thenReturn(false);
     when(incidente3.getFecha()).thenReturn(fecha.plusMinutes(10).plusHours(24));
@@ -192,11 +190,11 @@ public class CantidadIncidentesTest {
     when(incidente1.getFecha()).thenReturn(fecha.plusMinutes(10));
     when(incidente1.getFechaResolucion()).thenReturn(fecha);
 
-    // Los incidente 2 y 3 pertenecen a la entidad B
+    // Los incidentes 2 y 3 pertenecen a la entidad B
     when(incidente2.estaResuelto()).thenReturn(false);
     when(incidente2.getFecha()).thenReturn(fecha.plusMinutes(10));
 
-    // Este se abre 10hs Despues que se abre el incidente anterior del mismo servicio
+    // Este se abre 10 hs después que se abre el incidente anterior del mismo servicio
     // Por lo que NO deberia contar como otro incidente
     when(incidente3.estaResuelto()).thenReturn(false);
     when(incidente3.getFecha()).thenReturn(fecha.plusMinutes(10).plusHours(10));

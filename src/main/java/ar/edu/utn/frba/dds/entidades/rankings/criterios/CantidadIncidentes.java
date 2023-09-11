@@ -59,8 +59,8 @@ public class CantidadIncidentes implements CriterioDeOrdenamiento {
 
       /*
        Se cuenta el incidente
-       si se abrio después del ultimo cierre o
-       si el anterior está abierto y hay más de 24hs de diferencia con el actual
+       si se abrio después del último cierre o
+       si el anterior está abierto y hay más de 24 hs de diferencia con el actual
       */
       if (seAbrioLuegoDelUltimoCierre(anterior, actual, ultimoCierre) ||
           pasaronMasDe24Horas(anterior, actual)) {

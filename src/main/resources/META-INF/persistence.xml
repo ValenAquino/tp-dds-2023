@@ -7,6 +7,10 @@
 
   <persistence-unit name="simple-persistence-unit" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+    <class>ar.edu.utn.frba.dds.entidades.Entidad</class>
+    <class>ar.edu.utn.frba.dds.entidades.Establecimiento</class>
+    <class>ar.edu.utn.frba.dds.entidades.Servicio</class>
+    <class>ar.edu.utn.frba.dds.entidades.Incidente</class>
 
     <properties>
       <property name="hibernate.archive.autodetection" value="class"/>

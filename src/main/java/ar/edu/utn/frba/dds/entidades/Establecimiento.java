@@ -2,23 +2,24 @@ package ar.edu.utn.frba.dds.entidades;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.Transient;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Establecimiento extends PersistentEntity {
-  @Transient
+  @OneToMany(mappedBy = "establecimiento")
   private final List<Servicio> servicios = new ArrayList<>();
-  @Transient
+  @ManyToOne
   private final Entidad entidad;
   private String nombre;
   @Embedded
-  private Ubicacion ubicacion;
+  private final Ubicacion ubicacion;
 
-  public Establecimiento(Entidad entidad) {
+  public Establecimiento(Entidad entidad, Ubicacion ubicacion) {
     this.entidad = entidad;
+    this.ubicacion = ubicacion;
   }
 
   public void agregarServicio(Servicio servicio) {
