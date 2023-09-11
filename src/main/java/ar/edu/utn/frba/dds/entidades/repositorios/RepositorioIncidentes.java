@@ -2,12 +2,13 @@ package ar.edu.utn.frba.dds.entidades.repositorios;
 
 import ar.edu.utn.frba.dds.entidades.Incidente;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class RepositorioIncidentes {
   private static RepositorioIncidentes instance;
-  private List<Incidente> incidentes;
+  private final List<Incidente> incidentes = new ArrayList<>();
 
   public List<Incidente> todos() {
     return this.incidentes;
