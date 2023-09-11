@@ -1,9 +1,9 @@
 package ar.edu.utn.frba.dds.notificaciones.medios;
 
 public class Mail {
-  private String destinatario;
-  private String asunto;
-  private String cuerpo;
+  private final String destinatario;
+  private final String asunto;
+  private final String cuerpo;
 
   public Mail(String destinatario, String asunto, String cuerpo) {
     this.destinatario = destinatario;

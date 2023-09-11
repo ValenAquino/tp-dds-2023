@@ -10,15 +10,15 @@ public class RepositorioComunidades {
   private static RepositorioComunidades instance;
   private final List<Comunidad> comunidades = new ArrayList<>();
 
-  public List<Comunidad> todas() {
-    return this.comunidades;
-  }
-
   public static RepositorioComunidades getInstance() {
     if (instance == null) {
       instance = new RepositorioComunidades();
     }
     return instance;
+  }
+
+  public List<Comunidad> todas() {
+    return this.comunidades;
   }
 
   public void agregarComunidad(Comunidad comunidad) {

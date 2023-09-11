@@ -1,31 +1,35 @@
 package ar.edu.utn.frba.dds;
 
-import ar.edu.utn.frba.dds.entidades.*;
+import ar.edu.utn.frba.dds.entidades.Comunidad;
+import ar.edu.utn.frba.dds.entidades.Servicio;
+import ar.edu.utn.frba.dds.entidades.Usuario;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
 import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioComunidades;
-import ar.edu.utn.frba.dds.notificaciones.*;
+import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
+import ar.edu.utn.frba.dds.notificaciones.NotificacionNuevoIncidente;
 import ar.edu.utn.frba.dds.notificaciones.horarios.CalendarioNotificaciones;
 import ar.edu.utn.frba.dds.notificaciones.horarios.RangoHorario;
-import ar.edu.utn.frba.dds.notificaciones.medios.*;
+import ar.edu.utn.frba.dds.notificaciones.medios.MailSender;
+import ar.edu.utn.frba.dds.notificaciones.medios.WhatsAppSender;
 import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
-import org.junit.jupiter.api.*;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 public class IncidentesTest {
 
-  private Usuario usuarioQueUsaSubte;
-  private Usuario reportante;
-  private MedioDeComunicacion medioDeComunicacion;
-  private WhatsAppSender whatsAppSender;
-  private MailSender mailSender;
   private final Servicio ascensor = new Servicio(
       "Ascensor - acceso a estación",
       TipoDeServicio.ASCENSORES
@@ -34,6 +38,11 @@ public class IncidentesTest {
       "Escalera mecánica - acceso a andén",
       TipoDeServicio.ESCALERAS_MECANICAS
   );
+  private Usuario usuarioQueUsaSubte;
+  private Usuario reportante;
+  private MedioDeComunicacion medioDeComunicacion;
+  private WhatsAppSender whatsAppSender;
+  private MailSender mailSender;
   private Comunidad nosMovemosEnSubte;
 
   private ServicioMapas servicioMapas;
@@ -128,6 +137,7 @@ public class IncidentesTest {
 
     verify(mailSender).procesarNotificacion(any(NotificacionNuevoIncidente.class));
   }
+
   @Test
   public void seLlamaElMetodoDeWhatsappCuandoElUsuarioEligeWhatsapp() {
     nosMovemosEnSubte.agregarServicioDeInteres(escaleraMecanica);

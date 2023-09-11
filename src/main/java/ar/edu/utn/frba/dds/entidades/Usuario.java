@@ -11,11 +11,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class Usuario {
-  private String usuario;
-  private String contrasenia;
-  private String nombre;
-  private String apellido;
-  private String correoElectronico;
+  private final String usuario;
+  private final String contrasenia;
+  private final String nombre;
+  private final String apellido;
+  private final String correoElectronico;
   private MedioDeComunicacion medioDeComunicacion;
   private CalendarioNotificaciones calendarioNotificaciones;
 

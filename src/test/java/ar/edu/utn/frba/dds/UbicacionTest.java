@@ -1,12 +1,5 @@
 package ar.edu.utn.frba.dds;
 
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import ar.edu.utn.frba.dds.entidades.Comunidad;
 import ar.edu.utn.frba.dds.entidades.Incidente;
 import ar.edu.utn.frba.dds.entidades.Servicio;
@@ -15,16 +8,21 @@ import ar.edu.utn.frba.dds.entidades.Usuario;
 import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioComunidades;
 import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
 import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class UbicacionTest {
 
-  private ServicioMapas servicioMapas;
-  private MedioDeComunicacion medioDeComunicacion;
   private final Ubicacion plazaDeMayo = new Ubicacion(-34.608421330, -58.372169490);
   private final Ubicacion lima = new Ubicacion(-34.627777777778, -58.381305555556);
   private final Usuario cornelioSaavedra = new Usuario(
@@ -34,7 +32,9 @@ public class UbicacionTest {
       "Saavedra",
       "saavedra@primerajunta.gob"
   );
-  private  Servicio ascensor;
+  private ServicioMapas servicioMapas;
+  private MedioDeComunicacion medioDeComunicacion;
+  private Servicio ascensor;
   private Servicio escaleraMecanica;
   private Servicio banioDeHombres;
   private Comunidad nosLiberamos;
@@ -84,9 +84,9 @@ public class UbicacionTest {
             nosLiberamos
         )
     );  // Set comunidades del usuario
-    nosLiberamos.reportarIncidente(ascensor, "Fuera de servicio", LocalDateTime.now(),cornelioSaavedra);
-    incidenteACerrar = nosLiberamos.reportarIncidente(escaleraMecanica, "Fuera de servicio", LocalDateTime.now(),cornelioSaavedra);
-    nosLiberamos.reportarIncidente(banioDeHombres, "Fuera de servicio", LocalDateTime.now(),cornelioSaavedra);
+    nosLiberamos.reportarIncidente(ascensor, "Fuera de servicio", LocalDateTime.now(), cornelioSaavedra);
+    incidenteACerrar = nosLiberamos.reportarIncidente(escaleraMecanica, "Fuera de servicio", LocalDateTime.now(), cornelioSaavedra);
+    nosLiberamos.reportarIncidente(banioDeHombres, "Fuera de servicio", LocalDateTime.now(), cornelioSaavedra);
   }
 
   @Test
@@ -102,6 +102,7 @@ public class UbicacionTest {
     verify(medioDeComunicacion, times(2))
         .procesarNotificacion(any());
   }
+
   @Test
   public void unUsuarioNoRecibeSugerenciaDeIncidenteCerrado() {
 
@@ -117,6 +118,7 @@ public class UbicacionTest {
     verify(medioDeComunicacion, times(1))
         .procesarNotificacion(any());
   }
+
   @Test
   public void unUsuarioNoRecibeSugerenciaDeIncidenteLejano() {
 

@@ -1,12 +1,12 @@
 package ar.edu.utn.frba.dds;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import ar.edu.utn.frba.dds.excepciones.ArchivoCsvException;
 import ar.edu.utn.frba.dds.importadores.ArchivoParseableCsv;
 import java.nio.file.Paths;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ArchivoParseableCsvTest {
   @Test

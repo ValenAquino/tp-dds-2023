@@ -1,14 +1,5 @@
 package ar.edu.utn.frba.dds;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-
 import ar.edu.utn.frba.dds.entidades.Entidad;
 import ar.edu.utn.frba.dds.entidades.Establecimiento;
 import ar.edu.utn.frba.dds.entidades.Incidente;
@@ -20,15 +11,24 @@ import ar.edu.utn.frba.dds.notificaciones.Notificacion;
 import ar.edu.utn.frba.dds.notificaciones.horarios.CalendarioNotificaciones;
 import ar.edu.utn.frba.dds.notificaciones.horarios.RangoHorario;
 import ar.edu.utn.frba.dds.notificaciones.medios.MailSender;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 public class EntidadTest {
   private Entidad entidad;
@@ -52,9 +52,9 @@ public class EntidadTest {
   @BeforeEach
   public void setUp() {
     entidad = new Entidad("entidad", TipoDeEntidad.SUBTERRANEO);
-    establecimiento1 = new Establecimiento();
-    establecimiento2 = new Establecimiento();
-    establecimiento3 = new Establecimiento();
+    establecimiento1 = new Establecimiento(entidad);
+    establecimiento2 = new Establecimiento(entidad);
+    establecimiento3 = new Establecimiento(entidad);
     servicio1 = new Servicio("servicioInestable", TipoDeServicio.BANIOS);
     servicio2 = new Servicio("ascensorInestable", TipoDeServicio.ASCENSORES);
     servicio3 = new Servicio("escalerasInestables", TipoDeServicio.ESCALERAS_MECANICAS);
@@ -77,20 +77,20 @@ public class EntidadTest {
         "subtemaster@gmail.com"
     );
 
-    rangoHorarioCompleto = new RangoHorario(LocalTime.MIN,LocalTime.MAX);
-    rangoHorarioVacio = new RangoHorario(LocalTime.MIN,LocalTime.MIN);
+    rangoHorarioCompleto = new RangoHorario(LocalTime.MIN, LocalTime.MAX);
+    rangoHorarioVacio = new RangoHorario(LocalTime.MIN, LocalTime.MIN);
 
-    horariosVacios.put(DayOfWeek.THURSDAY,rangoHorarioVacio);
+    horariosVacios.put(DayOfWeek.THURSDAY, rangoHorarioVacio);
 
     calendarioQueNoPermite = new CalendarioNotificaciones(horariosVacios);
 
-    horarios.put(DayOfWeek.MONDAY,rangoHorarioCompleto);
-    horarios.put(DayOfWeek.TUESDAY,rangoHorarioCompleto);
-    horarios.put(DayOfWeek.WEDNESDAY,rangoHorarioCompleto);
-    horarios.put(DayOfWeek.THURSDAY,rangoHorarioCompleto);
-    horarios.put(DayOfWeek.FRIDAY,rangoHorarioCompleto);
-    horarios.put(DayOfWeek.SATURDAY,rangoHorarioCompleto);
-    horarios.put(DayOfWeek.SUNDAY,rangoHorarioCompleto);
+    horarios.put(DayOfWeek.MONDAY, rangoHorarioCompleto);
+    horarios.put(DayOfWeek.TUESDAY, rangoHorarioCompleto);
+    horarios.put(DayOfWeek.WEDNESDAY, rangoHorarioCompleto);
+    horarios.put(DayOfWeek.THURSDAY, rangoHorarioCompleto);
+    horarios.put(DayOfWeek.FRIDAY, rangoHorarioCompleto);
+    horarios.put(DayOfWeek.SATURDAY, rangoHorarioCompleto);
+    horarios.put(DayOfWeek.SUNDAY, rangoHorarioCompleto);
 
     calendarioQuePermite = new CalendarioNotificaciones(horarios);
   }

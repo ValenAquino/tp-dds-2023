@@ -10,15 +10,15 @@ public class RepositorioIncidentes {
   private static RepositorioIncidentes instance;
   private final List<Incidente> incidentes = new ArrayList<>();
 
-  public List<Incidente> todos() {
-    return this.incidentes;
-  }
-
   public static RepositorioIncidentes getInstance() {
     if (instance == null) {
       instance = new RepositorioIncidentes();
     }
     return instance;
+  }
+
+  public List<Incidente> todos() {
+    return this.incidentes;
   }
 
   public List<Incidente> ultimaSemana() {

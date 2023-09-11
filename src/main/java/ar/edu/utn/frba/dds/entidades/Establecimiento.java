@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Establecimiento {
-  private String nombre;
   private final List<Servicio> servicios = new ArrayList<>();
-  private Entidad entidad;
+  private final Entidad entidad;
+  private String nombre;
   private Ubicacion ubicacion;
+
+  public Establecimiento(Entidad entidad) {
+    this.entidad = entidad;
+  }
 
   public void agregarServicio(Servicio servicio) {
     this.servicios.add(servicio);
@@ -28,4 +32,5 @@ public class Establecimiento {
   public Ubicacion getUbicacion() {
     return ubicacion;
   }
+
 }
