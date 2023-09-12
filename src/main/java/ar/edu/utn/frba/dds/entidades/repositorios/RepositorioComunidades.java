@@ -8,11 +8,7 @@ import java.util.List;
 
 public class RepositorioComunidades {
   private static RepositorioComunidades instance;
-  private final List<Comunidad> comunidades;
-
-  private RepositorioComunidades() {
-    this.comunidades = new ArrayList<>();
-  }
+  private final List<Comunidad> comunidades = new ArrayList<>();
 
   public static RepositorioComunidades getInstance() {
     if (instance == null) {
