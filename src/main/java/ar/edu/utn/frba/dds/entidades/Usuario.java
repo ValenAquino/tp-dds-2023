@@ -9,10 +9,11 @@ import ar.edu.utn.frba.dds.notificaciones.horarios.CalendarioNotificaciones;
 import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
 import java.time.LocalDateTime;
 import java.util.List;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Usuario extends PersistentEntity {
@@ -21,9 +22,12 @@ public class Usuario extends PersistentEntity {
   private final String nombre;
   private final String apellido;
   private final String correoElectronico;
+
   @ManyToOne
   private MedioDeComunicacion medioDeComunicacion;
-  @Transient
+
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "calendario_notificaciones_id")
   private CalendarioNotificaciones calendarioNotificaciones;
 
   public Usuario(String usuario, String contrasenia, String nombre, String apellido,
