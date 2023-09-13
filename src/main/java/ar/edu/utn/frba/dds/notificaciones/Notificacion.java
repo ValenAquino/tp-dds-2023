@@ -16,7 +16,6 @@ import javax.persistence.Transient;
 @DiscriminatorColumn(name = "tipo")
 public abstract class Notificacion extends PersistentEntity {
   @ManyToOne
-  @JoinColumn(name = "receptor_id")
   private final Usuario receptor;
   private final LocalDateTime fecha;
   private LocalDateTime fechaEnvio;
