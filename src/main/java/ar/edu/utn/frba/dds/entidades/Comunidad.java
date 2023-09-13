@@ -2,10 +2,7 @@ package ar.edu.utn.frba.dds.entidades;
 
 import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +18,7 @@ public class Comunidad extends PersistentEntity {
   @ManyToMany
   List<Usuario> miembros;
 
-  @Embedded
+  @Transient
   ServicioMapas servicioMapa;
 
   public Comunidad(ServicioMapas servicioMapa) {
