@@ -8,8 +8,8 @@ import java.util.List;
 import org.apache.commons.csv.CSVRecord;
 
 public class ImportadorDeOrganismosDeControl {
-  ArchivoParseableCsv archivoParseableCsv;
-  List<OrganismoDeControl> organismos = new ArrayList<>();
+  final ArchivoParseableCsv archivoParseableCsv;
+  final List<OrganismoDeControl> organismos = new ArrayList<>();
 
   public ImportadorDeOrganismosDeControl(ArchivoParseableCsv archivoParseableCsv) {
     this.archivoParseableCsv = archivoParseableCsv;

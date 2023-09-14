@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 public class Ranking {
-  LocalDateTime fecha;
-  CriterioDeOrdenamiento criterio;
-  RepositorioIncidentes repo;
+  final LocalDateTime fecha;
+  final CriterioDeOrdenamiento criterio;
+  final RepositorioIncidentes repo;
   Map<Entidad, Double> entidades;
 
   public Ranking(RepositorioIncidentes repo, CriterioDeOrdenamiento criterio) {

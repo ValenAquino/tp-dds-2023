@@ -24,9 +24,9 @@ import static org.mockito.Mockito.when;
 public class ExportadorRankingCsvTest {
   private static final String DIRECTORIO_TEMPORAL = "reportes";
   private static Path PathDirectorioTemporal;
-  Ranking ranking = mock(Ranking.class);
-  Entidad subteA = new Entidad("subteA", TipoDeEntidad.SUBTERRANEO);
-  Entidad lineaSarmiento = new Entidad("lineaSarmiento", TipoDeEntidad.FERROCARRIL);
+  final Ranking ranking = mock(Ranking.class);
+  final Entidad subteA = new Entidad("subteA", TipoDeEntidad.SUBTERRANEO);
+  final Entidad lineaSarmiento = new Entidad("lineaSarmiento", TipoDeEntidad.FERROCARRIL);
 
   @BeforeAll
   static void setUp() throws IOException {

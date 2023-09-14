@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 @Entity
 public class Incidente extends PersistentEntity {
