@@ -1,7 +1,10 @@
 package ar.edu.utn.frba.dds.notificaciones.horarios;
 
+import ar.edu.utn.frba.dds.entidades.PersistentEntity;
 import java.time.LocalTime;
+import javax.persistence.Embeddable;
 
+@Embeddable
 public class RangoHorario {
   private final LocalTime inicio;
   private final LocalTime fin;
