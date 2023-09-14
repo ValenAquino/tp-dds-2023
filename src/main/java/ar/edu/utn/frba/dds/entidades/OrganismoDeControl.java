@@ -2,18 +2,23 @@ package ar.edu.utn.frba.dds.entidades;
 
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "organismos_de_control")
 public class OrganismoDeControl extends PersistentEntity {
   private final String nombre;
+  @Column(name = "correo_electronico")
   private final String correoElectronico;
   @ManyToMany
   @JoinTable(
+      name = "entidades_controladas_por_organismos_de_control",
       joinColumns = @JoinColumn(name = "organismo_id"),
       inverseJoinColumns = @JoinColumn(name = "entidad_id")
   )

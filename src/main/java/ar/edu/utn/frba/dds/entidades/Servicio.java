@@ -1,18 +1,19 @@
 package ar.edu.utn.frba.dds.entidades;
 
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
-
-import javax.persistence.Entity;
-import javax.persistence.Transient;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "servicios")
 public class Servicio extends PersistentEntity {
   private final String descripcion;
   @Enumerated(value = EnumType.STRING)
+  @Column(name = "tipo")
   private final TipoDeServicio tipoDeServicio;
 
   @ManyToOne

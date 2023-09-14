@@ -11,12 +11,14 @@ import javax.persistence.EnumType;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.MapKeyEnumerated;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "calendarios_notificaciones")
 public class CalendarioNotificaciones extends PersistentEntity {
   @ElementCollection
-  @CollectionTable(name = "horarios", joinColumns = @JoinColumn(name = "calendario_id"))
-  @MapKeyColumn(name = "day_of_week")
+  @CollectionTable(name = "horarios_notificaciones", joinColumns = @JoinColumn(name = "calendario_id"))
+  @MapKeyColumn(name = "dia_de_semana")
   @MapKeyEnumerated(EnumType.STRING)
   private final Map<DayOfWeek, RangoHorario> horarios;
 
