@@ -5,10 +5,13 @@ import java.util.List;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 @Entity
 public class Establecimiento extends PersistentEntity {
+  @Transient
   private final List<Servicio> servicios = new ArrayList<>();
+  @Transient
   private final Entidad entidad;
   private String nombre;
   @Embedded

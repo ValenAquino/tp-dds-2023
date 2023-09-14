@@ -4,10 +4,15 @@ import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-public class Servicio {
+import javax.persistence.Entity;
+import javax.persistence.Transient;
+
+@Entity
+public class Servicio extends PersistentEntity {
   private final String descripcion;
   @Enumerated(value = EnumType.STRING)
   private final TipoDeServicio tipoDeServicio;
+  @Transient
   private Establecimiento establecimiento;
 
   public Servicio(String descripcion, TipoDeServicio tipoDeServicio) {

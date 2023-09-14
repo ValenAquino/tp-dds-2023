@@ -1,15 +1,24 @@
 package ar.edu.utn.frba.dds.entidades;
 
 import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Comunidad {
+@Entity
+public class Comunidad extends PersistentEntity {
+  @ManyToMany
   List<Servicio> serviciosDeInteres;
+
+  @OneToMany
   List<Incidente> incidentes;
+
+  @ManyToMany
   List<Usuario> miembros;
 
+  @Transient
   ServicioMapas servicioMapa;
 
   public Comunidad(ServicioMapas servicioMapa) {
