@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.entidades;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeEntidad;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -10,13 +11,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "entidades")
 public class Entidad extends PersistentEntity {
   @OneToMany(mappedBy = "entidad")
   private final List<Establecimiento> establecimientos = new ArrayList<>();
   @ManyToMany
   @JoinTable(
+      name = "usuarios_interesados_por_entidades",
       joinColumns = @JoinColumn(name = "entidad_id"),
       inverseJoinColumns = @JoinColumn(name = "usuario_id")
   )
@@ -26,6 +30,7 @@ public class Entidad extends PersistentEntity {
   private final List<Incidente> incidentes = new ArrayList<>();
   private String nombre;
   @Enumerated(value = EnumType.STRING)
+  @Column(name = "tipo")
   private TipoDeEntidad tipoDeEntidad;
 
   public Entidad(String nombre, TipoDeEntidad tipoDeEntidad) {

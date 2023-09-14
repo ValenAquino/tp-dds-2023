@@ -7,27 +7,28 @@ import ar.edu.utn.frba.dds.notificaciones.NotificacionNuevoIncidente;
 import ar.edu.utn.frba.dds.notificaciones.NotificacionRevisionIncidente;
 import ar.edu.utn.frba.dds.notificaciones.horarios.CalendarioNotificaciones;
 import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
 
 @Entity
+@Table(name = "usuarios")
 public class Usuario extends PersistentEntity {
   private final String usuario;
   private final String contrasenia;
   private final String nombre;
   private final String apellido;
+  @Column(name = "correo_electronico")
   private final String correoElectronico;
 
   @ManyToOne
+  @JoinColumn(name = "medio_de_comunicacion_id")
   private MedioDeComunicacion medioDeComunicacion;
 
   @OneToOne(fetch = FetchType.LAZY)

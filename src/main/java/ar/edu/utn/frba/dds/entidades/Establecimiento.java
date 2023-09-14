@@ -6,8 +6,10 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "establecimientos")
 public class Establecimiento extends PersistentEntity {
   @OneToMany(mappedBy = "establecimiento")
   private final List<Servicio> servicios = new ArrayList<>();
