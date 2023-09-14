@@ -1,0 +1,141 @@
+@startuml
+
+hide circle
+hide empty members
+
+ENTITY calendarios_notificaciones {
+  id: integer (PK)
+}
+
+ENTITY comunidades {
+  id: integer (PK)
+  --
+  nombre: varchar(255)
+}
+
+ENTITY entidades {
+  id: integer (PK)
+  --
+  nombre: varchar(255)
+  tipo: varchar(255)
+}
+
+ENTITY entidades_controladas_por_organismos_de_control {
+  organismo_id: integer (PK) (FK)
+  entidad_id: integer (PK) (FK)
+}
+
+ENTITY establecimientos {
+  id: integer (PK)
+  --
+  nombre: varchar(255)
+  latitud: double
+  longitud: double
+  entidad_id: integer (FK)
+}
+
+ENTITY horarios_notificaciones {
+  calendario_id: integer  (PK) (FK)
+  dia_de_semana: varchar(255) (PK)
+  --
+  fin: time
+  inicio: time
+}
+
+ENTITY incidentes {
+  id: integer (PK)
+  --
+  fecha: timestamp
+  fecha_resolucion: timestamp
+  observaciones: varchar(255)
+  resuelto: boolean
+  reportante_id: integer (FK)
+  servicio_id: integer (FK)
+  entidad_id: integer (FK)
+}
+
+ENTITY incidentes_por_comunidades {
+  comunidad_id: integer (PK) (FK)
+  incidente_id: integer (PK) (FK)
+}
+
+ENTITY medios_de_comunicacion {
+  id: integer (PK)
+  --
+  descripcion: varchar(255)
+}
+
+ENTITY miembros_por_comunidades {
+  comunidad_id: integer (FK)
+  usuario_id: integer (FK)
+}
+
+ENTITY notificaciones {
+  id: integer (PK)
+  --
+  tipo: varchar(255)
+  fecha: timestamp
+  fecha_envio: timestamp
+  receptor_id: integer (FK)
+}
+
+ENTITY organismos_de_control {
+  id: integer (PK)
+  --
+  correo_electronico: varchar(255)
+  nombre: varchar(255)
+  responsable_id: integer (FK)
+}
+
+ENTITY servicios {
+  id: integer (PK)
+  --
+  descripcion: varchar(255)
+  tipo: varchar(255)
+  establecimiento_id: integer (FK)
+}
+
+ENTITY servicios_interesados_por_comunidades {
+  comunidad_id: integer (PK) (FK)
+  servicio_id: integer (PK) (FK)
+}
+
+ENTITY usuarios {
+  id: integer (PK)
+  --
+  apellido: varchar(255)
+  contrasenia: varchar(255)
+  correo_electronico: varchar(255)
+  nombre: varchar(255)
+  usuario: varchar(255)
+  calendario_notificaciones_id: integer (FK)
+  medio_de_comunicacion_id: integer (FK)
+}
+
+ENTITY usuarios_interesados_por_entidades {
+  entidad_id: integer (PK) (FK)
+  usuario_id: integer (PK) (FK)
+}
+
+organismos_de_control ||--o{ entidades_controladas_por_organismos_de_control : organismo_id
+entidades ||--o{ entidades_controladas_por_organismos_de_control : entidad_id
+entidades ||--o{ establecimientos : entidad_id
+horarios_notificaciones }o--|| calendarios_notificaciones : calendario_id
+incidentes }o--|| usuarios : reportante_id
+incidentes }o--|| servicios : servicio_id
+incidentes }o--|| entidades : entidad_id
+incidentes_por_comunidades }o--|| comunidades : comunidad_id
+incidentes_por_comunidades }o--|| incidentes : incidente_id
+miembros_por_comunidades }o--|| usuarios : usuario_id
+miembros_por_comunidades }o--|| comunidades : comunidad_id
+notificaciones }o--|| usuarios : receptor_id
+organismos_de_control }o--o| usuarios : responsable_id
+servicios }o--|| establecimientos : establecimiento_id
+servicios_interesados_por_comunidades }o--|| comunidades : comunidad_id
+servicios_interesados_por_comunidades }o--|| servicios : servicio_id
+usuarios ||--o| calendarios_notificaciones : calendario_notificaciones_id
+usuarios }o--|| medios_de_comunicacion : medio_de_comunicacion_id
+usuarios_interesados_por_entidades }o--|| entidades : entidad_id
+usuarios_interesados_por_entidades }o--|| usuarios : usuario_id
+
+@enduml
