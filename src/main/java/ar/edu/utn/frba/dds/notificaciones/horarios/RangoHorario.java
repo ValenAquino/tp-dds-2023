@@ -5,7 +5,7 @@ import java.time.LocalTime;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class RangoHorario extends PersistentEntity {
+public class RangoHorario {
   private final LocalTime inicio;
   private final LocalTime fin;
 
