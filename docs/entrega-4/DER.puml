@@ -117,25 +117,25 @@ ENTITY usuarios_interesados_por_entidades {
   usuario_id: integer (PK) (FK)
 }
 
-organismos_de_control ||--o{ entidades_controladas_por_organismos_de_control : organismo_id
-entidades ||--o{ entidades_controladas_por_organismos_de_control : entidad_id
-entidades ||--o{ establecimientos : entidad_id
-horarios_notificaciones }o--|| calendarios_notificaciones : calendario_id
+organismos_de_control ||--o{ entidades_controladas_por_organismos_de_control
+entidades ||--o{ entidades_controladas_por_organismos_de_control
+entidades ||--o{ establecimientos
+horarios_notificaciones }o--|| calendarios_notificaciones
 incidentes }o--|| usuarios : reportante_id
-incidentes }o--|| servicios : servicio_id
-incidentes }o--|| entidades : entidad_id
-incidentes_por_comunidades }o--|| comunidades : comunidad_id
-incidentes_por_comunidades }o--|| incidentes : incidente_id
-miembros_por_comunidades }o--|| usuarios : usuario_id
-miembros_por_comunidades }o--|| comunidades : comunidad_id
+incidentes }o--|| servicios
+incidentes }o--|| entidades
+incidentes_por_comunidades }o--|| comunidades
+incidentes_por_comunidades }o--|| incidentes
+miembros_por_comunidades }o--|| usuarios
+miembros_por_comunidades }o--|| comunidades
 notificaciones }o--|| usuarios : receptor_id
 organismos_de_control }o--o| usuarios : responsable_id
-servicios }o--|| establecimientos : establecimiento_id
-servicios_interesados_por_comunidades }o--|| comunidades : comunidad_id
-servicios_interesados_por_comunidades }o--|| servicios : servicio_id
-usuarios ||--o| calendarios_notificaciones : calendario_notificaciones_id
-usuarios }o--|| medios_de_comunicacion : medio_de_comunicacion_id
-usuarios_interesados_por_entidades }o--|| entidades : entidad_id
-usuarios_interesados_por_entidades }o--|| usuarios : usuario_id
+servicios }o--|| establecimientos
+servicios_interesados_por_comunidades }o--|| comunidades
+servicios_interesados_por_comunidades }o--|| servicios
+usuarios ||--o| calendarios_notificaciones
+usuarios }o--|| medios_de_comunicacion
+usuarios_interesados_por_entidades }o--|| entidades
+usuarios_interesados_por_entidades }o--|| usuarios
 
 @enduml
