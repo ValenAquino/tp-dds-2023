@@ -11,8 +11,14 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
 
-public class MailSender extends MedioDeComunicacion {
+@Entity
+@DiscriminatorValue("Mail")
+public class MailSender extends MedioDeComunicacion  {
+  @Transient
   private final Properties propiedades = new Properties();
 
   public MailSender() {

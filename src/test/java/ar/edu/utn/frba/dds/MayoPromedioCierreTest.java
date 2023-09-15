@@ -15,12 +15,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class MayoPromedioCierreTest {
-  Entidad entidadA = new Entidad("Entidad A", TipoDeEntidad.SUPERMERCADO);
-  Entidad entidadB = new Entidad("Entidad B", TipoDeEntidad.BANCO);
-  MayorPromedioCierre criterio = new MayorPromedioCierre();
-  Incidente incidente1 = mock(Incidente.class);
-  Incidente incidente2 = mock(Incidente.class);
-  Incidente incidente3 = mock(Incidente.class);
+  final Entidad entidadA = new Entidad("Entidad A", TipoDeEntidad.SUPERMERCADO);
+  final Entidad entidadB = new Entidad("Entidad B", TipoDeEntidad.BANCO);
+  final MayorPromedioCierre criterio = new MayorPromedioCierre();
+  final Incidente incidente1 = mock(Incidente.class);
+  final Incidente incidente2 = mock(Incidente.class);
+  final Incidente incidente3 = mock(Incidente.class);
 
   @BeforeEach
   public void setUp() {
@@ -32,9 +32,7 @@ public class MayoPromedioCierreTest {
   private void assertOrdenEntidades(List<Incidente> incidentes, Entidad[] entidadesEsperadas) {
     Map<Entidad, Double> entidadesOrdenadas = criterio.getEntidadesOrdenadas(incidentes);
 
-    entidadesOrdenadas.forEach((entidad, count) -> {
-      System.out.println("Entidad: " + entidad.getNombre() + ", Incidentes: " + count);
-    });
+    entidadesOrdenadas.forEach((entidad, count) -> System.out.println("Entidad: " + entidad.getNombre() + ", Incidentes: " + count));
 
     int i = 0;
     for (Map.Entry<Entidad, Double> entry : entidadesOrdenadas.entrySet()) {
@@ -77,10 +75,10 @@ public class MayoPromedioCierreTest {
     when(incidente2.estaResuelto()).thenReturn(true);
     when(incidente3.estaResuelto()).thenReturn(true);
 
-    // Promedio de cierre de 1 dia Entidad A
+    // Promedio de cierre de 1 día Entidad A
     when(incidente1.tiempoDeCierre()).thenReturn(Duration.ofDays(1).toMillis());
 
-    // Promedio de cierre de 2 dias Entidad B
+    // Promedio de cierre de 2 días Entidad B
     when(incidente2.tiempoDeCierre()).thenReturn(Duration.ofDays(2).toMillis());
     when(incidente3.tiempoDeCierre()).thenReturn(Duration.ofDays(2).toMillis());
 
@@ -92,10 +90,10 @@ public class MayoPromedioCierreTest {
     when(incidente2.estaResuelto()).thenReturn(true);
     when(incidente3.estaResuelto()).thenReturn(true);
 
-    // Promedio de cierre de 2 dia Entidad A
+    // Promedio de cierre de 2 día Entidad A
     when(incidente1.tiempoDeCierre()).thenReturn(Duration.ofDays(2).toMillis());
 
-    // Promedio de cierre de 1 dias Entidad B
+    // Promedio de cierre de 1 días Entidad B
     when(incidente2.tiempoDeCierre()).thenReturn(Duration.ofDays(1).toMillis());
     when(incidente3.tiempoDeCierre()).thenReturn(Duration.ofDays(1).toMillis());
 

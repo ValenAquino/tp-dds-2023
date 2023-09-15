@@ -4,7 +4,7 @@ import ar.edu.utn.frba.dds.password.validacion.PoliticaContrasena;
 import java.util.List;
 
 public class ValidacionContrasenaException extends RuntimeException {
-  public List<PoliticaContrasena> politicasAValidar;
+  public final List<PoliticaContrasena> politicasAValidar;
 
   public ValidacionContrasenaException(List<PoliticaContrasena> politicasAValidar, String message) {
     super(message);

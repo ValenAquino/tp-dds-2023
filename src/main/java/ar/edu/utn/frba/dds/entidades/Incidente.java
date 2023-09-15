@@ -1,14 +1,23 @@
 package ar.edu.utn.frba.dds.entidades;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-public class Incidente {
+@Entity
+@Table(name = "incidentes")
+public class Incidente extends PersistentEntity {
   boolean resuelto;
   LocalDateTime fecha;
+  @Column(name = "fecha_resolucion")
   LocalDateTime fechaResolucion;
+  @ManyToOne
   Servicio servicio;
   String observaciones;
+  @ManyToOne
   Usuario reportante;
 
   public Incidente(Servicio servicio, String observaciones) {

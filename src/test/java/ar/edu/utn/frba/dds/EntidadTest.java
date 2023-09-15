@@ -4,6 +4,7 @@ import ar.edu.utn.frba.dds.entidades.Entidad;
 import ar.edu.utn.frba.dds.entidades.Establecimiento;
 import ar.edu.utn.frba.dds.entidades.Incidente;
 import ar.edu.utn.frba.dds.entidades.Servicio;
+import ar.edu.utn.frba.dds.entidades.Ubicacion;
 import ar.edu.utn.frba.dds.entidades.Usuario;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeEntidad;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
@@ -49,12 +50,21 @@ public class EntidadTest {
   private Map<DayOfWeek, RangoHorario> horarios;
   private Map<DayOfWeek, RangoHorario> horariosVacios;
 
+  private Ubicacion facultadDeMedicina;
+  private Ubicacion castroBarros;
+  private Ubicacion medrano;
+
   @BeforeEach
   public void setUp() {
+
+    Ubicacion facultadDeMedicina = new Ubicacion(-34.59977778, -58.39766667);
+    Ubicacion castroBarros = new Ubicacion(-34.611806, -58.42175);
+    Ubicacion medrano = new Ubicacion(-34.6033341,-58.4206027);
+
     entidad = new Entidad("entidad", TipoDeEntidad.SUBTERRANEO);
-    establecimiento1 = new Establecimiento(entidad);
-    establecimiento2 = new Establecimiento(entidad);
-    establecimiento3 = new Establecimiento(entidad);
+    establecimiento1 = new Establecimiento(entidad, facultadDeMedicina);
+    establecimiento2 = new Establecimiento(entidad, castroBarros);
+    establecimiento3 = new Establecimiento(entidad, medrano);
     servicio1 = new Servicio("servicioInestable", TipoDeServicio.BANIOS);
     servicio2 = new Servicio("ascensorInestable", TipoDeServicio.ASCENSORES);
     servicio3 = new Servicio("escalerasInestables", TipoDeServicio.ESCALERAS_MECANICAS);

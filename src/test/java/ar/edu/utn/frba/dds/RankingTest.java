@@ -4,6 +4,7 @@ import ar.edu.utn.frba.dds.entidades.Entidad;
 import ar.edu.utn.frba.dds.entidades.Establecimiento;
 import ar.edu.utn.frba.dds.entidades.Incidente;
 import ar.edu.utn.frba.dds.entidades.Servicio;
+import ar.edu.utn.frba.dds.entidades.Ubicacion;
 import ar.edu.utn.frba.dds.entidades.Usuario;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeEntidad;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
@@ -30,6 +31,11 @@ public class RankingTest {
   Servicio ascensorALaCalle;
   Servicio escaleraMecanica;
   Servicio banioDeHombres;
+
+  Ubicacion carabobo;
+  Ubicacion flores;
+  Ubicacion caballito;
+  Ubicacion once;
   RepositorioIncidentes repo;
 
   @BeforeEach
@@ -43,13 +49,16 @@ public class RankingTest {
   }
 
   private void setUpSubteA() {
+    carabobo = new Ubicacion(-34.626417, -58.456083);
+    flores = new Ubicacion(-34.62861111, -58.46444444);
+
     subteA = new Entidad("subteA", TipoDeEntidad.SUBTERRANEO);
 
     ascensorALaCalle = new Servicio("ascensorALaCalle", TipoDeServicio.ASCENSORES);
     escaleraMecanica = new Servicio("escaleraMecanica", TipoDeServicio.ESCALERAS_MECANICAS);
 
-    Establecimiento estacionCarabobo = new Establecimiento(subteA);
-    Establecimiento estacionFlores = new Establecimiento(subteA);
+    Establecimiento estacionCarabobo = new Establecimiento(subteA, carabobo);
+    Establecimiento estacionFlores = new Establecimiento(subteA, flores);
 
     estacionCarabobo.agregarServicio(escaleraMecanica);
     estacionFlores.agregarServicio(ascensorALaCalle);
@@ -62,10 +71,13 @@ public class RankingTest {
   }
 
   private void setUpLineaSarmiento() {
+    caballito = new Ubicacion(-34.6194, -58.4438);
+    once = new Ubicacion(-34.608611111111, -58.408888888889);
+
     lineaSarmiento = new Entidad("lineaSarmiento", TipoDeEntidad.FERROCARRIL);
 
-    Establecimiento estacionCaballito = new Establecimiento(lineaSarmiento);
-    Establecimiento estacionOnce = new Establecimiento(lineaSarmiento);
+    Establecimiento estacionCaballito = new Establecimiento(lineaSarmiento, caballito);
+    Establecimiento estacionOnce = new Establecimiento(lineaSarmiento, once);
 
     banioDeMujeres = new Servicio("banioDeMujeres", TipoDeServicio.BANIOS);
     banioDeHombres = new Servicio("banioDeHombres", TipoDeServicio.BANIOS);
@@ -87,9 +99,7 @@ public class RankingTest {
 
     rankingMayorCantidadIncidentes.generarRanking();
 
-    rankingMayorCantidadIncidentes.getEntidades().forEach((entidad, count) -> {
-      System.out.println("Entidad: " + entidad.getNombre() + ", Incidentes: " + count);
-    });
+    rankingMayorCantidadIncidentes.getEntidades().forEach((entidad, count) -> System.out.println("Entidad: " + entidad.getNombre() + ", Incidentes: " + count));
 
     Assertions.assertEquals(
         2, rankingMayorCantidadIncidentes.getEntidades().get(lineaSarmiento)
@@ -107,9 +117,7 @@ public class RankingTest {
 
     rankingMayorPromedioDeCierre.generarRanking();
 
-    rankingMayorPromedioDeCierre.getEntidades().forEach((entidad, count) -> {
-      System.out.println("Entidad: " + entidad.getNombre() + ", Incidentes: " + count);
-    });
+    rankingMayorPromedioDeCierre.getEntidades().forEach((entidad, count) -> System.out.println("Entidad: " + entidad.getNombre() + ", Incidentes: " + count));
 
     Assertions.assertEquals(
         Duration.ofDays(1).toMillis(),

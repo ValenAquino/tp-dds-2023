@@ -1,15 +1,39 @@
 package ar.edu.utn.frba.dds.entidades;
 
 import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Comunidad {
+@Entity
+@Table(name = "comunidades")
+public class Comunidad extends PersistentEntity {
+  @ManyToMany
+  @JoinTable(
+      name = "servicios_interesados_por_comunidades",
+      joinColumns = @JoinColumn(name = "comunidad_id"),
+      inverseJoinColumns = @JoinColumn(name = "servicio_id"))
   List<Servicio> serviciosDeInteres;
+
+  @OneToMany
+  @JoinTable(
+      name = "incidentes_por_comunidades",
+      joinColumns = @JoinColumn(name = "comunidad_id"),
+      inverseJoinColumns = @JoinColumn(name = "incidente_id"))
   List<Incidente> incidentes;
+
+  @ManyToMany
+  @JoinTable(
+      name = "miembros_por_comunidades",
+      joinColumns = @JoinColumn(name = "comunidad_id"),
+      inverseJoinColumns = @JoinColumn(name = "usuario_id"))
   List<Usuario> miembros;
 
+  String nombre;
+
+  @Transient
   ServicioMapas servicioMapa;
 
   public Comunidad(ServicioMapas servicioMapa) {
