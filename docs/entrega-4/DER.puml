@@ -128,7 +128,7 @@ incidentes_por_comunidades }o--|| comunidades
 incidentes_por_comunidades }o--|| incidentes
 miembros_por_comunidades }o--|| usuarios 
 miembros_por_comunidades }o--|| comunidades
-notificaciones }o--|| usuarios : receptor_id
+notificaciones }o--|| usuarios : receptor
 organismos_de_control }o--o| usuarios : responsable
 servicios }o--|| establecimientos
 servicios_interesados_por_comunidades }o--|| comunidades
