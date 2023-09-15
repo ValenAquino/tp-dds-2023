@@ -22,15 +22,14 @@ public class RepositorioComunidades implements WithGlobalEntityManager {
 
   @SuppressWarnings("unchecked")
   public List<Comunidad> todas() {
-    return entityManager().createQuery("from comunidades").getResultList();
+    return entityManager().createQuery("from Comunidad").getResultList();
   }
 
   public List<Comunidad> getComunidadesDe(Usuario usuario) {
-    return todas().stream()
-        .filter(c -> c.tieneMiembro(usuario))
-        .toList();
-
-    // TODO: Implementar con query --> Borrar todas()
+    return entityManager()
+        .createQuery("from Comunidad c join c.miembros m where m.id = :id", Comunidad.class)
+        .setParameter("id", usuario.getId())
+        .getResultList();
   }
 
   public List<Comunidad> getComunidadesInteresadas(Usuario usuario, Servicio servicio) {
