@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.entidades;
 
+import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioComunidades;
 import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
 
 import javax.persistence.*;
@@ -41,6 +42,7 @@ public class Comunidad extends PersistentEntity {
     this.incidentes = new ArrayList<>();
     this.miembros = new ArrayList<>();
     this.servicioMapa = servicioMapa;
+    RepositorioComunidades.getInstance().persistir(this);
   }
 
   public List<Incidente> getIncidentes() {

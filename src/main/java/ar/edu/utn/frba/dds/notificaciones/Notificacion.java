@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.notificaciones;
 
 import ar.edu.utn.frba.dds.entidades.PersistentEntity;
 import ar.edu.utn.frba.dds.entidades.Usuario;
+import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioNotificaciones;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -21,7 +22,7 @@ public abstract class Notificacion extends PersistentEntity {
   @ManyToOne
   private final Usuario receptor;
   private final LocalDateTime fecha;
-  @Column(name = "fecha_envio")
+  @Column(name = "fecha_envio", nullable = true)
   private LocalDateTime fechaEnvio;
 
   public Notificacion(Usuario receptor) {
@@ -43,9 +44,12 @@ public abstract class Notificacion extends PersistentEntity {
 
   public void marcarComoEnviada() {
     this.fechaEnvio = LocalDateTime.now();
+    // TODO: Chequear si para update seria algo distinto
+    RepositorioNotificaciones.getInstance().persistir(this);
   }
 
   public void enviar() {
     receptor.notificar(this);
+    RepositorioNotificaciones.getInstance().persistir(this);
   }
 }

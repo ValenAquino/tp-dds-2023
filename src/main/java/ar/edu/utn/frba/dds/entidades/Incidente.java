@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.entidades;
 
+import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioIncidentes;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -32,6 +33,7 @@ public class Incidente extends PersistentEntity {
     this(servicio, observaciones);
     this.fecha = fecha;
     this.reportante = reportante;
+    RepositorioIncidentes.getInstance().persistir(this);
   }
 
   public boolean estaResuelto() {

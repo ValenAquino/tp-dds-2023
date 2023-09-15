@@ -75,8 +75,6 @@ public class IncidentesTest {
     nosMovemosEnSubte = new Comunidad(servicioMapas);
     nosMovemosEnSubte.agregarMiembro(usuarioQueUsaSubte);
     nosMovemosEnSubte.agregarMiembro(reportante);
-
-    RepositorioComunidades.getInstance().agregarComunidad(nosMovemosEnSubte);
   }
 
   @Test
