@@ -41,13 +41,9 @@ public abstract class Notificacion extends PersistentEntity {
 
   public void marcarComoEnviada() {
     this.fechaEnvio = LocalDateTime.now();
-    // TODO: Chequear si para update seria algo distinto
-    // RepositorioNotificaciones.getInstance().persistir(this);
   }
 
   public void enviar() {
     receptor.notificar(this);
-    // TODO: Chequear cuándo persistir la notificación
-    // RepositorioNotificaciones.getInstance().persistir(this);
   }
 }
