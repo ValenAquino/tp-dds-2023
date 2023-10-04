@@ -11,10 +11,12 @@ import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
 import ar.edu.utn.frba.dds.entidades.rankings.Ranking;
 import ar.edu.utn.frba.dds.entidades.rankings.criterios.CantidadIncidentes;
 import ar.edu.utn.frba.dds.entidades.rankings.criterios.MayorPromedioCierre;
+import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioComunidades;
 import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioIncidentes;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioNotificaciones;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,6 +39,8 @@ public class RankingTest {
   Ubicacion caballito;
   Ubicacion once;
   RepositorioIncidentes repo;
+  RepositorioNotificaciones repositorioNotificaciones;
+  RepositorioComunidades repositorioComunidades;
 
   @BeforeEach
   public void setUp() {
@@ -44,6 +48,8 @@ public class RankingTest {
     setUpLineaSarmiento();
 
     repo = mock(RepositorioIncidentes.class);
+    repositorioNotificaciones = mock(RepositorioNotificaciones.class);
+    repositorioComunidades = mock(RepositorioComunidades.class);
     rankingMayorCantidadIncidentes = new Ranking(repo, new CantidadIncidentes());
     rankingMayorPromedioDeCierre = new Ranking(repo, new MayorPromedioCierre());
   }
@@ -193,7 +199,15 @@ public class RankingTest {
   }
 
   public Incidente crearIncidente(Servicio s, String obs, LocalDateTime fecha) {
-    Usuario usuario = new Usuario("usr", "pw", "unNombre", "unApellido", "usr@mail");
+    Usuario usuario = new Usuario(
+        "usr",
+        "pw",
+        "unNombre",
+        "unApellido",
+        "usr@mail",
+        repositorioComunidades,
+        repositorioNotificaciones
+    );
     return new Incidente(s, obs, fecha, usuario);
   }
 }

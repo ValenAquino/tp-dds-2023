@@ -26,13 +26,7 @@ public class UbicacionTest {
 
   private final Ubicacion plazaDeMayo = new Ubicacion(-34.608421330, -58.372169490);
   private final Ubicacion lima = new Ubicacion(-34.627777777778, -58.381305555556);
-  private final Usuario cornelioSaavedra = new Usuario(
-      "cornelio.saavedra",
-      "",
-      "Cornelio",
-      "Saavedra",
-      "saavedra@primerajunta.gob"
-  );
+  private Usuario cornelioSaavedra;
   private ServicioMapas servicioMapas;
   private MedioDeComunicacion medioDeComunicacion;
   private Servicio ascensor;
@@ -91,11 +85,18 @@ public class UbicacionTest {
     nosLiberamos.reportarIncidente(banioDeHombres, "Fuera de servicio", LocalDateTime.now(), cornelioSaavedra);
 
     repositorioNotificaciones = mock(RepositorioNotificaciones.class);
-    // ServiceLocator.set("RepositorioNotificaciones", repositorioNotificaciones);
-    // o
-    // cornelioSaavedra.setRepositorioNotificaciones(repositorioNotificaciones);
-    // o
-    // cornelioSaavedra = new Usuario(..., repositorioNotificaciones);
+
+    cornelioSaavedra = new Usuario(
+        "cornelio.saavedra",
+        "",
+        "Cornelio",
+        "Saavedra",
+        "saavedra@primerajunta.gob",
+        repositorioComunidades,
+        repositorioNotificaciones
+    );
+
+
   }
 
   @Test

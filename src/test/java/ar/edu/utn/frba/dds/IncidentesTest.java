@@ -5,6 +5,7 @@ import ar.edu.utn.frba.dds.entidades.Servicio;
 import ar.edu.utn.frba.dds.entidades.Usuario;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
 import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioComunidades;
+import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioNotificaciones;
 import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
 import ar.edu.utn.frba.dds.notificaciones.NotificacionNuevoIncidente;
 import ar.edu.utn.frba.dds.notificaciones.horarios.CalendarioNotificaciones;
@@ -45,17 +46,23 @@ public class IncidentesTest {
   private MailSender mailSender;
   private Comunidad nosMovemosEnSubte;
   private RepositorioComunidades repositorioComunidades;
+  private RepositorioNotificaciones repositorioNotificaciones;
 
   private ServicioMapas servicioMapas;
 
   @BeforeEach
   public void inicializar() {
+    repositorioComunidades = mock(RepositorioComunidades.class);
+    repositorioNotificaciones = mock(RepositorioNotificaciones.class);
+
     usuarioQueUsaSubte = new Usuario(
         "subte.master",
         "",
         "Subte",
         "Master",
-        "subtemaster@gmail.com"
+        "subtemaster@gmail.com",
+        repositorioComunidades,
+        repositorioNotificaciones
     );
 
     reportante = new Usuario(
@@ -63,21 +70,17 @@ public class IncidentesTest {
         "",
         "Subte",
         "Reportante",
-        "subtereportante@gmail.com"
+        "subtereportante@gmail.com",
+        repositorioComunidades,
+        repositorioNotificaciones
     );
 
     medioDeComunicacion = mock(MedioDeComunicacion.class);
     whatsAppSender = mock(WhatsAppSender.class);
     mailSender = mock(MailSender.class);
     nosMovemosEnSubte = new Comunidad(servicioMapas);
-    repositorioComunidades = mock(RepositorioComunidades.class);
 
     usuarioQueUsaSubte.setMedioDeComunicacion(medioDeComunicacion);
-    // ServiceLocator.set("RepositorioComunidades", repositorioComunidades);
-    // o
-    // reportante.setRepositorioComunidades(repositorioComunidades);
-    // o
-    // reportante = new Usuario(..., repositorioComunidades);
 
     nosMovemosEnSubte = new Comunidad(servicioMapas);
     nosMovemosEnSubte.agregarMiembro(usuarioQueUsaSubte);
