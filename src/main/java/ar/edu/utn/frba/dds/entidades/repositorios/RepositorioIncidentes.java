@@ -5,10 +5,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.uqbarproject.jpa.java8.extras.WithGlobalEntityManager;
 
-public class RepositorioIncidentes {
+public class RepositorioIncidentes implements WithGlobalEntityManager {
   private static RepositorioIncidentes instance;
-  private final List<Incidente> incidentes = new ArrayList<>();
 
   public static RepositorioIncidentes getInstance() {
     if (instance == null) {
@@ -17,8 +17,13 @@ public class RepositorioIncidentes {
     return instance;
   }
 
+  public void persistir(Incidente incidente) {
+    entityManager().persist(incidente);
+  }
+
+  @SuppressWarnings("unchecked")
   public List<Incidente> todos() {
-    return this.incidentes;
+    return entityManager().createQuery("from incidentes").getResultList();
   }
 
   public List<Incidente> ultimaSemana() {
@@ -28,5 +33,7 @@ public class RepositorioIncidentes {
     return todos().stream()
         .filter(i -> i.getFecha().isAfter(fechaLimite) && i.getFecha().isBefore(ahora))
         .collect(Collectors.toList());
+
+    // TODO: Implementar con query --> Borrar todos()
   }
 }

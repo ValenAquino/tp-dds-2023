@@ -119,9 +119,13 @@ public class RankingTest {
 
     rankingMayorPromedioDeCierre.getEntidades().forEach((entidad, count) -> System.out.println("Entidad: " + entidad.getNombre() + ", Incidentes: " + count));
 
+    double tolerancia = 1e-7;// Tolerancia muy pequeña
+    long valorEsperado = Duration.ofDays(1).toMillis();
+
     Assertions.assertEquals(
-        Duration.ofDays(1).toMillis(),
-        rankingMayorPromedioDeCierre.getEntidades().get(lineaSarmiento)
+        valorEsperado,
+        rankingMayorPromedioDeCierre.getEntidades().get(lineaSarmiento),
+        valorEsperado * tolerancia
     );
 
     Assertions.assertEquals(

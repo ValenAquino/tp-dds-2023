@@ -2,16 +2,14 @@ package ar.edu.utn.frba.dds.notificaciones;
 
 import ar.edu.utn.frba.dds.entidades.PersistentEntity;
 import ar.edu.utn.frba.dds.entidades.Usuario;
-import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "notificaciones")
@@ -21,7 +19,7 @@ public abstract class Notificacion extends PersistentEntity {
   @ManyToOne
   private final Usuario receptor;
   private final LocalDateTime fecha;
-  @Column(name = "fecha_envio")
+  @Column(name = "fecha_envio", nullable = true)
   private LocalDateTime fechaEnvio;
 
   public Notificacion(Usuario receptor) {

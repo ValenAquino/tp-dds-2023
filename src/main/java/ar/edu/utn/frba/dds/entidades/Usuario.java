@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.entidades;
 
 import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioComunidades;
+import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioNotificaciones;
 import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
 import ar.edu.utn.frba.dds.notificaciones.Notificacion;
 import ar.edu.utn.frba.dds.notificaciones.NotificacionNuevoIncidente;
@@ -86,6 +87,7 @@ public class Usuario extends PersistentEntity {
   }
 
   public void notificar(Notificacion notificacion) {
+    RepositorioNotificaciones.getInstance().persistir(notificacion);
     if (puedeRecibirNotificacion()) {
       medioDeComunicacion.notificar(notificacion);
     }
