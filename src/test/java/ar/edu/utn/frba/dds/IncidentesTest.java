@@ -44,6 +44,7 @@ public class IncidentesTest {
   private WhatsAppSender whatsAppSender;
   private MailSender mailSender;
   private Comunidad nosMovemosEnSubte;
+  private RepositorioComunidades repositorioComunidades;
 
   private ServicioMapas servicioMapas;
 
@@ -69,8 +70,14 @@ public class IncidentesTest {
     whatsAppSender = mock(WhatsAppSender.class);
     mailSender = mock(MailSender.class);
     nosMovemosEnSubte = new Comunidad(servicioMapas);
+    repositorioComunidades = mock(RepositorioComunidades.class);
 
     usuarioQueUsaSubte.setMedioDeComunicacion(medioDeComunicacion);
+    // ServiceLocator.set("RepositorioComunidades", repositorioComunidades);
+    // o
+    // reportante.setRepositorioComunidades(repositorioComunidades);
+    // o
+    // reportante = new Usuario(..., repositorioComunidades);
 
     nosMovemosEnSubte = new Comunidad(servicioMapas);
     nosMovemosEnSubte.agregarMiembro(usuarioQueUsaSubte);

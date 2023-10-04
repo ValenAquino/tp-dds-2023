@@ -6,6 +6,7 @@ import ar.edu.utn.frba.dds.entidades.Servicio;
 import ar.edu.utn.frba.dds.entidades.Ubicacion;
 import ar.edu.utn.frba.dds.entidades.Usuario;
 import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioComunidades;
+import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioNotificaciones;
 import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
 import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
 import java.time.LocalDateTime;
@@ -40,6 +41,7 @@ public class UbicacionTest {
   private Comunidad nosLiberamos;
 
   private RepositorioComunidades repositorioComunidades;
+  private RepositorioNotificaciones repositorioNotificaciones;
 
   private Incidente incidenteACerrar;
 
@@ -87,6 +89,13 @@ public class UbicacionTest {
     nosLiberamos.reportarIncidente(ascensor, "Fuera de servicio", LocalDateTime.now(), cornelioSaavedra);
     incidenteACerrar = nosLiberamos.reportarIncidente(escaleraMecanica, "Fuera de servicio", LocalDateTime.now(), cornelioSaavedra);
     nosLiberamos.reportarIncidente(banioDeHombres, "Fuera de servicio", LocalDateTime.now(), cornelioSaavedra);
+
+    repositorioNotificaciones = mock(RepositorioNotificaciones.class);
+    // ServiceLocator.set("RepositorioNotificaciones", repositorioNotificaciones);
+    // o
+    // cornelioSaavedra.setRepositorioNotificaciones(repositorioNotificaciones);
+    // o
+    // cornelioSaavedra = new Usuario(..., repositorioNotificaciones);
   }
 
   @Test
