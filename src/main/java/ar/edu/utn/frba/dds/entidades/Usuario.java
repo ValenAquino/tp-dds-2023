@@ -41,19 +41,25 @@ public class Usuario extends PersistentEntity {
   @Transient
   private RepositorioComunidades repositorioComunidades;
 
+  @Transient
+  private RepositorioNotificaciones repositorioNotificaciones;
+
   @PostLoad
   public void postLoad() {
     this.repositorioComunidades = RepositorioComunidades.getInstance();
+    this.repositorioNotificaciones = RepositorioNotificaciones.getInstance();
   }
 
   public Usuario(String usuario, String contrasenia, String nombre, String apellido,
-                 String correoElectronico, RepositorioComunidades repositorioComunidades) {
+                 String correoElectronico, RepositorioComunidades repositorioComunidades,
+                 RepositorioNotificaciones repositorioNotificaciones) {
     this.usuario = usuario;
     this.contrasenia = contrasenia;
     this.nombre = nombre;
     this.apellido = apellido;
     this.correoElectronico = correoElectronico;
     this.repositorioComunidades = repositorioComunidades;
+    this.repositorioNotificaciones = repositorioNotificaciones;
   }
 
   public void setMedioDeComunicacion(MedioDeComunicacion medioDeComunicacion) {
@@ -98,7 +104,7 @@ public class Usuario extends PersistentEntity {
   }
 
   public void notificar(Notificacion notificacion) {
-    RepositorioNotificaciones.getInstance().persistir(notificacion);
+    repositorioNotificaciones.persistir(notificacion);
     if (puedeRecibirNotificacion()) {
       medioDeComunicacion.notificar(notificacion);
     }
