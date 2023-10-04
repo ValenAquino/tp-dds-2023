@@ -14,7 +14,9 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.PostLoad;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -36,13 +38,22 @@ public class Usuario extends PersistentEntity {
   @JoinColumn(name = "calendario_notificaciones_id")
   private CalendarioNotificaciones calendarioNotificaciones;
 
+  @Transient
+  private RepositorioComunidades repositorioComunidades;
+
+  @PostLoad
+  public void postLoad() {
+    this.repositorioComunidades = RepositorioComunidades.getInstance();
+  }
+
   public Usuario(String usuario, String contrasenia, String nombre, String apellido,
-                 String correoElectronico) {
+                 String correoElectronico, RepositorioComunidades repositorioComunidades) {
     this.usuario = usuario;
     this.contrasenia = contrasenia;
     this.nombre = nombre;
     this.apellido = apellido;
     this.correoElectronico = correoElectronico;
+    this.repositorioComunidades = repositorioComunidades;
   }
 
   public void setMedioDeComunicacion(MedioDeComunicacion medioDeComunicacion) {
@@ -99,7 +110,6 @@ public class Usuario extends PersistentEntity {
   }
 
   private List<Comunidad> getComunidadesInteresadas(Servicio servicio) {
-    return RepositorioComunidades
-        .getInstance().getComunidadesInteresadas(this, servicio);
+    return repositorioComunidades.getComunidadesInteresadas(this, servicio);
   }
 }
