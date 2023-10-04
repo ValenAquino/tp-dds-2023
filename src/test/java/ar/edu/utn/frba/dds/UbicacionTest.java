@@ -10,8 +10,10 @@ import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioNotificaciones;
 import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
 import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -53,13 +55,8 @@ public class UbicacionTest {
         any(Long.class)
     )).thenReturn(false);
 
-    when(servicioMapas.ubicacionActual(cornelioSaavedra.getCorreoElectronico()))
-        .thenReturn(plazaDeMayo); // Set Ubicacion del Usuario
-
     medioDeComunicacion = mock(MedioDeComunicacion.class);
     nosLiberamos = new Comunidad(servicioMapas);
-    nosLiberamos.agregarMiembro(cornelioSaavedra);
-    cornelioSaavedra.setMedioDeComunicacion(medioDeComunicacion);
 
     ascensor = mock(Servicio.class);
     when(ascensor.getUbicacion()).thenReturn(plazaDeMayo);  // Set Ubicacion del Servicio
@@ -75,11 +72,7 @@ public class UbicacionTest {
     nosLiberamos.agregarServicioDeInteres(escaleraMecanica);
 
     repositorioComunidades = mock(RepositorioComunidades.class);
-    when(repositorioComunidades.getComunidadesDe(cornelioSaavedra)).thenReturn(
-        Collections.singletonList(
-            nosLiberamos
-        )
-    );  // Set comunidades del usuario
+
     nosLiberamos.reportarIncidente(ascensor, "Fuera de servicio", LocalDateTime.now(), cornelioSaavedra);
     incidenteACerrar = nosLiberamos.reportarIncidente(escaleraMecanica, "Fuera de servicio", LocalDateTime.now(), cornelioSaavedra);
     nosLiberamos.reportarIncidente(banioDeHombres, "Fuera de servicio", LocalDateTime.now(), cornelioSaavedra);
@@ -96,7 +89,17 @@ public class UbicacionTest {
         repositorioNotificaciones
     );
 
+    when(repositorioComunidades.getComunidadesDe(cornelioSaavedra)).thenReturn(
+        Collections.singletonList(
+            nosLiberamos
+        )
+    );  // Set comunidades del usuario
 
+    when(servicioMapas.ubicacionActual(cornelioSaavedra.getCorreoElectronico()))
+        .thenReturn(plazaDeMayo); // Set Ubicacion del Usuario
+
+    nosLiberamos.agregarMiembro(cornelioSaavedra);
+    cornelioSaavedra.setMedioDeComunicacion(medioDeComunicacion);
   }
 
   @Test

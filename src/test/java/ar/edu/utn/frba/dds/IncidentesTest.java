@@ -16,6 +16,7 @@ import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,6 +29,7 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class IncidentesTest {
 
@@ -85,6 +87,18 @@ public class IncidentesTest {
     nosMovemosEnSubte = new Comunidad(servicioMapas);
     nosMovemosEnSubte.agregarMiembro(usuarioQueUsaSubte);
     nosMovemosEnSubte.agregarMiembro(reportante);
+
+    when(repositorioComunidades.getComunidadesInteresadas(reportante, ascensor)).thenReturn(
+        Collections.singletonList(
+            nosMovemosEnSubte
+        )
+    );
+
+    when(repositorioComunidades.getComunidadesInteresadas(reportante, escaleraMecanica)).thenReturn(
+        Collections.singletonList(
+            nosMovemosEnSubte
+        )
+    );
   }
 
   @Test
