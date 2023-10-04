@@ -2,10 +2,11 @@ package ar.edu.utn.frba.dds.notificaciones;
 
 import ar.edu.utn.frba.dds.entidades.Incidente;
 import ar.edu.utn.frba.dds.entidades.Usuario;
-import org.hibernate.annotations.Entity;
 import javax.persistence.DiscriminatorValue;
-import javax.persistence.JoinColumn;
+import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+
+@Entity
 @DiscriminatorValue("RevisiónIncidente")
 public class NotificacionRevisionIncidente extends Notificacion {
   @ManyToOne

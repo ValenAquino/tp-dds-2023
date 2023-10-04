@@ -1,13 +1,12 @@
 package ar.edu.utn.frba.dds.entidades.repositorios;
 
 import ar.edu.utn.frba.dds.entidades.Incidente;
+import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.uqbarproject.jpa.java8.extras.WithGlobalEntityManager;
 
-public class RepositorioIncidentes implements WithGlobalEntityManager {
+public class RepositorioIncidentes implements WithSimplePersistenceUnit {
   private static RepositorioIncidentes instance;
 
   public static RepositorioIncidentes getInstance() {

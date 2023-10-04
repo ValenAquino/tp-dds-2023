@@ -1,9 +1,7 @@
 package ar.edu.utn.frba.dds.entidades.repositorios;
 
-import ar.edu.utn.frba.dds.entidades.Comunidad;
 import ar.edu.utn.frba.dds.notificaciones.Notificacion;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
