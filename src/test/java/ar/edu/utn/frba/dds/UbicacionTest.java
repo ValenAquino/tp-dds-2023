@@ -6,11 +6,14 @@ import ar.edu.utn.frba.dds.entidades.Servicio;
 import ar.edu.utn.frba.dds.entidades.Ubicacion;
 import ar.edu.utn.frba.dds.entidades.Usuario;
 import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioComunidades;
+import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioNotificaciones;
 import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
 import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,13 +28,7 @@ public class UbicacionTest {
 
   private final Ubicacion plazaDeMayo = new Ubicacion(-34.608421330, -58.372169490);
   private final Ubicacion lima = new Ubicacion(-34.627777777778, -58.381305555556);
-  private final Usuario cornelioSaavedra = new Usuario(
-      "cornelio.saavedra",
-      "",
-      "Cornelio",
-      "Saavedra",
-      "saavedra@primerajunta.gob"
-  );
+  private Usuario cornelioSaavedra;
   private ServicioMapas servicioMapas;
   private MedioDeComunicacion medioDeComunicacion;
   private Servicio ascensor;
@@ -40,6 +37,7 @@ public class UbicacionTest {
   private Comunidad nosLiberamos;
 
   private RepositorioComunidades repositorioComunidades;
+  private RepositorioNotificaciones repositorioNotificaciones;
 
   private Incidente incidenteACerrar;
 
@@ -57,13 +55,8 @@ public class UbicacionTest {
         any(Long.class)
     )).thenReturn(false);
 
-    when(servicioMapas.ubicacionActual(cornelioSaavedra.getCorreoElectronico()))
-        .thenReturn(plazaDeMayo); // Set Ubicacion del Usuario
-
     medioDeComunicacion = mock(MedioDeComunicacion.class);
     nosLiberamos = new Comunidad(servicioMapas);
-    nosLiberamos.agregarMiembro(cornelioSaavedra);
-    cornelioSaavedra.setMedioDeComunicacion(medioDeComunicacion);
 
     ascensor = mock(Servicio.class);
     when(ascensor.getUbicacion()).thenReturn(plazaDeMayo);  // Set Ubicacion del Servicio
@@ -79,14 +72,34 @@ public class UbicacionTest {
     nosLiberamos.agregarServicioDeInteres(escaleraMecanica);
 
     repositorioComunidades = mock(RepositorioComunidades.class);
+
+    nosLiberamos.reportarIncidente(ascensor, "Fuera de servicio", LocalDateTime.now(), cornelioSaavedra);
+    incidenteACerrar = nosLiberamos.reportarIncidente(escaleraMecanica, "Fuera de servicio", LocalDateTime.now(), cornelioSaavedra);
+    nosLiberamos.reportarIncidente(banioDeHombres, "Fuera de servicio", LocalDateTime.now(), cornelioSaavedra);
+
+    repositorioNotificaciones = mock(RepositorioNotificaciones.class);
+
+    cornelioSaavedra = new Usuario(
+        "cornelio.saavedra",
+        "",
+        "Cornelio",
+        "Saavedra",
+        "saavedra@primerajunta.gob",
+        repositorioComunidades,
+        repositorioNotificaciones
+    );
+
     when(repositorioComunidades.getComunidadesDe(cornelioSaavedra)).thenReturn(
         Collections.singletonList(
             nosLiberamos
         )
     );  // Set comunidades del usuario
-    nosLiberamos.reportarIncidente(ascensor, "Fuera de servicio", LocalDateTime.now(), cornelioSaavedra);
-    incidenteACerrar = nosLiberamos.reportarIncidente(escaleraMecanica, "Fuera de servicio", LocalDateTime.now(), cornelioSaavedra);
-    nosLiberamos.reportarIncidente(banioDeHombres, "Fuera de servicio", LocalDateTime.now(), cornelioSaavedra);
+
+    when(servicioMapas.ubicacionActual(cornelioSaavedra.getCorreoElectronico()))
+        .thenReturn(plazaDeMayo); // Set Ubicacion del Usuario
+
+    nosLiberamos.agregarMiembro(cornelioSaavedra);
+    cornelioSaavedra.setMedioDeComunicacion(medioDeComunicacion);
   }
 
   @Test

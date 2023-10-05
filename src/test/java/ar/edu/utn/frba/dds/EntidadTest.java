@@ -8,6 +8,8 @@ import ar.edu.utn.frba.dds.entidades.Ubicacion;
 import ar.edu.utn.frba.dds.entidades.Usuario;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeEntidad;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
+import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioComunidades;
+import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioNotificaciones;
 import ar.edu.utn.frba.dds.notificaciones.Notificacion;
 import ar.edu.utn.frba.dds.notificaciones.horarios.CalendarioNotificaciones;
 import ar.edu.utn.frba.dds.notificaciones.horarios.RangoHorario;
@@ -50,9 +52,9 @@ public class EntidadTest {
   private Map<DayOfWeek, RangoHorario> horarios;
   private Map<DayOfWeek, RangoHorario> horariosVacios;
 
-  private Ubicacion facultadDeMedicina;
-  private Ubicacion castroBarros;
-  private Ubicacion medrano;
+  private RepositorioComunidades repositorioComunidades;
+  private RepositorioNotificaciones repositorioNotificaciones;
+
 
   @BeforeEach
   public void setUp() {
@@ -79,12 +81,17 @@ public class EntidadTest {
     horarios = new HashMap<>();
     horariosVacios = new HashMap<>();
 
+    repositorioNotificaciones = mock(RepositorioNotificaciones.class);
+    repositorioComunidades = mock(RepositorioComunidades.class);
+
     usuarioQueUsaSubte = new Usuario(
         "subte.master",
         "",
         "Subte",
         "Master",
-        "subtemaster@gmail.com"
+        "subtemaster@gmail.com",
+        repositorioComunidades,
+        repositorioNotificaciones
     );
 
     rangoHorarioCompleto = new RangoHorario(LocalTime.MIN, LocalTime.MAX);

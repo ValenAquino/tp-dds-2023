@@ -5,6 +5,7 @@ import ar.edu.utn.frba.dds.entidades.Servicio;
 import ar.edu.utn.frba.dds.entidades.Usuario;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
 import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioComunidades;
+import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioNotificaciones;
 import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
 import ar.edu.utn.frba.dds.notificaciones.NotificacionNuevoIncidente;
 import ar.edu.utn.frba.dds.notificaciones.horarios.CalendarioNotificaciones;
@@ -15,6 +16,7 @@ import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,6 +29,7 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class IncidentesTest {
 
@@ -44,17 +47,24 @@ public class IncidentesTest {
   private WhatsAppSender whatsAppSender;
   private MailSender mailSender;
   private Comunidad nosMovemosEnSubte;
+  private RepositorioComunidades repositorioComunidades;
+  private RepositorioNotificaciones repositorioNotificaciones;
 
   private ServicioMapas servicioMapas;
 
   @BeforeEach
   public void inicializar() {
+    repositorioComunidades = mock(RepositorioComunidades.class);
+    repositorioNotificaciones = mock(RepositorioNotificaciones.class);
+
     usuarioQueUsaSubte = new Usuario(
         "subte.master",
         "",
         "Subte",
         "Master",
-        "subtemaster@gmail.com"
+        "subtemaster@gmail.com",
+        repositorioComunidades,
+        repositorioNotificaciones
     );
 
     reportante = new Usuario(
@@ -62,7 +72,9 @@ public class IncidentesTest {
         "",
         "Subte",
         "Reportante",
-        "subtereportante@gmail.com"
+        "subtereportante@gmail.com",
+        repositorioComunidades,
+        repositorioNotificaciones
     );
 
     medioDeComunicacion = mock(MedioDeComunicacion.class);
@@ -75,6 +87,18 @@ public class IncidentesTest {
     nosMovemosEnSubte = new Comunidad(servicioMapas);
     nosMovemosEnSubte.agregarMiembro(usuarioQueUsaSubte);
     nosMovemosEnSubte.agregarMiembro(reportante);
+
+    when(repositorioComunidades.getComunidadesInteresadas(reportante, ascensor)).thenReturn(
+        Collections.singletonList(
+            nosMovemosEnSubte
+        )
+    );
+
+    when(repositorioComunidades.getComunidadesInteresadas(reportante, escaleraMecanica)).thenReturn(
+        Collections.singletonList(
+            nosMovemosEnSubte
+        )
+    );
   }
 
   @Test
@@ -148,15 +172,18 @@ public class IncidentesTest {
 
   @Test
   public void seLlamaElMetodoNotificarCuandoEsHorarioConfigurado() {
-    LocalDateTime fecha = LocalDateTime.now();
-    DayOfWeek dayOfWeek = fecha.getDayOfWeek();
-    LocalTime horario = fecha.toLocalTime();
+    usuarioQueUsaSubte.setCalendarioNotificaciones(
+        new CalendarioNotificaciones(
+            Map.of(
+                LocalDateTime.now().getDayOfWeek(),
+                new RangoHorario(
+                    LocalTime.MIN,
+                    LocalTime.MAX
+                )
+            )
+        )
+    );
 
-    Map<DayOfWeek, RangoHorario> horarios = new HashMap<>();
-    horarios.put(dayOfWeek, new RangoHorario(horario.minusHours(1), horario.plusHours(1)));
-    var calendarioNotificaciones = new CalendarioNotificaciones(horarios);
-
-    usuarioQueUsaSubte.setCalendarioNotificaciones(calendarioNotificaciones);
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
 
     reportante.reportarIncidente(ascensor, "Fuera de servicio");
