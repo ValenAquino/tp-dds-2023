@@ -172,15 +172,18 @@ public class IncidentesTest {
 
   @Test
   public void seLlamaElMetodoNotificarCuandoEsHorarioConfigurado() {
-    LocalDateTime fecha = LocalDateTime.now();
-    DayOfWeek dayOfWeek = fecha.getDayOfWeek();
-    LocalTime horario = fecha.toLocalTime();
+    usuarioQueUsaSubte.setCalendarioNotificaciones(
+        new CalendarioNotificaciones(
+            Map.of(
+                LocalDateTime.now().getDayOfWeek(),
+                new RangoHorario(
+                    LocalTime.MIN,
+                    LocalTime.MAX
+                )
+            )
+        )
+    );
 
-    Map<DayOfWeek, RangoHorario> horarios = new HashMap<>();
-    horarios.put(dayOfWeek, new RangoHorario(horario.minusHours(1), horario.plusHours(1)));
-    var calendarioNotificaciones = new CalendarioNotificaciones(horarios);
-
-    usuarioQueUsaSubte.setCalendarioNotificaciones(calendarioNotificaciones);
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
 
     reportante.reportarIncidente(ascensor, "Fuera de servicio");
