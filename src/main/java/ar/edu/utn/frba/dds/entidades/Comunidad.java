@@ -41,6 +41,14 @@ public class Comunidad extends PersistentEntity {
   @Transient
   ServicioMapas servicioMapas;
 
+  /*
+  TODO: cargar servicioMapas cuando lo implementemos
+  @PostLoad
+  public void postLoad() {
+    this.servicioMapas = new ServicioMapas();
+  }
+  */
+
   public Comunidad(ServicioMapas servicioMapa) {
     this.serviciosDeInteres = new ArrayList<>();
     this.incidentes = new ArrayList<>();
