@@ -39,13 +39,13 @@ public class Comunidad extends PersistentEntity {
   String nombre;
 
   @Transient
-  ServicioMapas servicioMapa;
+  ServicioMapas servicioMapas;
 
   public Comunidad(ServicioMapas servicioMapa) {
     this.serviciosDeInteres = new ArrayList<>();
     this.incidentes = new ArrayList<>();
     this.miembros = new ArrayList<>();
-    this.servicioMapa = servicioMapa;
+    this.servicioMapas = servicioMapa;
   }
 
   public List<Incidente> getIncidentes() {
@@ -103,8 +103,8 @@ public class Comunidad extends PersistentEntity {
 
   public List<Incidente> getIncidentesAbiertosCercanosA(Usuario usuario) {
     return this.getIncidentesAbiertos().stream().filter(i ->
-        servicioMapa.estanCerca(
-            usuario.getUbicacionActual(servicioMapa),
+        servicioMapas.estanCerca(
+            usuario.getUbicacionActual(servicioMapas),
             i.getUbicacion(),
             200
         )
