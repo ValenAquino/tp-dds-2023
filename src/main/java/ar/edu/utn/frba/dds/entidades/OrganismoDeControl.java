@@ -13,9 +13,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "organismos_de_control")
 public class OrganismoDeControl extends PersistentEntity {
-  private final String nombre;
+  private String nombre;
   @Column(name = "correo_electronico")
-  private final String correoElectronico;
+  private String correoElectronico;
   @ManyToMany
   @JoinTable(
       name = "entidades_controladas_por_organismos_de_control",
@@ -31,6 +31,8 @@ public class OrganismoDeControl extends PersistentEntity {
     this.nombre = nombre;
     this.correoElectronico = correoElectronico;
   }
+
+  public OrganismoDeControl() { }
 
   public String getNombre() {
     return nombre;

@@ -14,15 +14,17 @@ public class Establecimiento extends PersistentEntity {
   @OneToMany(mappedBy = "establecimiento")
   private final List<Servicio> servicios = new ArrayList<>();
   @ManyToOne
-  private final Entidad entidad;
+  private Entidad entidad;
   private String nombre;
   @Embedded
-  private final Ubicacion ubicacion;
+  private Ubicacion ubicacion;
 
   public Establecimiento(Entidad entidad, Ubicacion ubicacion) {
     this.entidad = entidad;
     this.ubicacion = ubicacion;
   }
+
+  public Establecimiento() { }
 
   public void agregarServicio(Servicio servicio) {
     this.servicios.add(servicio);

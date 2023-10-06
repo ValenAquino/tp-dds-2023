@@ -23,12 +23,12 @@ import java.util.List;
 @Entity
 @Table(name = "usuarios")
 public class Usuario extends PersistentEntity {
-  private final String usuario;
-  private final String contrasenia;
-  private final String nombre;
-  private final String apellido;
+  private String usuario;
+  private String contrasenia;
+  private String nombre;
+  private String apellido;
   @Column(name = "correo_electronico")
-  private final String correoElectronico;
+  private String correoElectronico;
 
   @ManyToOne
   @JoinColumn(name = "medio_de_comunicacion_id")
@@ -43,6 +43,8 @@ public class Usuario extends PersistentEntity {
 
   @Transient
   private RepositorioNotificaciones repositorioNotificaciones;
+
+  public Usuario() { }
 
   @PostLoad
   public void postLoad() {

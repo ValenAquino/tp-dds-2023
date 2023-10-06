@@ -34,6 +34,8 @@ public class Incidente extends PersistentEntity {
     this.reportante = reportante;
   }
 
+  public Incidente() { }
+
   public boolean estaResuelto() {
     return resuelto;
   }

@@ -56,6 +56,8 @@ public class Comunidad extends PersistentEntity {
     this.servicioMapas = servicioMapa;
   }
 
+  public Comunidad() { }
+
   public List<Incidente> getIncidentes() {
     return incidentes;
   }
