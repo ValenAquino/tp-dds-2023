@@ -1,11 +1,13 @@
 package ar.edu.utn.frba.dds.entidades;
 
 import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
+import ar.edu.utn.frba.dds.ubicacion.implementaciones.ServicioGoogleMaps;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.time.LocalDateTime;
@@ -41,13 +43,10 @@ public class Comunidad extends PersistentEntity {
   @Transient
   ServicioMapas servicioMapas;
 
-  /*
-  TODO: cargar servicioMapas cuando lo implementemos
   @PostLoad
   public void postLoad() {
-    this.servicioMapas = new ServicioMapas();
+    this.servicioMapas = new ServicioGoogleMaps();
   }
-  */
 
   public Comunidad(ServicioMapas servicioMapa) {
     this.serviciosDeInteres = new ArrayList<>();
