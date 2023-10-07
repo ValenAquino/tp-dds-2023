@@ -20,11 +20,13 @@ public class CalendarioNotificaciones extends PersistentEntity {
   @CollectionTable(name = "horarios_notificaciones", joinColumns = @JoinColumn(name = "calendario_id"))
   @MapKeyColumn(name = "dia_de_semana")
   @MapKeyEnumerated(EnumType.STRING)
-  private final Map<DayOfWeek, RangoHorario> horarios;
+  private Map<DayOfWeek, RangoHorario> horarios;
 
   public CalendarioNotificaciones(Map<DayOfWeek, RangoHorario> horarios) {
     this.horarios = horarios;
   }
+
+  public CalendarioNotificaciones() { }
 
   public boolean abarcaA(LocalDateTime fecha) {
     RangoHorario rangoHorario = horarios.get(fecha.getDayOfWeek());

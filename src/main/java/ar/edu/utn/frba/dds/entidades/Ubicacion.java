@@ -4,13 +4,15 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 public class Ubicacion {
-  private final double latitud;
-  private final double longitud;
+  private double latitud;
+  private double longitud;
 
   public Ubicacion(double latitud, double longitud) {
     this.latitud = latitud;
     this.longitud = longitud;
   }
+
+  public Ubicacion() { }
 
   public double getLatitud() {
     return latitud;

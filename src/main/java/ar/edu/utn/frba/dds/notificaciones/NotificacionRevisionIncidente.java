@@ -16,6 +16,8 @@ public class NotificacionRevisionIncidente extends Notificacion {
     this.incidente = incidente;
   }
 
+  public NotificacionRevisionIncidente() { }
+
   @Override
   public String getAsunto() {
     return "Sugerencia de revisión de incidente";

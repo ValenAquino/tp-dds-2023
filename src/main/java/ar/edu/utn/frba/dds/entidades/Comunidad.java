@@ -1,11 +1,13 @@
 package ar.edu.utn.frba.dds.entidades;
 
 import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
+import ar.edu.utn.frba.dds.ubicacion.implementaciones.ServicioGoogleMaps;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.time.LocalDateTime;
@@ -39,14 +41,21 @@ public class Comunidad extends PersistentEntity {
   String nombre;
 
   @Transient
-  ServicioMapas servicioMapa;
+  ServicioMapas servicioMapas;
+
+  @PostLoad
+  public void postLoad() {
+    this.servicioMapas = new ServicioGoogleMaps();
+  }
 
   public Comunidad(ServicioMapas servicioMapa) {
     this.serviciosDeInteres = new ArrayList<>();
     this.incidentes = new ArrayList<>();
     this.miembros = new ArrayList<>();
-    this.servicioMapa = servicioMapa;
+    this.servicioMapas = servicioMapa;
   }
+
+  public Comunidad() { }
 
   public List<Incidente> getIncidentes() {
     return incidentes;
@@ -103,8 +112,8 @@ public class Comunidad extends PersistentEntity {
 
   public List<Incidente> getIncidentesAbiertosCercanosA(Usuario usuario) {
     return this.getIncidentesAbiertos().stream().filter(i ->
-        servicioMapa.estanCerca(
-            usuario.getUbicacionActual(servicioMapa),
+        servicioMapas.estanCerca(
+            usuario.getUbicacionActual(servicioMapas),
             i.getUbicacion(),
             200
         )

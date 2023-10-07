@@ -17,8 +17,8 @@ import java.time.LocalDateTime;
 @DiscriminatorColumn(name = "tipo", length = 255)
 public abstract class Notificacion extends PersistentEntity {
   @ManyToOne
-  private final Usuario receptor;
-  private final LocalDateTime fecha;
+  private Usuario receptor;
+  private LocalDateTime fecha;
   @Column(name = "fecha_envio", nullable = true)
   private LocalDateTime fechaEnvio;
 
@@ -26,6 +26,8 @@ public abstract class Notificacion extends PersistentEntity {
     this.receptor = receptor;
     this.fecha = LocalDateTime.now();
   }
+
+  public Notificacion() { }
 
   public abstract String getAsunto();
 

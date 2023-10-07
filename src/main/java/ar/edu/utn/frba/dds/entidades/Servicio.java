@@ -11,10 +11,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "servicios")
 public class Servicio extends PersistentEntity {
-  private final String descripcion;
+  private String descripcion;
   @Enumerated(value = EnumType.STRING)
   @Column(name = "tipo")
-  private final TipoDeServicio tipoDeServicio;
+  private TipoDeServicio tipoDeServicio;
 
   @ManyToOne
   private Establecimiento establecimiento;
@@ -23,6 +23,8 @@ public class Servicio extends PersistentEntity {
     this.descripcion = descripcion;
     this.tipoDeServicio = tipoDeServicio;
   }
+
+  public Servicio() { }
 
   public String getDescripcion() {
     return descripcion;

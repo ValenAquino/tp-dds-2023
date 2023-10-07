@@ -11,12 +11,14 @@ import javax.persistence.ManyToOne;
 public class NotificacionNuevoIncidente extends Notificacion {
 
   @ManyToOne
-  private final Incidente incidente;
+  private Incidente incidente;
 
   public NotificacionNuevoIncidente(Usuario receptor, Incidente incidente) {
     super(receptor);
     this.incidente = incidente;
   }
+
+  public NotificacionNuevoIncidente() { }
 
   @Override
   public String getAsunto() {
