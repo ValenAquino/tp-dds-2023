@@ -41,9 +41,9 @@ public class MailSender extends MedioDeComunicacion  {
   @Override
   public void procesarNotificacion(Notificacion notificacion) {
     enviarEmail(new Mail(
+        notificacion.getReceptor().getCorreoElectronico(),
         notificacion.getAsunto(),
-        notificacion.getMensaje(),
-        notificacion.getReceptor().getCorreoElectronico()
+        notificacion.getMensaje()
     ));
   }
 
