@@ -13,6 +13,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.PostLoad;
 import javax.persistence.Transient;
 
 @Entity
@@ -21,22 +22,28 @@ public class MailSender extends MedioDeComunicacion  {
   @Transient
   private final Properties propiedades = new Properties();
 
-  public MailSender() {
-    // TODO: configurar
+  @PostLoad
+  public void postLoad() {
+    cargarPropiedades();
+  }
+
+  public MailSender() { }
+
+  private void cargarPropiedades() {
     propiedades.put("mail.smtp.auth", "true");
     propiedades.put("mail.smtp.starttls.enable", "true");
     propiedades.put("mail.smtp.host", "smtp.gmail.com");
     propiedades.put("mail.smtp.port", "587");
-    propiedades.put("mail.username", "username");
-    propiedades.put("mail.password", "password");
+    propiedades.put("mail.username", System.getenv("MAIL_USERNAME"));
+    propiedades.put("mail.password", System.getenv("MAIL_PASSWORD"));
   }
 
   @Override
   public void procesarNotificacion(Notificacion notificacion) {
     enviarEmail(new Mail(
+        notificacion.getReceptor().getCorreoElectronico(),
         notificacion.getAsunto(),
-        notificacion.getMensaje(),
-        notificacion.getReceptor().getCorreoElectronico()
+        notificacion.getMensaje()
     ));
   }
 
@@ -49,6 +56,10 @@ public class MailSender extends MedioDeComunicacion  {
   }
 
   private Session crearSesion() {
+    if (propiedades.isEmpty()) {
+      cargarPropiedades();
+    }
+
     return Session.getInstance(propiedades, new Authenticator() {
       @Override
       protected PasswordAuthentication getPasswordAuthentication() {
