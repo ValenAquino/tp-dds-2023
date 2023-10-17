@@ -1,12 +1,19 @@
 package ar.edu.utn.frba.dds;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import ar.edu.utn.frba.dds.entidades.Comunidad;
 import ar.edu.utn.frba.dds.entidades.Servicio;
 import ar.edu.utn.frba.dds.entidades.Usuario;
+import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
 import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioComunidades;
 import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioNotificaciones;
+import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
+import ar.edu.utn.frba.dds.notificaciones.medios.MailSender;
+import ar.edu.utn.frba.dds.notificaciones.medios.WhatsAppSender;
 import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,12 +27,25 @@ public class RepositorioTest {
 
   private RepositorioComunidades repositorioComunidades;
   private RepositorioNotificaciones repositorioNotificaciones;
-  private Comunidad usuariosDeSubte;
+
+  private MedioDeComunicacion medioDeComunicacion;
+  private Comunidad nosMovemosEnSubte;
   private ServicioMapas servicioMapas;
+
+  private final Servicio ascensor = new Servicio(
+      "Ascensor - acceso a estación",
+      TipoDeServicio.ASCENSORES
+  );
+  private final Servicio escaleraMecanica = new Servicio(
+      "Escalera mecánica - acceso a andén",
+      TipoDeServicio.ESCALERAS_MECANICAS
+  );
 
 
   @BeforeEach
   public void startUp(){
+    repositorioComunidades = new RepositorioComunidades();
+    repositorioNotificaciones = new RepositorioNotificaciones();
     usuarioQueUsaSubte = new Usuario(
         "subteMaster13",
         "",
@@ -44,27 +64,36 @@ public class RepositorioTest {
         repositorioComunidades,
         repositorioNotificaciones
     );
-    repositorioComunidades = new RepositorioComunidades();
-    repositorioNotificaciones = new RepositorioNotificaciones();
-    usuariosDeSubte = new Comunidad(servicioMapas);
-    usuariosDeSubte.agregarMiembro(usuarioQueUsaSubte);
-    usuariosDeSubte.agregarMiembro(usuariaQueUsaSubte);
+    medioDeComunicacion = new WhatsAppSender();
+    usuariaQueUsaSubte.setMedioDeComunicacion(medioDeComunicacion);
+    usuarioQueUsaSubte.setMedioDeComunicacion(medioDeComunicacion);
+    nosMovemosEnSubte = new Comunidad(servicioMapas);
+    nosMovemosEnSubte.agregarMiembro(usuarioQueUsaSubte);
+    nosMovemosEnSubte.agregarMiembro(usuariaQueUsaSubte);
+    nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
+    nosMovemosEnSubte.agregarServicioDeInteres(escaleraMecanica);
+    repositorioComunidades.persistir(nosMovemosEnSubte);
+
+
   }
 
   @Test
   public void sePuedenPersistirComunidades() {
-    repositorioComunidades.persistir(usuariosDeSubte);
     List<Comunidad> comunidadesObtenidas = repositorioComunidades.todas();
-
-    Assertions.assertTrue(comunidadesObtenidas.contains(usuariosDeSubte));
+    Assertions.assertTrue(comunidadesObtenidas.contains(nosMovemosEnSubte));
   }
   @Test
   public void sePuedenPersistirLosUsuariosDeUnaComunidad() {
-    repositorioComunidades.persistir(usuariosDeSubte);
     List<Comunidad> comunidadesObtenidas = repositorioComunidades.todas();
-
     Assertions.assertTrue(comunidadesObtenidas.get(0).tieneMiembro(usuarioQueUsaSubte));
     Assertions.assertTrue(comunidadesObtenidas.get(0).tieneMiembro(usuariaQueUsaSubte));
   }
- 
+  @Test
+  public void sePuedenPersistirLosIncidentesDeUnaComunidad() {
+    usuariaQueUsaSubte.reportarIncidente(ascensor,"Fuera de servicio");
+    repositorioComunidades.persistir(nosMovemosEnSubte);
+
+    List<Comunidad> comunidadesObtenidas = repositorioComunidades.todas();
+    Assertions.assertEquals(comunidadesObtenidas.get(0).getIncidentes().size(),1);
+  }
 }

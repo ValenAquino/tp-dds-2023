@@ -18,7 +18,7 @@ import java.util.List;
 @Entity
 @Table(name = "comunidades")
 public class Comunidad extends PersistentEntity {
-  @ManyToMany
+  @ManyToMany(cascade = CascadeType.PERSIST)
   @JoinTable(
       name = "servicios_interesados_por_comunidades",
       joinColumns = @JoinColumn(name = "comunidad_id"),

@@ -8,6 +8,7 @@ import ar.edu.utn.frba.dds.notificaciones.NotificacionNuevoIncidente;
 import ar.edu.utn.frba.dds.notificaciones.NotificacionRevisionIncidente;
 import ar.edu.utn.frba.dds.notificaciones.horarios.CalendarioNotificaciones;
 import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,7 +31,7 @@ public class Usuario extends PersistentEntity {
   @Column(name = "correo_electronico")
   private String correoElectronico;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.PERSIST)
   @JoinColumn(name = "medio_de_comunicacion_id")
   private MedioDeComunicacion medioDeComunicacion;
 
