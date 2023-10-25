@@ -5,6 +5,7 @@ import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.persistence.EntityTransaction;
 
 public class RepositorioIncidentes implements WithSimplePersistenceUnit {
   private static RepositorioIncidentes instance;
@@ -17,7 +18,16 @@ public class RepositorioIncidentes implements WithSimplePersistenceUnit {
   }
 
   public void persistir(Incidente incidente) {
-    entityManager().persist(incidente);
+    EntityTransaction transaction = entityManager().getTransaction();
+    try {
+      transaction.begin();
+      entityManager().persist(incidente);
+      transaction.commit();
+    } catch (Exception e) {
+      if (transaction.isActive()) {
+        transaction.rollback();
+      }
+    }
   }
 
   @SuppressWarnings("unchecked")

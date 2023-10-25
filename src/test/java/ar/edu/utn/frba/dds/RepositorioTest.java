@@ -12,6 +12,7 @@ import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
 import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioComunidades;
 import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioNotificaciones;
 import ar.edu.utn.frba.dds.notificaciones.MedioDeComunicacion;
+import ar.edu.utn.frba.dds.notificaciones.Notificacion;
 import ar.edu.utn.frba.dds.notificaciones.medios.MailSender;
 import ar.edu.utn.frba.dds.notificaciones.medios.WhatsAppSender;
 import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
@@ -73,8 +74,6 @@ public class RepositorioTest {
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
     nosMovemosEnSubte.agregarServicioDeInteres(escaleraMecanica);
     repositorioComunidades.persistir(nosMovemosEnSubte);
-
-
   }
 
   @Test
@@ -96,4 +95,13 @@ public class RepositorioTest {
     List<Comunidad> comunidadesObtenidas = repositorioComunidades.todas();
     Assertions.assertEquals(comunidadesObtenidas.get(0).getIncidentes().size(),1);
   }
+  @Test
+  public void sePuedenPersistirLasNotificaciones() {
+    usuariaQueUsaSubte.reportarIncidente(ascensor,"Fuera de servicio");
+
+    List<Notificacion> notificaciones = repositorioNotificaciones.todas();
+    Assertions.assertEquals(notificaciones.get(0).getAsunto(),"¡Nuevo incidente!");
+    Assertions.assertEquals(notificaciones.get(0).getReceptor(),usuarioQueUsaSubte);
+  }
+
 }

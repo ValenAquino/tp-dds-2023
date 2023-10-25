@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.notificaciones;
 
 import ar.edu.utn.frba.dds.entidades.PersistentEntity;
 import ar.edu.utn.frba.dds.entidades.Usuario;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo", length = 255)
 public abstract class Notificacion extends PersistentEntity {
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.PERSIST)
   private Usuario receptor;
   private LocalDateTime fecha;
   @Column(name = "fecha_envio", nullable = true)
