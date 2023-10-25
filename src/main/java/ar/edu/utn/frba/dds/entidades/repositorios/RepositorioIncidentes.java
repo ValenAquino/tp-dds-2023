@@ -32,15 +32,6 @@ public class RepositorioIncidentes implements WithSimplePersistenceUnit {
     }
   }
 
-  public List<Incidente> ultimaSemana() {
-    LocalDateTime ahora = LocalDateTime.now();
-    LocalDateTime fechaLimite = ahora.minusDays(7);
-
-    return todos().stream()
-        .filter(i -> i.getFecha().isAfter(fechaLimite) && i.getFecha().isBefore(ahora))
-        .collect(Collectors.toList());
-  }
-
   public List<Incidente> todos() {
     return entityManager().createQuery("SELECT i FROM Incidente", Incidente.class)
         .getResultList();
@@ -61,6 +52,14 @@ public class RepositorioIncidentes implements WithSimplePersistenceUnit {
   public List<Incidente> incidentesDelReportante(Usuario usuario) {
     return  entityManager().createQuery("SELECT i FROM Incidente i WHERE i.reportante = :usuario", Incidente.class)
         .setParameter("usuario", usuario.getId())
+        .getResultList();
+  }
+  public List<Incidente> incidentesUltimaSemana() {
+    LocalDateTime ahora = LocalDateTime.now();
+    LocalDateTime fechaLimite = ahora.minusDays(7);
+    return  entityManager().createQuery("SELECT i FROM Incidente i WHERE i.fecha >= :fechaLimite AND i.fecha <= :ahora", Incidente.class)
+        .setParameter("fechaLimite",fechaLimite)
+        .setParameter("ahora",ahora)
         .getResultList();
   }
 }
