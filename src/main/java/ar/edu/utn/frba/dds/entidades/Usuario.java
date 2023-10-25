@@ -80,16 +80,15 @@ public class Usuario extends PersistentEntity {
     return correoElectronico;
   }
 
-  public void reportarIncidente(Servicio servicio, String observaciones) {
-    var ahora = LocalDateTime.now();
+  public void reportarIncidente(Servicio servicio, LocalDateTime fecha, String observaciones) {
     getComunidadesInteresadas(servicio).forEach(c ->
-        c.reportarIncidente(servicio, observaciones, ahora, this)
+        c.reportarIncidente(servicio, observaciones, fecha, this)
     );
   }
 
-  public void cerrarIncidente(Comunidad comunidad, Incidente incidente) {
+  public void cerrarIncidente(Comunidad comunidad, Incidente incidente, LocalDateTime fecha) {
     if (comunidad.tieneIncidente(incidente)) {
-      comunidad.cerrarIncidente(incidente);
+      comunidad.cerrarIncidente(incidente, fecha);
     } else {
       throw new RuntimeException("El incidente a cerrar debe estar abierto para la comunidad");
     }

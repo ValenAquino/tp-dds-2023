@@ -150,8 +150,8 @@ public class RankingTest {
         banioDeMujeres, "banioDeMujeres", LocalDateTime.now().minusDays(1)
     );
 
-    incidente1.cerrar();
-    incidente2.cerrar();
+    incidente1.cerrar(LocalDateTime.now());
+    incidente2.cerrar(LocalDateTime.now());
 
     // Incidentes de SubteA
     Incidente incidente3 = crearIncidente(
@@ -162,8 +162,8 @@ public class RankingTest {
         ascensorALaCalle, "ascensorALaCalle", LocalDateTime.now().minusDays(1)
     );
 
-    incidente3.cerrar();
-    incidente4.cerrar();
+    incidente3.cerrar(LocalDateTime.now());
+    incidente4.cerrar(LocalDateTime.now());
 
     return List.of(incidente1, incidente2, incidente3, incidente4);
   }
@@ -180,8 +180,8 @@ public class RankingTest {
         banioDeMujeres, "banioDeMujeres", fecha.minusDays(1)
     );
 
-    incidente1.cerrar();
-    incidente2.cerrar();
+    incidente1.cerrar(LocalDateTime.now());
+    incidente2.cerrar(LocalDateTime.now());
 
     // Incidentes de SubteA
     Incidente incidente3 = crearIncidente(
@@ -192,8 +192,8 @@ public class RankingTest {
         ascensorALaCalle, "ascensorALaCalle", LocalDateTime.now().minusDays(2)
     );
 
-    incidente3.cerrar();
-    incidente4.cerrar();
+    incidente3.cerrar(LocalDateTime.now());
+    incidente4.cerrar(LocalDateTime.now());
 
     return List.of(incidente1, incidente2, incidente3, incidente4);
   }

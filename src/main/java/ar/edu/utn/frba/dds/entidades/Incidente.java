@@ -60,9 +60,9 @@ public class Incidente extends PersistentEntity {
     return reportante;
   }
 
-  public void cerrar() {
+  public void cerrar(LocalDateTime fecha) {
     resuelto = true;
-    fechaResolucion = LocalDateTime.now();
+    fechaResolucion = fecha;
   }
 
   public long tiempoDeCierre() {
