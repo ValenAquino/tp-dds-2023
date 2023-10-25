@@ -96,12 +96,22 @@ public class RepositorioTest {
     Assertions.assertEquals(comunidadesObtenidas.get(0).getIncidentes().size(),1);
   }
   @Test
-  public void sePuedenPersistirLasNotificaciones() {
+  public void sePuedenPersistirLasNotificacionesDeNuevoIncidente() {
     usuariaQueUsaSubte.reportarIncidente(ascensor,"Fuera de servicio");
 
     List<Notificacion> notificaciones = repositorioNotificaciones.todas();
     Assertions.assertEquals(notificaciones.get(0).getAsunto(),"¡Nuevo incidente!");
     Assertions.assertEquals(notificaciones.get(0).getReceptor(),usuarioQueUsaSubte);
   }
+  @Test
+  public void sePuedenPersistirLasNotificacionesDeRevisionDeIncidente() {
+    usuariaQueUsaSubte.reportarIncidente(ascensor,"Fuera de servicio");
+    var incidente = nosMovemosEnSubte.getIncidentes().get(0);
+    usuariaQueUsaSubte.sugerirRevisionDeIncidente(incidente);
 
+    List<Notificacion> notificaciones = repositorioNotificaciones.todas();
+    Assertions.assertEquals(notificaciones.size(), 2);
+    Assertions.assertEquals(notificaciones.get(0).getAsunto(),"¡Nuevo incidente!");
+    Assertions.assertEquals(notificaciones.get(1).getAsunto(), "Sugerencia de revisión de incidente");
+  }
 }
