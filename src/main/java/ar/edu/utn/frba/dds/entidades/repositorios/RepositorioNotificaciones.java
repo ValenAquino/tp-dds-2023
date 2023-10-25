@@ -30,8 +30,6 @@ public class RepositorioNotificaciones implements WithSimplePersistenceUnit {
       }
     }
   }
-
-
   public List<Notificacion> todas() {
     return entityManager().createQuery("SELECT n FROM Notificacion", Notificacion.class)
         .getResultList();

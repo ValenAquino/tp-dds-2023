@@ -3,7 +3,6 @@ package ar.edu.utn.frba.dds.entidades.repositorios;
 import ar.edu.utn.frba.dds.entidades.Incidente;
 import ar.edu.utn.frba.dds.entidades.Servicio;
 import ar.edu.utn.frba.dds.entidades.Usuario;
-import ar.edu.utn.frba.dds.notificaciones.Notificacion;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -56,12 +55,12 @@ public class RepositorioIncidentes implements WithSimplePersistenceUnit {
   }
   public List<Incidente> incidentesDelServicio(Servicio servicio) {
     return  entityManager().createQuery("SELECT i FROM Incidente i WHERE i.servicio = :servicio", Incidente.class)
-        .setParameter("servicio", servicio)
+        .setParameter("servicio", servicio.getId())
         .getResultList();
   }
   public List<Incidente> incidentesDelReportante(Usuario usuario) {
     return  entityManager().createQuery("SELECT i FROM Incidente i WHERE i.reportante = :usuario", Incidente.class)
-        .setParameter("usuario", usuario)
+        .setParameter("usuario", usuario.getId())
         .getResultList();
   }
 }
