@@ -42,7 +42,6 @@ public class RepositorioTest {
       TipoDeServicio.ESCALERAS_MECANICAS
   );
 
-
   @BeforeEach
   public void startUp(){
     repositorioComunidades = new RepositorioComunidades();
