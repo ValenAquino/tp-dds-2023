@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.entidades;
 
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeEntidad;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -52,9 +53,9 @@ public class Entidad extends PersistentEntity {
     usuariosInteresados.add(usuario);
   }
 
-  public void reportarIncidente(Servicio servicio, String observaciones) {
+  public void reportarIncidente(Servicio servicio, LocalDateTime fecha, String observaciones) {
     if (this.tieneServicio(servicio)) {
-      Incidente incidente = new Incidente(servicio, observaciones);
+      Incidente incidente = new Incidente(servicio, observaciones, fecha);
       agregarIncidente(incidente);
       notificarReporteDeIncidente(incidente);
     } else {

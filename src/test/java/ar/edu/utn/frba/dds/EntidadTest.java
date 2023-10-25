@@ -9,6 +9,7 @@ import ar.edu.utn.frba.dds.entidades.Usuario;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeEntidad;
 import ar.edu.utn.frba.dds.entidades.enums.TipoDeServicio;
 import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioComunidades;
+import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioIncidentes;
 import ar.edu.utn.frba.dds.entidades.repositorios.RepositorioNotificaciones;
 import ar.edu.utn.frba.dds.notificaciones.Notificacion;
 import ar.edu.utn.frba.dds.notificaciones.horarios.CalendarioNotificaciones;
@@ -18,6 +19,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,6 +34,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 
 public class EntidadTest {
   private Entidad entidad;
@@ -54,6 +57,7 @@ public class EntidadTest {
 
   private RepositorioComunidades repositorioComunidades;
   private RepositorioNotificaciones repositorioNotificaciones;
+  private RepositorioIncidentes repositorioIncidentes;
 
 
   @BeforeEach
@@ -83,6 +87,7 @@ public class EntidadTest {
 
     repositorioNotificaciones = mock(RepositorioNotificaciones.class);
     repositorioComunidades = mock(RepositorioComunidades.class);
+    repositorioIncidentes = mock(RepositorioIncidentes.class);
 
     usuarioQueUsaSubte = new Usuario(
         "subte.master",
@@ -117,39 +122,40 @@ public class EntidadTest {
     LocalDateTime fechaActual = LocalDateTime.now();
     LocalDateTime fechaLimite = fechaActual.minusDays(7);
 
-    Incidente incidente1 = new Incidente(servicio1, "Incidente1");
-//    incidente1.setFecha(fechaLimite.plusDays(1)); // 6 dias atras
+    Incidente incidente1 = new Incidente(servicio1,
+        "Incidente1", fechaLimite.plusDays(1));
 
-    Incidente incidente2 = new Incidente(servicio2, "Incidente2");
-//    incidente2.setFecha(fechaLimite.minusDays(1)); // 8 dias atras
+    Incidente incidente2 = new Incidente(servicio2,
+        "Incidente2", fechaLimite.minusDays(1));
 
-    Incidente incidente3 = new Incidente(servicio1, "Incidente3");
-//    incidente3.setFecha(fechaLimite.plusDays(3)); // 4 dias atras
+    Incidente incidente3 = new Incidente(servicio1,
+        "Incidente3", fechaLimite.plusDays(3));
 
-    Incidente incidente4 = new Incidente(servicio2, "Incidente2");
-//    incidente4.setFecha(fechaActual.plusDays(1)); // 1 dia despues
+    Incidente incidente4 = new Incidente(servicio2,
+        "Incidente2", fechaActual.plusDays(1));
 
-//    // usar repo
-//    List<Incidente> incidentesUltimaSemana = new ArrayList<>();
-//
-//    Assertions.assertEquals(2, incidentesUltimaSemana.size());
-//    Assertions.assertTrue(incidentesUltimaSemana.contains(incidente1));
-//    Assertions.assertFalse(incidentesUltimaSemana.contains(incidente2));
-//    Assertions.assertTrue(incidentesUltimaSemana.contains(incidente3));
-//    Assertions.assertFalse(incidentesUltimaSemana.contains(incidente4));
+    List<Incidente> incidentesUltimaSemana = List.of(incidente1, incidente3);
+
+    when(repositorioIncidentes.ultimaSemana()).thenReturn(incidentesUltimaSemana);
+
+    Assertions.assertEquals(2, repositorioIncidentes.ultimaSemana().size());
+    Assertions.assertTrue(repositorioIncidentes.ultimaSemana().contains(incidente1));
+    Assertions.assertFalse(repositorioIncidentes.ultimaSemana().contains(incidente2));
+    Assertions.assertTrue(repositorioIncidentes.ultimaSemana().contains(incidente3));
+    Assertions.assertFalse(repositorioIncidentes.ultimaSemana().contains(incidente4));
   }
 
   @Test
   public void unaEntidadPuedeReportarUnIncidenteEnUnServicioSuyo() {
-    entidad.reportarIncidente(servicio1, "No anda la cadena");
-    entidad.reportarIncidente(servicio2, "No funciona botón de piso 3");
+    entidad.reportarIncidente(servicio1, LocalDateTime.now(), "No anda la cadena");
+    entidad.reportarIncidente(servicio2, LocalDateTime.now(), "No funciona botón de piso 3");
     assertEquals(2, entidad.getIncidentesAbiertos().size());
   }
 
   @Test
   public void unaEntidadNoPuedeReportarUnIncidenteEnUnServicioAjeno() {
     Assertions.assertThrows(RuntimeException.class, () ->
-        entidad.reportarIncidente(servicio3, "No funciona la escalera mecanica"));
+        entidad.reportarIncidente(servicio3, LocalDateTime.now(), "No funciona la escalera mecanica"));
   }
 
   @Test
@@ -159,7 +165,7 @@ public class EntidadTest {
     usuarioQueUsaSubte.setCalendarioNotificaciones(calendarioQuePermite);
     entidad.agregarUsuarioInteresado(usuarioQueUsaSubte);
 
-    entidad.reportarIncidente(servicio1, "No anda la cadena");
+    entidad.reportarIncidente(servicio1, LocalDateTime.now(), "No anda la cadena");
 
     ArgumentCaptor<Notificacion> notificacionCaptor = ArgumentCaptor.forClass(Notificacion.class);
 
@@ -174,7 +180,7 @@ public class EntidadTest {
     Usuario usuarioQueUsaSubteSpy = spy(usuarioQueUsaSubte);
     usuarioQueUsaSubteSpy.setCalendarioNotificaciones(calendarioQuePermite);
     usuarioQueUsaSubteSpy.setMedioDeComunicacion(mailSender);
-    entidad.reportarIncidente(servicio1, "No anda la cadena");
+    entidad.reportarIncidente(servicio1, LocalDateTime.now(), "No anda la cadena");
     verify(usuarioQueUsaSubteSpy, never()).notificar(any());
   }
 
@@ -185,7 +191,7 @@ public class EntidadTest {
     usuarioQueUsaSubte.setCalendarioNotificaciones(calendarioQueNoPermite);
     entidad.agregarUsuarioInteresado(usuarioQueUsaSubte);
 
-    entidad.reportarIncidente(servicio1, "No anda la cadena");
+    entidad.reportarIncidente(servicio1, LocalDateTime.now(), "No anda la cadena");
 
     ArgumentCaptor<Notificacion> notificacionCaptor = ArgumentCaptor.forClass(Notificacion.class);
 
