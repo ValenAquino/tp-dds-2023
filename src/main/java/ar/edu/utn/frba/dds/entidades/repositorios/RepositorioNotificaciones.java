@@ -33,12 +33,12 @@ public class RepositorioNotificaciones implements WithSimplePersistenceUnit {
 
 
   public List<Notificacion> todas() {
-    return entityManager().createQuery("SELECT n FROM Notificacion", Notificacion.class).getResultList();
+    return entityManager().createQuery("SELECT n FROM Notificacion", Notificacion.class)
+        .getResultList();
   }
   public List<Notificacion> notificacionesPendientes() {
-    return todas().stream()
-        .filter(n -> !n.fueEnviada())
-        .collect(Collectors.toList());
+    return entityManager().createQuery("SELECT n FROM Notificacion n WHERE n.fechaEnvio IS NULL", Notificacion.class)
+        .getResultList();
   }
   public List<Notificacion> notificacionesDelUsuario(Usuario usuario) {
     return  entityManager().createQuery("SELECT n FROM Notificacion n WHERE n.receptor = :usuario", Notificacion.class)
