@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo", length = 255)
 public abstract class Notificacion extends PersistentEntity {
-  @ManyToOne(cascade = CascadeType.PERSIST)
+  @ManyToOne
   private Usuario receptor;
   private LocalDateTime fecha;
   @Column(name = "fecha_envio", nullable = true)

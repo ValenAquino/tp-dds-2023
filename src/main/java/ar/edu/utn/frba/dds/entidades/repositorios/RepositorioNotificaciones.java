@@ -19,16 +19,7 @@ public class RepositorioNotificaciones implements WithSimplePersistenceUnit {
   }
 
   public void persistir(Notificacion notificacion) {
-    EntityTransaction transaction = entityManager().getTransaction();
-    try {
-      transaction.begin();
-      entityManager().persist(notificacion);
-      transaction.commit();
-    } catch (Exception e) {
-      if (transaction.isActive()) {
-        transaction.rollback();
-      }
-    }
+    entityManager().persist(notificacion);
   }
   public List<Notificacion> todas() {
     return entityManager().createQuery("SELECT n FROM Notificacion", Notificacion.class)

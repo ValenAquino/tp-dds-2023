@@ -1,12 +1,10 @@
 package ar.edu.utn.frba.dds.entidades.repositorios;
 
 import ar.edu.utn.frba.dds.entidades.Comunidad;
-import ar.edu.utn.frba.dds.entidades.Incidente;
 import ar.edu.utn.frba.dds.entidades.Servicio;
 import ar.edu.utn.frba.dds.entidades.Usuario;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
-import javax.persistence.EntityTransaction;
 
 public class RepositorioComunidades implements WithSimplePersistenceUnit {
   private static RepositorioComunidades instance;
@@ -19,17 +17,7 @@ public class RepositorioComunidades implements WithSimplePersistenceUnit {
   }
 
   public void persistir(Comunidad comunidad) {
-
-    EntityTransaction transaction = entityManager().getTransaction();
-    try {
-      transaction.begin();
-      entityManager().persist(comunidad);
-      transaction.commit();
-    } catch (Exception e) {
-      if (transaction.isActive()) {
-        transaction.rollback();
-      }
-    }
+    entityManager().persist(comunidad);
   }
   public List<Comunidad> getComunidadesDe(Usuario usuario) {
     return entityManager()

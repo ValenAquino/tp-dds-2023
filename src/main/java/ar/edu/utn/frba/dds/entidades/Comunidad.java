@@ -18,21 +18,21 @@ import java.util.List;
 @Entity
 @Table(name = "comunidades")
 public class Comunidad extends PersistentEntity {
-  @ManyToMany(cascade = CascadeType.PERSIST)
+  @ManyToMany
   @JoinTable(
       name = "servicios_interesados_por_comunidades",
       joinColumns = @JoinColumn(name = "comunidad_id"),
       inverseJoinColumns = @JoinColumn(name = "servicio_id"))
   List<Servicio> serviciosDeInteres;
 
-  @OneToMany(cascade = CascadeType.PERSIST)
+  @OneToMany
   @JoinTable(
       name = "incidentes_por_comunidades",
       joinColumns = @JoinColumn(name = "comunidad_id"),
       inverseJoinColumns = @JoinColumn(name = "incidente_id"))
   List<Incidente> incidentes;
 
-  @ManyToMany(cascade = CascadeType.PERSIST)
+  @ManyToMany
   @JoinTable(
       name = "miembros_por_comunidades",
       joinColumns = @JoinColumn(name = "comunidad_id"),

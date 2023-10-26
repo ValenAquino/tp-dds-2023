@@ -31,7 +31,7 @@ public class Usuario extends PersistentEntity {
   @Column(name = "correo_electronico")
   private String correoElectronico;
 
-  @ManyToOne(cascade = CascadeType.PERSIST)
+  @ManyToOne
   @JoinColumn(name = "medio_de_comunicacion_id")
   private MedioDeComunicacion medioDeComunicacion;
 
