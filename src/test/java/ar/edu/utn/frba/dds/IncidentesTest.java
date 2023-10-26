@@ -104,7 +104,7 @@ public class IncidentesTest {
   @Test
   public void unUsuarioPuedeReportarUnIncidente() {
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
-    reportante.reportarIncidente(ascensor, "Fuera de servicio");
+    reportante.reportarIncidente(ascensor, LocalDateTime.now(), "Fuera de servicio");
 
     assertEquals(1, nosMovemosEnSubte.getIncidentes().size());
   }
@@ -112,11 +112,11 @@ public class IncidentesTest {
   @Test
   public void unUsuarioPuedeCerrarUnIncidenteEnUnaComunidad() {
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
-    reportante.reportarIncidente(ascensor, "Fuera de servicio");
+    reportante.reportarIncidente(ascensor, LocalDateTime.now(), "Fuera de servicio");
 
     var incidente = nosMovemosEnSubte.getIncidentes().get(0);
 
-    nosMovemosEnSubte.cerrarIncidente(incidente);
+    nosMovemosEnSubte.cerrarIncidente(incidente, LocalDateTime.now());
 
     assertTrue(incidente.estaResuelto());
     assertNotNull(incidente.getFechaResolucion());
@@ -127,13 +127,13 @@ public class IncidentesTest {
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
     nosMovemosEnSubte.agregarServicioDeInteres(escaleraMecanica);
 
-    reportante.reportarIncidente(ascensor, "Fuera de servicio");
-    reportante.reportarIncidente(escaleraMecanica, "Fuera de servicio");
+    reportante.reportarIncidente(ascensor, LocalDateTime.now(), "Fuera de servicio");
+    reportante.reportarIncidente(escaleraMecanica, LocalDateTime.now(), "Fuera de servicio");
 
     var incidenteAscensor = nosMovemosEnSubte.getIncidentesAbiertos().get(0);
     var incidenteEscalera = nosMovemosEnSubte.getIncidentesAbiertos().get(1);
 
-    nosMovemosEnSubte.cerrarIncidente(incidenteAscensor);
+    nosMovemosEnSubte.cerrarIncidente(incidenteAscensor, LocalDateTime.now());
 
     assertEquals(1, nosMovemosEnSubte.getIncidentesAbiertos().size());
     assertEquals(1, nosMovemosEnSubte.getIncidentesResueltos().size());
@@ -145,7 +145,7 @@ public class IncidentesTest {
   public void elUsuarioReportanteNoEsNotificado() {
     nosMovemosEnSubte.agregarServicioDeInteres(escaleraMecanica);
     Usuario reportanteMock = mock(Usuario.class);
-    reportanteMock.reportarIncidente(escaleraMecanica, "Fuera de servicio");
+    reportanteMock.reportarIncidente(escaleraMecanica, LocalDateTime.now(), "Fuera de servicio");
 
     verify(reportanteMock, never()).notificar(any());
   }
@@ -155,7 +155,7 @@ public class IncidentesTest {
     nosMovemosEnSubte.agregarServicioDeInteres(escaleraMecanica);
     usuarioQueUsaSubte.setMedioDeComunicacion(mailSender);
 
-    reportante.reportarIncidente(escaleraMecanica, "Fuera de servicio");
+    reportante.reportarIncidente(escaleraMecanica, LocalDateTime.now(), "Fuera de servicio");
 
     verify(mailSender).procesarNotificacion(any(NotificacionNuevoIncidente.class));
   }
@@ -165,7 +165,7 @@ public class IncidentesTest {
     nosMovemosEnSubte.agregarServicioDeInteres(escaleraMecanica);
     usuarioQueUsaSubte.setMedioDeComunicacion(whatsAppSender);
 
-    reportante.reportarIncidente(escaleraMecanica, "Fuera de servicio");
+    reportante.reportarIncidente(escaleraMecanica, LocalDateTime.now(), "Fuera de servicio");
 
     verify(whatsAppSender).procesarNotificacion(any(NotificacionNuevoIncidente.class));
   }
@@ -186,7 +186,7 @@ public class IncidentesTest {
 
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
 
-    reportante.reportarIncidente(ascensor, "Fuera de servicio");
+    reportante.reportarIncidente(ascensor, LocalDateTime.now(), "Fuera de servicio");
 
     verify(medioDeComunicacion).procesarNotificacion(any());
   }
@@ -205,7 +205,7 @@ public class IncidentesTest {
     nosMovemosEnSubte.agregarMiembro(usuarioQueUsaSubte);
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
 
-    reportante.reportarIncidente(ascensor, "Fuera de servicio");
+    reportante.reportarIncidente(ascensor, LocalDateTime.now(), "Fuera de servicio");
 
     verify(medioDeComunicacion, never()).procesarNotificacion(any());
   }
@@ -215,7 +215,7 @@ public class IncidentesTest {
     usuarioQueUsaSubte.setCalendarioNotificaciones(null);
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
 
-    reportante.reportarIncidente(ascensor, "Fuera de servicio");
+    reportante.reportarIncidente(ascensor, LocalDateTime.now(), "Fuera de servicio");
 
     verify(medioDeComunicacion).procesarNotificacion(any());
   }

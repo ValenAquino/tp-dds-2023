@@ -20,17 +20,16 @@ public class Incidente extends PersistentEntity {
   @ManyToOne
   Usuario reportante;
 
-  public Incidente(Servicio servicio, String observaciones) {
+  public Incidente(Servicio servicio, String observaciones, LocalDateTime fecha) {
     this.resuelto = false;
-    this.fecha = LocalDateTime.now();
+    this.fecha = fecha;
     this.servicio = servicio;
     this.observaciones = observaciones;
   }
 
   public Incidente(Servicio servicio, String observaciones, LocalDateTime fecha,
                    Usuario reportante) {
-    this(servicio, observaciones);
-    this.fecha = fecha;
+    this(servicio, observaciones, fecha);
     this.reportante = reportante;
   }
 
@@ -60,9 +59,9 @@ public class Incidente extends PersistentEntity {
     return reportante;
   }
 
-  public void cerrar() {
+  public void cerrar(LocalDateTime fecha) {
     resuelto = true;
-    fechaResolucion = LocalDateTime.now();
+    fechaResolucion = fecha;
   }
 
   public long tiempoDeCierre() {

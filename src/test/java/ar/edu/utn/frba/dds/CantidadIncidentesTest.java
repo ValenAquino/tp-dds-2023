@@ -110,15 +110,14 @@ public class CantidadIncidentesTest {
     );
   }
 
-//  @Test
-//  public void siNoHayNingunIncidenteDevuelveCero() {
-//    CantidadIncidentes cantidadIncidentes = new CantidadIncidentes();
-//    List<Incidente> incidentes = List.of(/*Vacio*/);
-//    Map<Entidad, Double> resultados = cantidadIncidentes.getEntidadesOrdenadas(incidentes);
-//
-//    Esto Rompería, hace falta que lo contemplemos?
-//    - Ranking Exception (No hay incidentes para agrupar)
-//  }
+  @Test
+  public void siNoHayNingunIncidenteDevuelveCero() {
+    CantidadIncidentes cantidadIncidentes = new CantidadIncidentes();
+    List<Incidente> incidentes = List.of(/*Vacio*/);
+    Map<Entidad, Double> resultados = cantidadIncidentes.getEntidadesOrdenadas(incidentes);
+
+    Assertions.assertEquals(0, resultados.size());
+  }
 
   public List<Incidente> incidentesCaso1() {
     LocalDateTime fecha = LocalDateTime.now();

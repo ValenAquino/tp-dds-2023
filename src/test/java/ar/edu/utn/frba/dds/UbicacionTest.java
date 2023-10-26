@@ -119,7 +119,7 @@ public class UbicacionTest {
   @Test
   public void unUsuarioNoRecibeSugerenciaDeIncidenteCerrado() {
 
-    incidenteACerrar.cerrar();
+    incidenteACerrar.cerrar(LocalDateTime.now());
 
     List<Incidente> listaIncidentesCercanosAbiertos =
         repositorioComunidades

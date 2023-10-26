@@ -77,9 +77,9 @@ public class Comunidad extends PersistentEntity {
     return incidente;
   }
 
-  public void cerrarIncidente(Incidente incidente) {
+  public void cerrarIncidente(Incidente incidente, LocalDateTime fecha) {
     if (!incidente.estaResuelto()) {
-      incidente.cerrar();
+      incidente.cerrar(fecha);
     }
   }
 
