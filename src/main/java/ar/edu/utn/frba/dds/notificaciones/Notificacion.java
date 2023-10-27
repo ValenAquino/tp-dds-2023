@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.notificaciones;
 
 import ar.edu.utn.frba.dds.entidades.PersistentEntity;
 import ar.edu.utn.frba.dds.entidades.Usuario;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;

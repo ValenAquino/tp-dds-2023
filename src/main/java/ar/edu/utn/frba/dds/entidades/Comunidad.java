@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.entidades;
 
 import ar.edu.utn.frba.dds.ubicacion.ServicioMapas;
 import ar.edu.utn.frba.dds.ubicacion.implementaciones.ServicioGoogleMaps;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
