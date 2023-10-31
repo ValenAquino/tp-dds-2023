@@ -27,6 +27,8 @@ public class Usuario extends PersistentEntity {
   private String contrasenia;
   private String nombre;
   private String apellido;
+  @Column(name = "es_admin")
+  private boolean esAdmin;
   @Column(name = "correo_electronico")
   private String correoElectronico;
 
@@ -53,15 +55,30 @@ public class Usuario extends PersistentEntity {
   }
 
   public Usuario(String usuario, String contrasenia, String nombre, String apellido,
-                 String correoElectronico, RepositorioComunidades repositorioComunidades,
-                 RepositorioNotificaciones repositorioNotificaciones) {
+                 String correoElectronico) {
     this.usuario = usuario;
     this.contrasenia = contrasenia;
     this.nombre = nombre;
     this.apellido = apellido;
     this.correoElectronico = correoElectronico;
+    this.repositorioComunidades = RepositorioComunidades.getInstance();
+    this.repositorioNotificaciones = RepositorioNotificaciones.getInstance();
+  }
+
+  public Usuario(String usuario, String contrasenia, String nombre, String apellido,
+                 String correoElectronico, RepositorioComunidades repositorioComunidades,
+                 RepositorioNotificaciones repositorioNotificaciones) {
+    this(usuario, contrasenia, nombre, apellido, correoElectronico);
     this.repositorioComunidades = repositorioComunidades;
     this.repositorioNotificaciones = repositorioNotificaciones;
+  }
+
+  public boolean esAdmin() {
+    return esAdmin;
+  }
+
+  public void setAdmin(boolean esAdmin) {
+    this.esAdmin = esAdmin;
   }
 
   public void setMedioDeComunicacion(MedioDeComunicacion medioDeComunicacion) {

@@ -16,9 +16,7 @@ public class MailSenderTest {
         "contraseña",
         "marcos",
         "marano",
-        "marcosmarano3@gmail.com",
-        RepositorioComunidades.getInstance(),
-        RepositorioNotificaciones.getInstance()
+        "marcosmarano3@gmail.com"
     );
 
     Notificacion notificacion = new Notificacion(usuario) {
