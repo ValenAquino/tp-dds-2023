@@ -24,7 +24,7 @@ public class Ranking {
   }
 
   public void generarRanking() {
-    List<Incidente> incidentesUltimaSemana = repo.ultimaSemana();
+    List<Incidente> incidentesUltimaSemana = repo.incidentesUltimaSemana();
     this.entidades = criterio.getEntidadesOrdenadas(incidentesUltimaSemana);
   }
 

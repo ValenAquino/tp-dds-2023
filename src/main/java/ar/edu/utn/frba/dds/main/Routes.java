@@ -14,7 +14,7 @@ public class Routes implements WithSimplePersistenceUnit {
   public void start() {
     System.out.println("Iniciando servidor");
 
-    Spark.port(8080);
+    Spark.port(8555);
     Spark.staticFileLocation("/public");
 
     HandlebarsTemplateEngine engine = new HandlebarsTemplateEngine();
