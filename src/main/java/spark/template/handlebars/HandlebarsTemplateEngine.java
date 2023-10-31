@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package spark.template.handlebars;
 
 import com.github.jknack.handlebars.Handlebars;
@@ -24,12 +25,11 @@ import com.github.jknack.handlebars.io.TemplateLoader;
 import com.github.jknack.handlebars.io.TemplateSource;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 import org.eclipse.jetty.io.RuntimeIOException;
 import spark.ModelAndView;
 import spark.TemplateEngine;
-
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Renders HTML from Route output using

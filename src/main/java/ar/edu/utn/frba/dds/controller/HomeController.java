@@ -1,12 +1,11 @@
 package ar.edu.utn.frba.dds.controller;
 
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+import java.util.HashMap;
+import java.util.Map;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class HomeController implements WithSimplePersistenceUnit  {
   public ModelAndView list(Request request, Response response) {

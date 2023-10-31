@@ -2,11 +2,9 @@ package ar.edu.utn.frba.dds.main;
 
 import ar.edu.utn.frba.dds.controller.HomeController;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-import spark.ModelAndView;
+import javax.persistence.PersistenceException;
 import spark.Spark;
 import spark.template.handlebars.HandlebarsTemplateEngine;
-
-import javax.persistence.PersistenceException;
 
 public class Routes implements WithSimplePersistenceUnit {
   public static void main(String[] args) {
