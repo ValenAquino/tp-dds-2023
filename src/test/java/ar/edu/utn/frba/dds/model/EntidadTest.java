@@ -136,13 +136,13 @@ public class EntidadTest {
 
     List<Incidente> incidentesUltimaSemana = List.of(incidente1, incidente3);
 
-    when(repositorioIncidentes.ultimaSemana()).thenReturn(incidentesUltimaSemana);
+    when(repositorioIncidentes.incidentesUltimaSemana()).thenReturn(incidentesUltimaSemana);
 
-    Assertions.assertEquals(2, repositorioIncidentes.ultimaSemana().size());
-    Assertions.assertTrue(repositorioIncidentes.ultimaSemana().contains(incidente1));
-    Assertions.assertFalse(repositorioIncidentes.ultimaSemana().contains(incidente2));
-    Assertions.assertTrue(repositorioIncidentes.ultimaSemana().contains(incidente3));
-    Assertions.assertFalse(repositorioIncidentes.ultimaSemana().contains(incidente4));
+    Assertions.assertEquals(2, repositorioIncidentes.incidentesUltimaSemana().size());
+    Assertions.assertTrue(repositorioIncidentes.incidentesUltimaSemana().contains(incidente1));
+    Assertions.assertFalse(repositorioIncidentes.incidentesUltimaSemana().contains(incidente2));
+    Assertions.assertTrue(repositorioIncidentes.incidentesUltimaSemana().contains(incidente3));
+    Assertions.assertFalse(repositorioIncidentes.incidentesUltimaSemana().contains(incidente4));
   }
 
   @Test
