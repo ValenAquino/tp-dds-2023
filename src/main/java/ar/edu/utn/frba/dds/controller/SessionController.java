@@ -17,7 +17,7 @@ public class SessionController {
   public ModelAndView render(Request request, Response response) {
 
     Map<String, Object> modelo = new HashMap<>();
-    return new ModelAndView(modelo, "formulario-login.html.hbs");
+    return new ModelAndView(modelo, "login.html.hbs");
   }
 
   public Void login(Request request, Response response) {

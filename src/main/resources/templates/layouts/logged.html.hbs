@@ -1,0 +1,55 @@
+{{#partial "layout" }}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid d-flex flex-row nav-container">
+        <div>
+            <h3 class="d-inline-block logo">Logo</h3>
+            <ul class="navbar-nav d-inline-flex flex-row">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Comunidades</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Incidentes
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li class="dropdown-item"><a href="#">Reportar incidente</a></li>
+                        <li class="dropdown-item"><a href="#">Revisión de incidentes</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Rankings
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li class="dropdown-item"><a href="#">Cantidad de incidentes</a></li>
+                        <li class="dropdown-item"><a href="#">Promedio de cierre</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Usuarios</a>
+                </li>
+            </ul>
+        </div>
+        <div class="nav-right-div d-flex flex-row justify-content-end">
+            <div class="m-2">
+                <a href="login" class="red-button">Reportar incidente</a>
+            </div>
+            <div class="m-2 d-flex flex-column justify-content-center">
+                <a href="login"><i class="fa-solid fa-arrow-right-from-bracket m-2"></i>Salir</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div>
+    <main>
+     {{#block "principal" }}
+     {{/block}}
+    </main>
+</div>
+{{/partial}}
+
+{{> layouts/document.html.hbs }}
