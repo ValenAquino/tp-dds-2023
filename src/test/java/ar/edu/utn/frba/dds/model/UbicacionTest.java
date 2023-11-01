@@ -54,7 +54,7 @@ public class UbicacionTest {
     )).thenReturn(false);
 
     medioDeComunicacion = mock(MedioDeComunicacion.class);
-    nosLiberamos = new Comunidad(servicioMapas);
+    nosLiberamos = new Comunidad("Nos liberamos", servicioMapas);
 
     ascensor = mock(Servicio.class);
     when(ascensor.getUbicacion()).thenReturn(plazaDeMayo);  // Set Ubicacion del Servicio

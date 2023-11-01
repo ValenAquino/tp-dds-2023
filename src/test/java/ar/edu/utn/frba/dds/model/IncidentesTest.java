@@ -80,11 +80,10 @@ public class IncidentesTest {
     medioDeComunicacion = mock(MedioDeComunicacion.class);
     whatsAppSender = mock(WhatsAppSender.class);
     mailSender = mock(MailSender.class);
-    nosMovemosEnSubte = new Comunidad(servicioMapas);
+    nosMovemosEnSubte = new Comunidad("Nos movemos en subte", servicioMapas);
 
     usuarioQueUsaSubte.setMedioDeComunicacion(medioDeComunicacion);
 
-    nosMovemosEnSubte = new Comunidad(servicioMapas);
     nosMovemosEnSubte.agregarMiembro(usuarioQueUsaSubte);
     nosMovemosEnSubte.agregarMiembro(reportante);
 

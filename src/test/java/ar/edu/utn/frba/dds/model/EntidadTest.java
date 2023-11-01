@@ -67,10 +67,10 @@ public class EntidadTest {
     Ubicacion castroBarros = new Ubicacion(-34.611806, -58.42175);
     Ubicacion medrano = new Ubicacion(-34.6033341,-58.4206027);
 
-    entidad = new Entidad("entidad", TipoDeEntidad.SUBTERRANEO);
-    establecimiento1 = new Establecimiento(entidad, facultadDeMedicina);
-    establecimiento2 = new Establecimiento(entidad, castroBarros);
-    establecimiento3 = new Establecimiento(entidad, medrano);
+    entidad = new Entidad("Subte D", TipoDeEntidad.SUBTERRANEO);
+    establecimiento1 = new Establecimiento("Estación Carranza", entidad, facultadDeMedicina);
+    establecimiento2 = new Establecimiento("Estación Olleros", entidad, castroBarros);
+    establecimiento3 = new Establecimiento("Estación Juramento", entidad, medrano);
     servicio1 = new Servicio("servicioInestable", TipoDeServicio.BANIOS);
     servicio2 = new Servicio("ascensorInestable", TipoDeServicio.ASCENSORES);
     servicio3 = new Servicio("escalerasInestables", TipoDeServicio.ESCALERAS_MECANICAS);

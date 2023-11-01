@@ -63,8 +63,8 @@ public class RankingTest {
     ascensorALaCalle = new Servicio("ascensorALaCalle", TipoDeServicio.ASCENSORES);
     escaleraMecanica = new Servicio("escaleraMecanica", TipoDeServicio.ESCALERAS_MECANICAS);
 
-    Establecimiento estacionCarabobo = new Establecimiento(subteA, carabobo);
-    Establecimiento estacionFlores = new Establecimiento(subteA, flores);
+    Establecimiento estacionCarabobo = new Establecimiento("Estación Carabobo", subteA, carabobo);
+    Establecimiento estacionFlores = new Establecimiento("Estación Flores", subteA, flores);
 
     estacionCarabobo.agregarServicio(escaleraMecanica);
     estacionFlores.agregarServicio(ascensorALaCalle);
@@ -82,8 +82,8 @@ public class RankingTest {
 
     lineaSarmiento = new Entidad("lineaSarmiento", TipoDeEntidad.FERROCARRIL);
 
-    Establecimiento estacionCaballito = new Establecimiento(lineaSarmiento, caballito);
-    Establecimiento estacionOnce = new Establecimiento(lineaSarmiento, once);
+    Establecimiento estacionCaballito = new Establecimiento("Estación Caballito", lineaSarmiento, caballito);
+    Establecimiento estacionOnce = new Establecimiento("Estación Once", lineaSarmiento, once);
 
     banioDeMujeres = new Servicio("banioDeMujeres", TipoDeServicio.BANIOS);
     banioDeHombres = new Servicio("banioDeHombres", TipoDeServicio.BANIOS);

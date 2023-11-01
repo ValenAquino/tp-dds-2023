@@ -48,7 +48,8 @@ public class Comunidad extends PersistentEntity {
     this.servicioMapas = new ServicioGoogleMaps();
   }
 
-  public Comunidad(ServicioMapas servicioMapa) {
+  public Comunidad(String nombre, ServicioMapas servicioMapa) {
+    this.nombre = nombre;
     this.serviciosDeInteres = new ArrayList<>();
     this.incidentes = new ArrayList<>();
     this.miembros = new ArrayList<>();

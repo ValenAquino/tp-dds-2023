@@ -4,6 +4,7 @@ import ar.edu.utn.frba.dds.model.entidades.enums.TipoDeEntidad;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -17,7 +18,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "entidades")
 public class Entidad extends PersistentEntity {
-  @OneToMany(mappedBy = "entidad")
+  @OneToMany(mappedBy = "entidad", cascade = CascadeType.ALL)
   private final List<Establecimiento> establecimientos = new ArrayList<>();
   @ManyToMany
   @JoinTable(
