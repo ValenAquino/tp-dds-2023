@@ -101,7 +101,7 @@ public class RankingTest {
   @Test
   public void elRankingPorMayorCantidadDeIncidentesDevuelveLaListaEnElOrdenCorrecto() {
     List<Incidente> incidentes = getIncidentes();
-    when(repo.ultimaSemana()).thenReturn(incidentes);
+    when(repo.incidentesUltimaSemana()).thenReturn(incidentes);
 
     rankingMayorCantidadIncidentes.generarRanking();
 
@@ -119,7 +119,7 @@ public class RankingTest {
   @Test
   public void elRankingPorMayorPromedioDeCierreDeIncidentesDevuelveLaListaEnElOrdenCorrecto() {
     List<Incidente> incidentes = getIncidentesConPromedio1y2();
-    when(repo.ultimaSemana()).thenReturn(incidentes);
+    when(repo.incidentesUltimaSemana()).thenReturn(incidentes);
 
     rankingMayorPromedioDeCierre.generarRanking();
 
