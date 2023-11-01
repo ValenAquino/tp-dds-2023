@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.model.entidades.repositorios;
 
 import ar.edu.utn.frba.dds.model.entidades.Usuario;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+import java.util.Collection;
 
 public class RepositorioUsuarios implements WithSimplePersistenceUnit {
   private static RepositorioUsuarios instance;
@@ -15,6 +16,10 @@ public class RepositorioUsuarios implements WithSimplePersistenceUnit {
 
   public void persistir(Usuario usuario) {
     entityManager().persist(usuario);
+  }
+
+  public Collection<Usuario> todos() {
+    return entityManager().createQuery("from Usuario", Usuario.class).getResultList();
   }
 
   public Usuario porUsuarioYContrasenia(String usuario, String contrasenia) {

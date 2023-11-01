@@ -73,6 +73,18 @@ public class Usuario extends PersistentEntity {
     this.repositorioNotificaciones = repositorioNotificaciones;
   }
 
+  public String getUsuario() {
+    return usuario;
+  }
+
+  public String getNombre() {
+    return nombre;
+  }
+
+  public String getApellido() {
+    return apellido;
+  }
+
   public boolean esAdmin() {
     return esAdmin;
   }
@@ -96,8 +108,6 @@ public class Usuario extends PersistentEntity {
   public String getCorreoElectronico() {
     return correoElectronico;
   }
-
-  public String getUsuario() { return usuario; }
 
   public void reportarIncidente(Servicio servicio, LocalDateTime fecha, String observaciones) {
     getComunidadesInteresadas(servicio).forEach(c ->

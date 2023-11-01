@@ -4,6 +4,7 @@ import ar.edu.utn.frba.dds.controller.ComunidadesController;
 import ar.edu.utn.frba.dds.controller.HomeController;
 import ar.edu.utn.frba.dds.controller.IncidentesController;
 import ar.edu.utn.frba.dds.controller.SessionController;
+import ar.edu.utn.frba.dds.controller.UsuariosController;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import javax.persistence.PersistenceException;
 
@@ -30,12 +31,16 @@ public class Routes implements WithSimplePersistenceUnit {
     var homeController = new HomeController();
     var sessionController = new SessionController();
     var comunidadesController = new ComunidadesController();
+    var usuariosController = new UsuariosController();
     var incidentesController = new IncidentesController();
 
     // Anonymous
     get("/login", sessionController::render, engine);
     post("/login", sessionController::login);
     post("/logout", sessionController::logout);
+
+    // Users routes
+    get("/usuarios", usuariosController::render, engine);
 
     // Protected "home" routes
     get("/home", homeController::render, engine);
