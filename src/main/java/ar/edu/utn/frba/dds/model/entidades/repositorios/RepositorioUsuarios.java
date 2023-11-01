@@ -20,7 +20,7 @@ public class RepositorioUsuarios  implements WithSimplePersistenceUnit {
   public Usuario porUsuarioYContrasenia(String usuario, String contrasenia) {
     return entityManager()
         .createQuery("from Usuario where usuario = :usuario and contrasenia = :contrasenia", Usuario.class)
-        .setParameter("nombre", usuario)
+        .setParameter("usuario", usuario)
         .setParameter("contrasenia", contrasenia)
         .getResultList()
         .get(0);
