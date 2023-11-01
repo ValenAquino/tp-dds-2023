@@ -19,7 +19,7 @@ public class RepositorioComunidades implements WithSimplePersistenceUnit {
   public void persistir(Comunidad comunidad) {
     entityManager().persist(comunidad);
   }
-  public List<Comunidad> getComunidadesDe(Usuario usuario) {
+  public List<Comunidad> comunidadesDeUsuario(Usuario usuario) {
     return entityManager()
         .createQuery("select distinct c from Comunidad c join c.miembros m where m.id = :id", Comunidad.class)
         .setParameter("id", usuario.getId())
@@ -30,7 +30,7 @@ public class RepositorioComunidades implements WithSimplePersistenceUnit {
     return entityManager().createQuery("SELECT c FROM Comunidad", Comunidad.class)
         .getResultList();
   }
-  public List<Comunidad> getComunidadesInteresadas(Usuario usuario, Servicio servicio) {
+  public List<Comunidad> comunidadesInteresadas(Usuario usuario, Servicio servicio) {
     return entityManager()
         .createQuery("SELECT c FROM Comunidad c JOIN c.serviciosDeInteres s WHERE :usuario MEMBER OF c.miembros AND :servicio MEMBER OF c.serviciosDeInteres", Comunidad.class)
         .setParameter("usuario", usuario.getId())

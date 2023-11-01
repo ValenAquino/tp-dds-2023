@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.main;
 
 import ar.edu.utn.frba.dds.controller.HomeController;
+import ar.edu.utn.frba.dds.controller.SessionController;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import javax.persistence.PersistenceException;
 import spark.Spark;
@@ -8,6 +9,7 @@ import spark.template.handlebars.HandlebarsTemplateEngine;
 
 public class Routes implements WithSimplePersistenceUnit {
   public static void main(String[] args) {
+    Bootstrap.main(args);
     new Routes().start();
   }
 
@@ -19,11 +21,16 @@ public class Routes implements WithSimplePersistenceUnit {
 
     HandlebarsTemplateEngine engine = new HandlebarsTemplateEngine();
     HomeController homeController = new HomeController();
+    var sesionController = new SessionController();
 
-    Spark.get("/", homeController::list, engine);
+    Spark.get("/", homeController::render, engine);
+
+    // Login routes
+    Spark.get("/login", sesionController::render, engine);
+    Spark.post("/login", sesionController::login);
 
     Spark.exception(PersistenceException.class, (e, request, response) -> {
-      response.redirect("/500"); //TODO
+      response.redirect("/500");
     });
 
     Spark.before((request, response) -> {

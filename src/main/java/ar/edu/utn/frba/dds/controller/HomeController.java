@@ -8,7 +8,7 @@ import spark.Request;
 import spark.Response;
 
 public class HomeController implements WithSimplePersistenceUnit  {
-  public ModelAndView list(Request request, Response response) {
+  public ModelAndView render(Request request, Response response) {
     Map<String, Object> modelo = new HashMap<>();
     return new ModelAndView(modelo, "index.html.hbs");
   }

@@ -87,7 +87,7 @@ public class UbicacionTest {
         repositorioNotificaciones
     );
 
-    when(repositorioComunidades.getComunidadesDe(cornelioSaavedra)).thenReturn(
+    when(repositorioComunidades.comunidadesDeUsuario(cornelioSaavedra)).thenReturn(
         Collections.singletonList(
             nosLiberamos
         )
@@ -105,7 +105,7 @@ public class UbicacionTest {
 
     List<Incidente> listaIncidentesCercanosAbiertos =
         repositorioComunidades
-            .getComunidadesDe(cornelioSaavedra)
+            .comunidadesDeUsuario(cornelioSaavedra)
             .stream()
             .flatMap(c -> c.getIncidentesAbiertosCercanosA(cornelioSaavedra).stream()).toList();
 
@@ -121,7 +121,7 @@ public class UbicacionTest {
 
     List<Incidente> listaIncidentesCercanosAbiertos =
         repositorioComunidades
-            .getComunidadesDe(cornelioSaavedra)
+            .comunidadesDeUsuario(cornelioSaavedra)
             .stream()
             .flatMap(c -> c.getIncidentesAbiertosCercanosA(cornelioSaavedra).stream()).toList();
 
@@ -135,7 +135,7 @@ public class UbicacionTest {
 
     List<Incidente> listaIncidentesCercanosAbiertos =
         repositorioComunidades
-            .getComunidadesDe(cornelioSaavedra)
+            .comunidadesDeUsuario(cornelioSaavedra)
             .stream()
             .flatMap(c -> c.getIncidentesAbiertosCercanosA(cornelioSaavedra).stream()).toList();
 

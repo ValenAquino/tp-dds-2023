@@ -88,13 +88,13 @@ public class IncidentesTest {
     nosMovemosEnSubte.agregarMiembro(usuarioQueUsaSubte);
     nosMovemosEnSubte.agregarMiembro(reportante);
 
-    when(repositorioComunidades.getComunidadesInteresadas(reportante, ascensor)).thenReturn(
+    when(repositorioComunidades.comunidadesInteresadas(reportante, ascensor)).thenReturn(
         Collections.singletonList(
             nosMovemosEnSubte
         )
     );
 
-    when(repositorioComunidades.getComunidadesInteresadas(reportante, escaleraMecanica)).thenReturn(
+    when(repositorioComunidades.comunidadesInteresadas(reportante, escaleraMecanica)).thenReturn(
         Collections.singletonList(
             nosMovemosEnSubte
         )

@@ -117,6 +117,6 @@ public class Usuario extends PersistentEntity {
   }
 
   private List<Comunidad> getComunidadesInteresadas(Servicio servicio) {
-    return repositorioComunidades.getComunidadesInteresadas(this, servicio);
+    return repositorioComunidades.comunidadesInteresadas(this, servicio);
   }
 }
