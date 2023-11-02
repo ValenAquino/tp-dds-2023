@@ -29,11 +29,11 @@ public class Establecimiento extends PersistentEntity {
   public Establecimiento() { }
 
   public void agregarServicio(Servicio servicio) {
-    this.servicios.add(servicio);
+    servicios.add(servicio);
   }
 
   public void removerServicio(Servicio servicio) {
-    this.servicios.remove(servicio);
+    servicios.remove(servicio);
   }
 
   public boolean tieneServicio(Servicio servicio) {
@@ -47,6 +47,8 @@ public class Establecimiento extends PersistentEntity {
   public Ubicacion getUbicacion() {
     return ubicacion;
   }
+  public String getNombre(){return nombre;  }
+  public List<Servicio> getServicios(){return servicios;}
 
   public String getNombre() { return nombre; }
 }
