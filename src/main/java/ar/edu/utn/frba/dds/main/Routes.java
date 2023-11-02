@@ -25,6 +25,7 @@ public class Routes implements WithSimplePersistenceUnit {
     var sesionController = new SessionController();
     var incidentesController = new IncidentesController();
 
+    // Home
     Spark.get("/", homeController::render, engine);
 
     // Login routes

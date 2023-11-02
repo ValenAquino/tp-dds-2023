@@ -1,5 +1,15 @@
 {{#partial "principal" }}
 
+    <h1>Mis comunidades</h1>
+    <div class="d-flex flex-row flex-wrap">
+        {{#comunidades}}
+            <div class="card">
+                <h4>{{nombre}}</h4>
+                <a href="/comunidades/{{id}}/incidentes">Ver incidentes</a>
+            </div>
+        {{/comunidades}}
+    </div>
+
 {{/partial}}
 
 {{> layouts/logged.html.hbs }}
