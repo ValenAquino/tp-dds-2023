@@ -30,6 +30,7 @@ public class Establecimiento extends PersistentEntity {
 
   public void agregarServicio(Servicio servicio) {
     servicios.add(servicio);
+    servicio.setEstablecimiento(this);
   }
 
   public void removerServicio(Servicio servicio) {

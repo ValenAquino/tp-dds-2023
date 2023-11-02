@@ -10,18 +10,19 @@
                             <div class="col">
                                 <label for="establecimientos">Establecimiento</label>
                                 <select class="form-select" id="establecimiento">
+                                    <option value=""></option>
                                     {{#each establecimientos}}
-                                        <option value=""></option>
+
                                         <option value="{{getNombre}}">{{getNombre}}</option>
                                     {{/each}}
                                 </select>
                             </div>
                             <div class="col">
                                 <label for="servicios">Servicios Disponibles</label>
-                                <select class="form-select" id="servicios" >
+                                <select class="form-select" id="servicios">
+                                    <option value=""></option>
                                     {{#each servicios}}
-                                        <option value=""></option>
-                                        <option value="{{getNombre}}">{{getNombre}}</option>
+                                        <option value="{{getDescripcion}}">{{getDescripcion}}</option>
                                     {{/each}}
                                 </select>
                             </div>

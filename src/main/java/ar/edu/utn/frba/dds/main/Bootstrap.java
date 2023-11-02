@@ -64,16 +64,42 @@ public class Bootstrap implements WithSimplePersistenceUnit {
     var establecimiento =
         new Establecimiento("Estación Carabobo", entidad, medrano);
 
+    var establecimiento2 =
+        new Establecimiento("Estación Puan", entidad, medrano);
+    var establecimiento3 =
+        new Establecimiento("Estación Primera Junta", entidad, medrano);
+    var establecimiento4 =
+        new Establecimiento("Estación Acoyte", entidad, medrano);
+
     Servicio ascensor = new Servicio(
         "Ascensor - acceso a estación",
         TipoDeServicio.ASCENSORES
     );
+    Servicio ascensor2 = new Servicio(
+        "Ascensor - acceso a estación",
+        TipoDeServicio.ASCENSORES
+    );
+    Servicio escalera = new Servicio(
+        "Escalera mecanica - acceso a estación",
+        TipoDeServicio.ESCALERAS_MECANICAS
+    );
+    Servicio escalera2 = new Servicio(
+        "Escalera mecanica - acceso a estación",
+        TipoDeServicio.ESCALERAS_MECANICAS
+    );
 
-    ascensor.setEstablecimiento(establecimiento);
 
+
+    establecimiento2.agregarServicio(escalera);
+    establecimiento3.agregarServicio(escalera2);
+    establecimiento4.agregarServicio(ascensor2);
     establecimiento.agregarServicio(ascensor);
 
+    entidad.agregarEstablecimiento(establecimiento2);
+    entidad.agregarEstablecimiento(establecimiento3);
+    entidad.agregarEstablecimiento(establecimiento4);
     entidad.agregarEstablecimiento(establecimiento);
+
 
     RepositorioEntidades.getInstance().persistir(entidad);
 
