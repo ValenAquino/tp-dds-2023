@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.model.entidades.repositorios;
 
+import ar.edu.utn.frba.dds.model.entidades.Comunidad;
 import ar.edu.utn.frba.dds.model.entidades.Incidente;
 import ar.edu.utn.frba.dds.model.entidades.Servicio;
 import ar.edu.utn.frba.dds.model.entidades.Usuario;
@@ -50,5 +51,8 @@ public class RepositorioIncidentes implements WithSimplePersistenceUnit {
         .setParameter("fechaLimite",fechaLimite)
         .setParameter("ahora",ahora)
         .getResultList();
+  }
+  public Incidente porId(Integer id) {
+    return entityManager().find(Incidente.class, id);
   }
 }

@@ -1,7 +1,27 @@
 {{#partial "principal" }}
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const closeButton = document.querySelector('[data-bs-target="#confirmarCierreModal"]');
+    const form = document.querySelector('#confirmarCierreModal form');
+
+    document.addEventListener('click', function (event) {
+      if (event.target && event.target.getAttribute('data-incident-id')) {
+        const incidentId = event.target.getAttribute('data-incident-id');
+
+        form.action = `incidentes/${incidentId}`;
+      }
+    });
+});
+</script>
+
 <div>
-    <h3 class="mb-4">Incidentes</h3>
+    <h3 class="mb-4 mr-4">Incidentes</h3>
+    <div style="height: 3em;">
+        <a class="mr-1" href="incidentes">Todos</a>
+        <a class="mr-1" href="incidentes?estado=abierto">Abiertos</a>
+        <a class="mr-1" href="incidentes?estado=cerrado">Cerrados</a>
+    </div>
     <div class="d-flex flex-row flex-wrap">
     {{#incidentes}}
         <div class="card-incidente">
@@ -22,12 +42,34 @@
             <div class="text-area mt-1">
                 {{observaciones}}
             </div>
-            <div class="d-flex flex-row justify-content-end mt-1">
-                <button class="green-button">Cerrar</button>
+            <div class="d-flex flex-row justify-content-end mt-1" style="height: 2.4rem;">
+                {{#if abierto}}
+                    <button type="button" class="btn btn-primary green-button" data-bs-toggle="modal" data-bs-target="#confirmarCierreModal" data-incident-id="{{id}}">Cerrar</button>
+                {{/if}}
             </div>
         </div>
     {{/incidentes}}
     </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="confirmarCierreModal" tabindex="-1" role="dialog" aria-labelledby="confirmarCierreModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmarCierreModalLabel">Confirmar cierre de incidente</h5>
+      </div>
+      <form method="POST" class="m-0">
+      <div class="modal-body">
+        ¿Desea cerrar el incidente?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary grey-button" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary green-button">Cerrar</button>
+      </div>
+      </form>
+    </div>
+  </div>
 </div>
 
 {{/partial}}

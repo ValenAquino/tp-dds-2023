@@ -66,12 +66,13 @@ a:hover {
     margin: 0 2% 2% 2%;
     width: 28%;
     border-top: 1px solid rgba(211, 211, 211, 0.5);
+    border-radius: 2%;
 }
 
 .dot-green {
     width: 1em;
     height: 1em;
-    background-color: green;
+    background-color: #3aeb34;
     border-radius: 50%;
     margin: 1.7% 4% 1% 1%;
 }
@@ -93,8 +94,21 @@ a:hover {
     color: #ffffff;
 }
 
+.grey-button {
+    width: 6rem;
+    height: 2.4rem;
+    border-radius: 10em;
+    border: none;
+    background-color: #9c9695;
+    color: #ffffff;
+}
+
 .mt-1 {
     margin-top: 1rem;
+}
+
+.mr-1 {
+    margin-right: 1rem;
 }
 
 .mt-2 {
@@ -105,8 +119,32 @@ a:hover {
     margin-bottom: 4rem;
 }
 
+.mr-4 {
+    margin-right: 4rem;
+}
+
+.mr-2 {
+    margin-right: 2rem;
+}
+
 .text-area {
     height: 70px;
     overflow: hidden;
     font-size: 0.9em;
+}
+
+.green-filter {
+    padding: 0.3em 1em 0.3em 1em;
+    border-radius: 10em;
+    border: none;
+    background-color: rgba(58, 235, 52, 0.8);
+    color: #ffffff;
+}
+
+.red-filter {
+    padding: 0.3em 1em 0.3em 1em;
+    border-radius: 10em;
+    border: none;
+    background-color: red;
+    color: #ffffff;
 }

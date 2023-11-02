@@ -34,6 +34,7 @@ public class Routes implements WithSimplePersistenceUnit {
 
     // Incidentes routes
     Spark.get("/comunidades/:id/incidentes", incidentesController::listarPorComunidad, engine);
+    Spark.post("/comunidades/:id/incidentes/:incidente_id", incidentesController::cerrar);
 
     Spark.exception(PersistenceException.class, (e, request, response) -> {
       response.redirect("/500");
