@@ -6,11 +6,8 @@ import ar.edu.utn.frba.dds.controller.IncidentesController;
 import ar.edu.utn.frba.dds.controller.SessionController;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import javax.persistence.PersistenceException;
-<<<<<<<HEAD
-    =======
-import javax.persistence.criteria.CriteriaBuilder;
 import spark.Spark;
->>>>>>>582fc1c(feat(reporte incidentes):crear vista)
+
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
 import static spark.Spark.before;

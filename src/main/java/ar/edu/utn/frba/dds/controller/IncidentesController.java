@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.controller;
 
-<<<<<<<HEAD
 import ar.edu.utn.frba.dds.model.entidades.Establecimiento;
 import ar.edu.utn.frba.dds.model.entidades.Incidente;
 import ar.edu.utn.frba.dds.model.entidades.Servicio;

@@ -50,5 +50,4 @@ public class Establecimiento extends PersistentEntity {
   public String getNombre(){return nombre;  }
   public List<Servicio> getServicios(){return servicios;}
 
-  public String getNombre() { return nombre; }
 }
