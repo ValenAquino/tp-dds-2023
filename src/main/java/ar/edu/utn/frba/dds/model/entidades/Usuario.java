@@ -97,6 +97,8 @@ public class Usuario extends PersistentEntity {
     return correoElectronico;
   }
 
+  public String getUsuario() { return usuario; }
+
   public void reportarIncidente(Servicio servicio, LocalDateTime fecha, String observaciones) {
     getComunidadesInteresadas(servicio).forEach(c ->
         c.reportarIncidente(servicio, observaciones, fecha, this)

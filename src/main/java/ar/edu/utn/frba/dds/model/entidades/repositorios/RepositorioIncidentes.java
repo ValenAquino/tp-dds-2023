@@ -22,7 +22,7 @@ public class RepositorioIncidentes implements WithSimplePersistenceUnit {
   }
 
   public List<Incidente> todos() {
-    return entityManager().createQuery("SELECT i FROM Incidente", Incidente.class)
+    return entityManager().createQuery("SELECT i FROM Incidente i", Incidente.class)
         .getResultList();
   }
   public List<Incidente> incidentesResueltos() {

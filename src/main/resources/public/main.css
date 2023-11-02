@@ -52,3 +52,61 @@ a:hover {
     padding: 0 2% 0 0;
     font-size: 0.9rem;
 }
+
+.main-container {
+    padding: 2%;
+}
+
+/* Incidentes */
+
+.card {
+    padding: 2% 2% 1% 2%;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    border: none;
+    margin: 0 2% 2% 2%;
+    width: 28%;
+    border-top: 1px solid rgba(211, 211, 211, 0.5);
+}
+
+.dot-green {
+    width: 1em;
+    height: 1em;
+    background-color: green;
+    border-radius: 50%;
+    margin: 1.7% 4% 1% 1%;
+}
+
+.dot-red {
+    width: 1em;
+    height: 1em;
+    background-color: red;
+    border-radius: 50%;
+    margin: 1.7% 4% 1% 1%;
+}
+
+.green-button {
+    width: 6rem;
+    height: 2.4rem;
+    border-radius: 10em;
+    border: none;
+    background-color: #3aeb34;
+    color: #ffffff;
+}
+
+.mt-1 {
+    margin-top: 1rem;
+}
+
+.mt-2 {
+    margin-top: 2rem;
+}
+
+.mb-4 {
+    margin-bottom: 4rem;
+}
+
+.text-area {
+    height: 70px;
+    overflow: hidden;
+    font-size: 0.9em;
+}

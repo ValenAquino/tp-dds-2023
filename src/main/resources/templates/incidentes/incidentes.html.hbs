@@ -1,0 +1,35 @@
+{{#partial "principal" }}
+
+<div>
+    <h3 class="mb-4">Incidentes</h3>
+    <div class="d-flex flex-row flex-wrap">
+    {{#incidentes}}
+        <div class="card">
+            <h5>{{servicio.descripcion}}</h5>
+            <h6>{{establecimiento.nombre}}</h6>
+
+            <div class="d-flex flex-row">
+                {{#if abierto}}
+                    <div class="dot-red"></div>
+                    <span>Abierto</span>
+                {{else}}
+                    <div class="dot-green"></div>
+                    <span>Cerrado</span>
+                {{/if}}
+            </div>
+
+            <span class="mt-2">{{fecha}} - {{reportante}}</span>
+            <div class="text-area mt-1">
+                {{observaciones}}
+            </div>
+            <div class="d-flex flex-row justify-content-end mt-1">
+                <button class="green-button">Cerrar</button>
+            </div>
+        </div>
+    {{/incidentes}}
+    </div>
+</div>
+
+{{/partial}}
+
+{{> layouts/logged.html.hbs }}

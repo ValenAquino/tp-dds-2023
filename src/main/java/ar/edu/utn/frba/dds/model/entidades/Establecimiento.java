@@ -48,4 +48,5 @@ public class Establecimiento extends PersistentEntity {
     return ubicacion;
   }
 
+  public String getNombre() { return nombre; }
 }

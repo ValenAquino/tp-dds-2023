@@ -75,4 +75,8 @@ public class Incidente extends PersistentEntity {
   public Ubicacion getUbicacion() {
     return servicio.getUbicacion();
   }
+
+  public Establecimiento getEstablecimiento() {
+    return servicio.getEstablecimiento();
+  }
 }

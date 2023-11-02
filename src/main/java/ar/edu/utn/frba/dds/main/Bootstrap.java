@@ -59,15 +59,17 @@ public class Bootstrap implements WithSimplePersistenceUnit {
 
     var entidad = new Entidad("Subte A", TipoDeEntidad.SUBTERRANEO);
 
+    var medrano = new Ubicacion(-34.6033341,-58.4206027);
+
+    var establecimiento =
+        new Establecimiento("Estación Carabobo", entidad, medrano);
+
     Servicio ascensor = new Servicio(
         "Ascensor - acceso a estación",
         TipoDeServicio.ASCENSORES
     );
 
-    var medrano = new Ubicacion(-34.6033341,-58.4206027);
-
-    var establecimiento =
-        new Establecimiento("Estación Carabobo", entidad, medrano);
+    ascensor.setEstablecimiento(establecimiento);
 
     establecimiento.agregarServicio(ascensor);
 
@@ -85,5 +87,17 @@ public class Bootstrap implements WithSimplePersistenceUnit {
         LocalDateTime.now(), usuario);
 
     RepositorioIncidentes.getInstance().persistir(incidente);
+
+    var contador = 1;
+
+    while(contador < 4) {
+      var incidente2 = new Incidente(ascensor,
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent venenatis sit amet arcu vitae hendrerit. In elementum neque in sapien viverra, vel auctor nibh dapibus.",
+          LocalDateTime.now(), usuario);
+
+      RepositorioIncidentes.getInstance().persistir(incidente2);
+
+      contador++;
+    }
   }
 }
