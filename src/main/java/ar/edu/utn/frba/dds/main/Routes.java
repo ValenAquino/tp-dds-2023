@@ -15,6 +15,7 @@ import static spark.Spark.exception;
 import static spark.Spark.get;
 import static spark.Spark.port;
 import static spark.Spark.post;
+import static spark.Spark.put;
 import static spark.Spark.staticFileLocation;
 
 public class Routes implements WithSimplePersistenceUnit {
@@ -40,11 +41,11 @@ public class Routes implements WithSimplePersistenceUnit {
     post("/logout", sessionController::logout);
 
     // Users routes
-    get("/usuarios", usuariosController::usuarios, engine);
-    get("/usuarios/nuevo", usuariosController::nuevo, engine);
-    post("/usuarios", usuariosController::crear);
-    get("/usuarios/ver", usuariosController::ver, engine);
-    put("/usuarios", usuariosController::editar);
+    get("/home/usuarios", usuariosController::usuarios, engine);
+    get("/home/usuarios/nuevo", usuariosController::nuevo, engine);
+    post("/home/usuarios", usuariosController::crear);
+    get("/home/usuarios/ver", usuariosController::ver, engine);
+    put("/home/usuarios", usuariosController::editar);
 
     // Protected "home" routes
     get("/home", homeController::render, engine);
