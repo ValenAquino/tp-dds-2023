@@ -3,7 +3,7 @@ package ar.edu.utn.frba.dds.model.entidades.repositorios;
 import ar.edu.utn.frba.dds.model.entidades.Usuario;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 
-public class RepositorioUsuarios  implements WithSimplePersistenceUnit {
+public class RepositorioUsuarios implements WithSimplePersistenceUnit {
   private static RepositorioUsuarios instance;
 
   public static RepositorioUsuarios getInstance() {
@@ -24,6 +24,10 @@ public class RepositorioUsuarios  implements WithSimplePersistenceUnit {
         .setParameter("contrasenia", contrasenia)
         .getResultList()
         .get(0);
+  }
+
+  public Usuario porId(Integer id) {
+    return entityManager().find(Usuario.class, id);
   }
 
 }

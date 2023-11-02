@@ -37,4 +37,8 @@ public class RepositorioComunidades implements WithSimplePersistenceUnit {
         .setParameter("servicio", servicio)
         .getResultList();
   }
+
+  public Comunidad porId(Integer id) {
+    return entityManager().find(Comunidad.class, id);
+  }
 }
