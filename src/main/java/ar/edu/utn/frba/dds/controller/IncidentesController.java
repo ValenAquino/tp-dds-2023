@@ -11,13 +11,13 @@ import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import spark.ModelAndView;
+import spark.Request;
+import spark.Response;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
 
 public class IncidentesController implements WithSimplePersistenceUnit {
   public ModelAndView listarPorComunidad(Request request, Response response) {
@@ -84,11 +84,11 @@ public class IncidentesController implements WithSimplePersistenceUnit {
           put("observaciones", incidente.getObservaciones());
         }})
     );
-
     return results;
   }
 
   public ModelAndView nuevo(Request request, Response response) {
+
     Map<String, Object> model = new HashMap<>();
     List<Establecimiento> establecimientos = RepositorioEntidades.getInstance()
         .todas()
@@ -107,4 +107,6 @@ public class IncidentesController implements WithSimplePersistenceUnit {
   public ModelAndView reportarIncidente(Request request, Response response) {
     return new ModelAndView(null, "incidentes/reportarIncidente.html.hbs");
   }
+
 }
+
