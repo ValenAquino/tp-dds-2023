@@ -125,7 +125,7 @@ public class Usuario extends PersistentEntity {
 
   public void notificar(Notificacion notificacion) {
     repositorioNotificaciones.persistir(notificacion);
-    if (puedeRecibirNotificacion()) {
+    if (medioDeComunicacion != null && puedeRecibirNotificacion()) {
       medioDeComunicacion.notificar(notificacion);
     }
   }

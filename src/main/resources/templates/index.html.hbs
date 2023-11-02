@@ -2,12 +2,25 @@
 
     <h1>Mis comunidades</h1>
     <div class="d-flex flex-row flex-wrap">
-        {{#comunidades}}
+        {{#each comunidades}}
             <div class="card">
-                <h4>{{nombre}}</h4>
-                <a href="/home/comunidades/{{id}}/incidentes">Ver incidentes</a>
+                <h4>{{this.nombre}}</h4>
+                <a href="/home/comunidades/{{this.id}}/incidentes">Ver incidentes</a>
             </div>
-        {{/comunidades}}
+        {{/each}}
+    </div>
+
+    <h2>Incidentes Pendientes a Revisar</h2>
+    <div class="d-flex flex-row flex-wrap">
+        {{#each incidentes}}
+            <div class="card m-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">Incidente en {{this.servicio.descripcion}}</h5>
+                    <p class="card-text">{{this.observaciones}}</p>
+                    <a href="/incidentes/{{this.id}}" class="btn btn-primary">Revisar</a>
+                </div>
+            </div>
+        {{/each}}
     </div>
 
 {{/partial}}

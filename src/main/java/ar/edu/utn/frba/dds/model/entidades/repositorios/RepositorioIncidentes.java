@@ -26,24 +26,37 @@ public class RepositorioIncidentes implements WithSimplePersistenceUnit {
     return entityManager().createQuery("SELECT i FROM Incidente i", Incidente.class)
         .getResultList();
   }
+
   public List<Incidente> incidentesResueltos() {
     return entityManager().createQuery("SELECT i FROM Incidente i WHERE i.resuelto = true", Incidente.class)
         .getResultList();
   }
+
   public List<Incidente> incidentesNoResueltos() {
     return  entityManager().createQuery("SELECT i FROM Incidente i WHERE i.resuelto = false", Incidente.class)
         .getResultList();
   }
+
   public List<Incidente> incidentesDelServicio(Servicio servicio) {
     return  entityManager().createQuery("SELECT i FROM Incidente i WHERE i.servicio = :servicio", Incidente.class)
         .setParameter("servicio", servicio.getId())
         .getResultList();
   }
+
+  public List<Incidente> incidentesARevisarPara(Usuario usuario) {
+    return entityManager().createQuery("SELECT i FROM Incidente i JOIN Notificacion n " +
+            "ON n.incidente = i.id WHERE TYPE(n) = NotificacionRevisionIncidente AND " +
+            "n.receptor = :receptor AND i.resuelto = false", Incidente.class)
+        .setParameter("receptor", usuario)
+        .getResultList();
+  }
+
   public List<Incidente> incidentesDelReportante(Usuario usuario) {
     return  entityManager().createQuery("SELECT i FROM Incidente i WHERE i.reportante = :usuario", Incidente.class)
         .setParameter("usuario", usuario.getId())
         .getResultList();
   }
+
   public List<Incidente> incidentesUltimaSemana() {
     LocalDateTime ahora = LocalDateTime.now();
     LocalDateTime fechaLimite = ahora.minusDays(7);

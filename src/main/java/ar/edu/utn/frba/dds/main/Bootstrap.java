@@ -93,6 +93,8 @@ public class Bootstrap implements WithSimplePersistenceUnit {
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent venenatis sit amet arcu vitae hendrerit. In elementum neque in sapien viverra, vel auctor nibh dapibus.",
           LocalDateTime.now(), usuario);
 
+      usuario.sugerirRevisionDeIncidente(incidente2);
+
       nosMovemosEnSubte.agregarIncidente(incidente2);
       RepositorioIncidentes.getInstance().persistir(incidente2);
     }
