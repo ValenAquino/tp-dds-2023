@@ -2,6 +2,8 @@ package ar.edu.utn.frba.dds.model.entidades.repositorios;
 
 import ar.edu.utn.frba.dds.model.entidades.Comunidad;
 import ar.edu.utn.frba.dds.model.entidades.Entidad;
+import ar.edu.utn.frba.dds.model.entidades.Establecimiento;
+import ar.edu.utn.frba.dds.model.entidades.Incidente;
 import ar.edu.utn.frba.dds.model.entidades.Servicio;
 import ar.edu.utn.frba.dds.model.entidades.Usuario;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
@@ -19,5 +21,9 @@ public class RepositorioEntidades implements WithSimplePersistenceUnit {
 
   public void persistir(Entidad entidad) {
     entityManager().persist(entidad);
+  }
+  public List<Entidad> todas() {
+    return entityManager().createQuery("from Entidad", Entidad.class)
+        .getResultList();
   }
 }
