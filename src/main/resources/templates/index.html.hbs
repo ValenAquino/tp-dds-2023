@@ -13,13 +13,30 @@
     <h2>Incidentes Pendientes a Revisar</h2>
     <div class="d-flex flex-row flex-wrap">
         {{#each incidentes}}
-            <div class="card m-2" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Incidente en {{this.servicio.descripcion}}</h5>
-                    <p class="card-text">{{this.observaciones}}</p>
-                    <a href="/incidentes/{{this.id}}" class="btn btn-primary">Revisar</a>
-                </div>
+        <div class="card-incidente">
+            <h5>{{servicio.descripcion}}</h5>
+            <h6>{{establecimiento.nombre}}</h6>
+
+            <div class="d-flex flex-row">
+                {{#if abierto}}
+                    <div class="dot-red"></div>
+                    <span>Abierto</span>
+                {{else}}
+                    <div class="dot-green"></div>
+                    <span>Cerrado</span>
+                {{/if}}
             </div>
+
+            <span class="mt-2">{{fecha}} - {{reportante}}</span>
+            <div class="text-area mt-1">
+                {{observaciones}}
+            </div>
+            <div class="d-flex flex-row justify-content-end mt-1" style="height: 2.4rem;">
+                {{#if abierto}}
+                    <button type="button" class="btn btn-primary green-button" data-bs-toggle="modal" data-bs-target="#confirmarCierreModal" data-incident-id="{{id}}">Cerrar</button>
+                {{/if}}
+            </div>
+        </div>
         {{/each}}
     </div>
 
