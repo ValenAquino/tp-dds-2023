@@ -40,7 +40,11 @@ public class Routes implements WithSimplePersistenceUnit {
     post("/logout", sessionController::logout);
 
     // Users routes
-    get("/usuarios", usuariosController::render, engine);
+    get("/usuarios", usuariosController::usuarios, engine);
+    get("/usuarios/nuevo", usuariosController::nuevo, engine);
+    post("/usuarios", usuariosController::crear);
+    get("/usuarios/ver", usuariosController::ver, engine);
+    put("/usuarios", usuariosController::editar);
 
     // Protected "home" routes
     get("/home", homeController::render, engine);
