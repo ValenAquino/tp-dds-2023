@@ -17,6 +17,7 @@ public class SessionController {
   public ModelAndView render(Request request, Response response) {
 
     Map<String, Object> modelo = new HashMap<>();
+    modelo.put("origin", request.queryParams("origin"));
     return new ModelAndView(modelo, "login.html.hbs");
   }
 
@@ -26,13 +27,29 @@ public class SessionController {
           request.queryParams("usuario"),
           request.queryParams("contrasenia"));
 
+      String origin = request.queryParams("origin");
       request.session().attribute("user_id", usuario.getId());
-      // TODO: Redirect to intended route
-      response.redirect("/");
+
+      if (origin != null && origin != "") {
+        response.redirect(origin);
+      } else {
+        response.redirect("/home");
+      }
       return null;
     } catch (Exception e) {
       response.redirect("/login");
       return null;
     }
+  }
+
+  public Void logout(Request request, Response response) {
+    request.session().removeAttribute("user_id");
+    response.redirect("/login");
+    return null;
+  }
+
+  public static Usuario usuarioLogueado(Request request) {
+    var idUsuario = request.session().attribute("user_id");
+    return RepositorioUsuarios.getInstance().porId((Integer) idUsuario);
   }
 }

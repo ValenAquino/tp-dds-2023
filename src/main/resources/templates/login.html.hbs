@@ -5,18 +5,19 @@
         <div class="card border-0 shadow rounded-3 my-5">
           <div class="card-body p-4 p-sm-5">
             <h5 class="card-title text-center mb-5 fw-light fs-5">Login</h5>
-            <form method="POST">
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Usuario">
-                <label for="usuario">Usuario</label>
-              </div>
-              <div class="form-floating mb-3">
-                <input type="password" class="form-control" id="contrasenia" name="contrasenia" placeholder="Contraseña">
-                <label for="contrasenia">Contraseña</label>
-              </div>
-              <div class="d-grid">
-                <button class="btn btn-primary text-uppercase fw-bold" type="submit">Ingresar</button>
-              </div>
+            <form method="POST" action="/login">
+                <input type="hidden" id="origin" name="origin" value={{origin}}>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Usuario">
+                    <label for="usuario">Usuario</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control" id="contrasenia" name="contrasenia" placeholder="Contraseña">
+                    <label for="contrasenia">Contraseña</label>
+                </div>
+                <div class="d-grid">
+                    <button class="btn btn-primary text-uppercase fw-bold" type="submit">Ingresar</button>
+                </div>
             </form>
           </div>
         </div>

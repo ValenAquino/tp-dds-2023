@@ -1,19 +1,19 @@
 package ar.edu.utn.frba.dds.controller;
 
 import ar.edu.utn.frba.dds.model.entidades.Incidente;
+import ar.edu.utn.frba.dds.model.entidades.Usuario;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioComunidades;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioIncidentes;
-import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioUsuarios;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDateTime;
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import spark.ModelAndView;
+import spark.Request;
+import spark.Response;
 
 public class IncidentesController implements WithSimplePersistenceUnit {
   public ModelAndView listarPorComunidad(Request request, Response response) {
@@ -27,13 +27,12 @@ public class IncidentesController implements WithSimplePersistenceUnit {
     Map<String, Object> modelo = new HashMap<>();
     modelo.put("incidentes", formatearIncidentes(incidentes));
     modelo.put("comunidad_id", Integer.valueOf(request.params("id")));
-    return new ModelAndView(modelo, "incidentes/incidentes.html.hbs");
+    return new ModelAndView(modelo, "pages/incidentes/incidentes.html.hbs");
   }
 
   public ModelAndView cerrar(Request request, Response response) {
     withTransaction(() -> {
-      var idUsuario = request.session().attribute("user_id");
-      var usuarioLogueado = RepositorioUsuarios.getInstance().porId((Integer) idUsuario);
+      Usuario usuarioLogueado = SessionController.usuarioLogueado(request);
 
       var idComunidad = Integer.valueOf(request.params("id"));
 
@@ -47,7 +46,7 @@ public class IncidentesController implements WithSimplePersistenceUnit {
 
       RepositorioIncidentes.getInstance().persistir(incidente);
 
-      response.redirect("/comunidades/" + idComunidad + "/incidentes");
+      response.redirect("/home/comunidades/" + idComunidad + "/incidentes");
     });
 
     return null;
