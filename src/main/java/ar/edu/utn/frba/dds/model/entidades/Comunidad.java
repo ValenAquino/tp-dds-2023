@@ -88,7 +88,7 @@ public class Comunidad extends PersistentEntity {
     return serviciosDeInteres.contains(servicio);
   }
 
-  private void agregarIncidente(Incidente incidente) {
+  public void agregarIncidente(Incidente incidente) {
     incidentes.add(incidente);
   }
 
