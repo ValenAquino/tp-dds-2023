@@ -74,7 +74,7 @@ public class UsuariosController implements WithSimplePersistenceUnit {
 
   public Void eliminar(Request request, Response response) {
     withTransaction(() -> {
-      var usuarioId = Integer.parseInt(request.params("id"));
+      var usuarioId = Integer.parseInt(request.queryParams("id"));
       var usuario = RepositorioUsuarios.getInstance().porId(usuarioId);
 
       RepositorioComunidades.getInstance().comunidadesDeUsuario(usuario)

@@ -43,7 +43,7 @@ public class Routes implements WithSimplePersistenceUnit {
     post("/home/usuarios", usuariosController::crear);
     get("/home/usuarios/:id", usuariosController::ver, engine);
     post("/home/usuarios/editar", usuariosController::editar);
-    post("/home/usuarios/:id/eliminar", usuariosController::eliminar);
+    post("/home/usuarios/eliminar", usuariosController::eliminar);
 
     // Comunidades
     get("/home/comunidades", comunidadesController::listar, engine);
