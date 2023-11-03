@@ -41,7 +41,12 @@ public class IncidentesController implements WithSimplePersistenceUnit {
 
       RepositorioIncidentes.getInstance().persistir(incidente);
 
-      response.redirect("/home/comunidades/" + idComunidad + "/incidentes");
+      var from = request.queryParams("from");
+
+      if (from.equals("index"))
+        response.redirect("/home");
+      else
+        response.redirect("/home/comunidades/" + idComunidad + "/incidentes");
     });
 
     return null;

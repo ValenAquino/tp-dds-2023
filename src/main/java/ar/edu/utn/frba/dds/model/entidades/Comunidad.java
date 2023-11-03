@@ -143,4 +143,6 @@ public class Comunidad extends PersistentEntity {
         .filter(m -> incidente.getReportante() != m)
         .toList();
   }
+
+  public int getId() { return id; }
 }
