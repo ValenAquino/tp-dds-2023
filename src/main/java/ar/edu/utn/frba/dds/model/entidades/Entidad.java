@@ -76,9 +76,6 @@ public class Entidad extends PersistentEntity {
   public void notificarReporteDeIncidente(Incidente incidente) {
     usuariosInteresados.forEach(m -> m.notificarReporteDeIncidente(incidente));
   }
-  public List<Establecimiento> getEstablecimientos(){
-    return establecimientos;
-  }
 
   public List<Incidente> getIncidentesResueltos() {
     return incidentes

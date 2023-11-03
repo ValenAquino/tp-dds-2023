@@ -140,7 +140,4 @@ public class Comunidad extends PersistentEntity {
         .filter(m -> incidente.getReportante() != m)
         .toList();
   }
-  public List<Servicio> getServiciosDeInteres(){
-    return serviciosDeInteres;
-  }
 }

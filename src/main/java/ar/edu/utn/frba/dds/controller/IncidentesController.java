@@ -1,12 +1,9 @@
 package ar.edu.utn.frba.dds.controller;
 
-import ar.edu.utn.frba.dds.model.entidades.Comunidad;
-import ar.edu.utn.frba.dds.model.entidades.Establecimiento;
 import ar.edu.utn.frba.dds.model.entidades.Incidente;
 import ar.edu.utn.frba.dds.model.entidades.Servicio;
 import ar.edu.utn.frba.dds.model.entidades.Usuario;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioComunidades;
-import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioEntidades;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioIncidentes;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioServicios;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioUsuarios;
@@ -103,9 +100,7 @@ public class IncidentesController implements WithSimplePersistenceUnit {
       usuario.reportarIncidente(servicio, LocalDateTime.now(), request.queryParams("observaciones"));
       RepositorioUsuarios.getInstance().persistir(usuario);
       response.redirect("/home");
-
     });
-    var a = RepositorioIncidentes.getInstance().todos();
     return null;
   }
 }
