@@ -16,7 +16,7 @@ public class UsuariosController implements WithSimplePersistenceUnit {
   public ModelAndView usuarios(Request request, Response response) {
     Map<String, Object> modelo = new HashMap<>();
     modelo.put("usuarios", RepositorioUsuarios.getInstance().todos());
-    return new ModelAndView(modelo, "usuarios/usuarios.html.hbs");
+    return new ModelAndView(modelo, "pages/usuarios.html.hbs");
   }
 
   public ModelAndView nuevo(Request request, Response response) {
