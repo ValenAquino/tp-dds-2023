@@ -36,7 +36,7 @@ public class RankingsController implements WithSimplePersistenceUnit {
     modelo.put("criterio", criterio.getDescripcion());
     modelo.put("entidades", formatearRanking(ranking.getEntidades()));
 
-    return new ModelAndView(modelo, "pages/incidentes/ranking.html.hbs");
+    return new ModelAndView(modelo, "pages/ranking.html.hbs");
   }
 
   public ModelAndView renderCantidadIncidentes(Request request, Response response) {
