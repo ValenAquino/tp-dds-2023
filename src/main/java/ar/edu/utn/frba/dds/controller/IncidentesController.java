@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.controller;
 
+import ar.edu.utn.frba.dds.model.entidades.Comunidad;
 import ar.edu.utn.frba.dds.model.entidades.Establecimiento;
 import ar.edu.utn.frba.dds.model.entidades.Incidente;
 import ar.edu.utn.frba.dds.model.entidades.Servicio;
@@ -7,6 +8,7 @@ import ar.edu.utn.frba.dds.model.entidades.Usuario;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioComunidades;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioEntidades;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioIncidentes;
+import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioServicios;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -88,25 +90,23 @@ public class IncidentesController implements WithSimplePersistenceUnit {
   }
 
   public ModelAndView nuevo(Request request, Response response) {
-
+//    Usuario usuarioLogueado = SessionController.usuarioLogueado(request);
+//    List<Comunidad> comunidadesDelUsuario = RepositorioComunidades.getInstance().comunidadesDeUsuario(usuarioLogueado);
     Map<String, Object> model = new HashMap<>();
-    List<Establecimiento> establecimientos = RepositorioEntidades.getInstance()
-        .todas()
-        .stream()
-        .flatMap(entidad -> entidad.getEstablecimientos().stream())
-        .collect(Collectors.toList());
-    List<Servicio> servicios = establecimientos
-        .stream()
-        .flatMap(establecimiento -> establecimiento.getServicios().stream())
-        .collect(Collectors.toList());
-    model.put("establecimientos", establecimientos);
-    model.put("servicios", servicios);
+//    List<Servicio> serviciosDeInteres = comunidadesDelUsuario
+//        .stream()
+//        .flatMap(comunidad -> comunidad.getServiciosDeInteres().stream())
+//        .toList();
+    model.put("servicios", RepositorioServicios.getInstance().todos());
     return new ModelAndView(model, "incidentes/reportarIncidente.html.hbs");
   }
 
-  public ModelAndView reportarIncidente(Request request, Response response) {
-    return new ModelAndView(null, "incidentes/reportarIncidente.html.hbs");
+  public Void reportarIncidente(Request request, Response response) {
+    var servicio = RepositorioServicios.getInstance().porId(Integer.parseInt(request.queryParams("servicio")));
+    var incidente = new Incidente(servicio,request.queryParams("observaciones"),LocalDateTime.now(),SessionController.usuarioLogueado(request));
+    RepositorioIncidentes.getInstance().persistir(incidente);
+    response.redirect("/home");
+    return null;
   }
 
 }
-

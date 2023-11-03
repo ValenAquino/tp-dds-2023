@@ -47,11 +47,7 @@ public class Routes implements WithSimplePersistenceUnit {
 
     // Incidentes routes
     Spark.get("/incidentes/nuevo", incidentesController::nuevo, engine);  // Devolver el formulario vacío
-    Spark.post("/incidentes/nuevo", incidentesController::reportarIncidente, engine); // Enviar formulario
-
-    Spark.exception(PersistenceException.class, (e, request, response) -> {
-      response.redirect("/500");
-    });
+    Spark.post("/incidentes/nuevo", incidentesController::reportarIncidente); // Enviar formulario
 
     exception(PersistenceException.class, (e, request, response) -> {
       response.redirect("/500");

@@ -17,6 +17,7 @@ import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioUsuarios;
 import ar.edu.utn.frba.dds.model.ubicacion.implementaciones.ServicioGoogleMaps;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Bootstrap implements WithSimplePersistenceUnit {
   public static void main(String[] args) {
@@ -54,8 +55,18 @@ public class Bootstrap implements WithSimplePersistenceUnit {
         RepositorioComunidades.getInstance(),
         RepositorioNotificaciones.getInstance()
     );
+    var mati = new Usuario(
+        "mati",
+        "12345",
+        "Mati",
+        "Rodr",
+        "mrodriguezstina@frba.utn.edu.ar",
+        RepositorioComunidades.getInstance(),
+        RepositorioNotificaciones.getInstance()
+    );
 
     RepositorioUsuarios.getInstance().persistir(usuario);
+    RepositorioUsuarios.getInstance().persistir(mati);
 
     var entidad = new Entidad("Subte A", TipoDeEntidad.SUBTERRANEO);
 
@@ -88,8 +99,6 @@ public class Bootstrap implements WithSimplePersistenceUnit {
         TipoDeServicio.ESCALERAS_MECANICAS
     );
 
-
-
     establecimiento2.agregarServicio(escalera);
     establecimiento3.agregarServicio(escalera2);
     establecimiento4.agregarServicio(ascensor2);
@@ -108,7 +117,11 @@ public class Bootstrap implements WithSimplePersistenceUnit {
         LocalDateTime.now(), usuario);
 
     nosMovemosEnSubte.agregarServicioDeInteres(ascensor);
+    nosMovemosEnSubte.agregarServicioDeInteres(ascensor2);
+    nosMovemosEnSubte.agregarServicioDeInteres(escalera);
+    nosMovemosEnSubte.agregarServicioDeInteres(escalera2);
     nosMovemosEnSubte.agregarMiembro(usuario);
+    nosMovemosEnSubte.agregarMiembro(mati);
     nosMovemosEnSubte.agregarIncidente(incidente);
 
     RepositorioComunidades.getInstance().persistir(nosMovemosEnSubte);
