@@ -1,21 +1,12 @@
 package ar.edu.utn.frba.dds.main;
 
-import ar.edu.utn.frba.dds.model.entidades.Comunidad;
-import ar.edu.utn.frba.dds.model.entidades.Entidad;
-import ar.edu.utn.frba.dds.model.entidades.Establecimiento;
-import ar.edu.utn.frba.dds.model.entidades.Incidente;
-import ar.edu.utn.frba.dds.model.entidades.Servicio;
-import ar.edu.utn.frba.dds.model.entidades.Ubicacion;
-import ar.edu.utn.frba.dds.model.entidades.Usuario;
+import ar.edu.utn.frba.dds.model.entidades.*;
 import ar.edu.utn.frba.dds.model.entidades.enums.TipoDeEntidad;
 import ar.edu.utn.frba.dds.model.entidades.enums.TipoDeServicio;
-import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioComunidades;
-import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioEntidades;
-import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioIncidentes;
-import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioNotificaciones;
-import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioUsuarios;
+import ar.edu.utn.frba.dds.model.entidades.repositorios.*;
 import ar.edu.utn.frba.dds.model.ubicacion.implementaciones.ServicioGoogleMaps;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+
 import java.time.LocalDateTime;
 
 public class Bootstrap implements WithSimplePersistenceUnit {
@@ -27,21 +18,51 @@ public class Bootstrap implements WithSimplePersistenceUnit {
     withTransaction(() -> {
       crearUsuario();
       crearIncidentes();
+      crearIncidentesCerrados();
     });
   }
 
-  private void crearUsuario() {
-      var usuario = new Usuario(
-          "alumnofrba",
-          "12345",
-          "Alumno",
-          "Modelo",
-          "alumno@frba.utn.edu.ar",
-          RepositorioComunidades.getInstance(),
-          RepositorioNotificaciones.getInstance()
+  private void crearIncidentesCerrados() {
+    var entidad = new Entidad("Subte B", TipoDeEntidad.SUBTERRANEO);
+    var correo = new Ubicacion(-34.6603376, -58.421703312);
+    var establecimiento = new Establecimiento("Estación Alem", entidad, correo);
+
+    Servicio escaleraMecanica = new Servicio(
+        "Escalera mecanica",
+        TipoDeServicio.ESCALERAS_MECANICAS
+    );
+
+    escaleraMecanica.setEstablecimiento(establecimiento);
+    establecimiento.agregarServicio(escaleraMecanica);
+    entidad.agregarEstablecimiento(establecimiento);
+
+    RepositorioEntidades.getInstance().persistir(entidad);
+
+    for (var i = 0; i < 5; i++) {
+      var incidente = new Incidente(
+          escaleraMecanica,
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+          LocalDateTime.now().minusDays(5).plusHours(i)
       );
 
-      RepositorioUsuarios.getInstance().persistir(usuario);
+      incidente.cerrar(LocalDateTime.now().minusDays(5).plusHours(i).plusMinutes(15));
+
+      RepositorioIncidentes.getInstance().persistir(incidente);
+    }
+  }
+
+  private void crearUsuario() {
+    var usuario = new Usuario(
+        "alumnofrba",
+        "12345",
+        "Alumno",
+        "Modelo",
+        "alumno@frba.utn.edu.ar",
+        RepositorioComunidades.getInstance(),
+        RepositorioNotificaciones.getInstance()
+    );
+
+    RepositorioUsuarios.getInstance().persistir(usuario);
   }
 
   private void crearIncidentes() {
@@ -59,7 +80,7 @@ public class Bootstrap implements WithSimplePersistenceUnit {
 
     var entidad = new Entidad("Subte A", TipoDeEntidad.SUBTERRANEO);
 
-    var medrano = new Ubicacion(-34.6033341,-58.4206027);
+    var medrano = new Ubicacion(-34.6033341, -58.4206027);
 
     var establecimiento =
         new Establecimiento("Estación Carabobo", entidad, medrano);

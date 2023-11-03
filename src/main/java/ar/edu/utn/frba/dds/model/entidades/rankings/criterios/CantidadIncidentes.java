@@ -15,7 +15,7 @@ public class CantidadIncidentes implements CriterioDeOrdenamiento {
 
   @Override
   public String getDescripcion() {
-    return "CantidadDeIncidentesReportados";
+    return "Cantidad de incidentes reportados";
   }
 
   public Map<Entidad, Double> getEntidadesOrdenadas(List<Incidente> incidentes) {
