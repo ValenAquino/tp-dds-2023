@@ -33,7 +33,7 @@ public class IncidentesController implements WithSimplePersistenceUnit {
     return new ModelAndView(modelo, "pages/incidentes.html.hbs");
   }
 
-  public ModelAndView cerrar(Request request, Response response) {1
+  public ModelAndView cerrar(Request request, Response response) {
     withTransaction(() -> {
       Usuario usuarioLogueado = SessionController.usuarioLogueado(request);
 
