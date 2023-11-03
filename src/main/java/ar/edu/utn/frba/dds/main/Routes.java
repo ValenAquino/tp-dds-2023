@@ -34,59 +34,54 @@ public class Routes implements WithSimplePersistenceUnit {
     post("/login", sessionController::login);
     post("/logout", sessionController::logout);
 
-    // Users routes
+    // Protected "home" routes
+    get("/home", homeController::render, engine);
+
+    // Usuarios
     get("/home/usuarios", usuariosController::usuarios, engine);
     get("/home/usuarios/nuevo", usuariosController::nuevo, engine);
     post("/home/usuarios", usuariosController::crear);
     get("/home/usuarios/:id", usuariosController::ver, engine);
     post("/home/usuarios/editar", usuariosController::editar);
 
-    // Protected "home" routes
-    get("/home", homeController::render, engine);
-    // --> Comunidades
+    // Comunidades
     get("/home/comunidades", comunidadesController::listar, engine);
     get("/home/comunidades/:id/incidentes", incidentesController::listarPorComunidad, engine);
     post("/home/comunidades/:id/incidentes/:incidente_id", incidentesController::cerrar);
 
-    // --> Servicios
+    // Servicios
     get("/home/servicios", serviciosController::listar, engine);
 
-    // Incidentes routes
+    // Incidentes
     Spark.get("/home/incidentes/nuevo", incidentesController::nuevo, engine);
     Spark.post("/home/incidentes/nuevo", incidentesController::reportarIncidente);
 
-    exception(PersistenceException.class, (e, request, response) -> {
-      response.redirect("/500");
-    });
-    // --> Rankings
+    // Rankings
     get("/home/rankings/cantidad-incidentes", rankingsController::renderCantidadIncidentes, engine);
     get("/home/rankings/promedio-cierre", rankingsController::renderMayorPromedioCierre, engine);
     post("/home/rankings/cantidad-incidentes", rankingsController::exportarCantidadIncidentes);
     post("/home/rankings/promedio-cierre", rankingsController::exportarMayorPromedioCierre);
 
-    before("/", (request, response) -> {
-      response.redirect("/home");
-    });
+    // Filtros
+    before("/", (request, response) -> response.redirect("/home"));
+    before((request, response) -> entityManager().clear());
+    before("/home", Routes::evaluarNoAutenticacion);
+    before("/home/*", Routes::evaluarNoAutenticacion);
+    before("/login", Routes::evaluarAutenticacion);
 
-    before((request, response) ->
-        entityManager().clear()
-    );
-
-    before("/login", (request, response) -> {
-      if (request.session().attribute("user_id") != null) {
-        response.redirect("/home");
-      }
-    });
-
-    before("/home", Routes::evaluarAutenticacion);
-
-    before("/home/*", Routes::evaluarAutenticacion);
+    // Excepciones
+    exception(PersistenceException.class, (e, request, response) -> response.redirect("/500"));
   }
 
   private static void evaluarAutenticacion(Request request, Response response) {
-    var path = request.pathInfo();
+    if (request.session().attribute("user_id") != null) {
+      response.redirect("/home");
+    }
+  }
+
+  private static void evaluarNoAutenticacion(Request request, Response response) {
     if (request.session().attribute("user_id") == null) {
-      response.redirect("/login?origin=" + path);
+      response.redirect("/login?origin=" + request.pathInfo());
     }
   }
 }
