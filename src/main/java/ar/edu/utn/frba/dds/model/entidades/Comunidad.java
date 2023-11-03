@@ -79,6 +79,10 @@ public class Comunidad extends PersistentEntity {
     miembros.add(usuario);
   }
 
+  public void eliminarMiembro(Usuario usuario) {
+    miembros.remove(usuario);
+  }
+
   public Incidente reportarIncidente(Servicio servicio, String observaciones,
                                      LocalDateTime ahora, Usuario reportante) {
     var incidente = new Incidente(servicio, observaciones, ahora, reportante);

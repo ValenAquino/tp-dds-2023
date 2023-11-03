@@ -17,20 +17,7 @@ import spark.Response;
 
 public class HomeController implements WithSimplePersistenceUnit {
   public ModelAndView render(Request request, Response response) {
-    Integer idUsuario = null;
-
-    try {
-      Object userIdObject = request.session().attribute("user_id");
-
-      if (!(userIdObject instanceof Integer)) {
-        throw new IllegalStateException("Sesión inválida");
-      }
-
-      idUsuario = (Integer) userIdObject;
-    } catch (Exception e) {
-      response.redirect("/login");
-      return null;
-    }
+    Integer idUsuario = request.session().attribute("user_id");
 
     Usuario usuarioLogueado = RepositorioUsuarios.getInstance().porId(idUsuario);
 

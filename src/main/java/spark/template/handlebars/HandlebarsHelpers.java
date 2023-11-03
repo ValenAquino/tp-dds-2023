@@ -15,7 +15,7 @@ public class HandlebarsHelpers {
     return fecha.format(formatter);
   };
 
-  public static Helper<Usuario> formatearUsuario = (usuario, options) -> usuario.getUsuario();
+  public static Helper<Usuario> formatearUsuario = (usuario, options) -> usuario != null ? usuario.getUsuario() : "Desconocido";
 
   public static Helper<Boolean> formatearEsAdmin = ((esAdmin, options) -> esAdmin ? "Sí" : "No");
 }

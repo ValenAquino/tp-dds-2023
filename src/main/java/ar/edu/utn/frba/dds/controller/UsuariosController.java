@@ -1,6 +1,8 @@
 package ar.edu.utn.frba.dds.controller;
 
 import ar.edu.utn.frba.dds.model.entidades.Usuario;
+import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioComunidades;
+import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioIncidentes;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioUsuarios;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import spark.ModelAndView;
@@ -70,4 +72,21 @@ public class UsuariosController implements WithSimplePersistenceUnit {
     return null;
   }
 
+  public Void eliminar(Request request, Response response) {
+    withTransaction(() -> {
+      var usuarioId = Integer.parseInt(request.params("id"));
+      var usuario = RepositorioUsuarios.getInstance().porId(usuarioId);
+
+      RepositorioComunidades.getInstance().comunidadesDeUsuario(usuario)
+          .forEach(comunidad -> comunidad.eliminarMiembro(usuario));
+
+      RepositorioIncidentes.getInstance().incidentesDelReportante(usuario)
+          .forEach(incidente -> incidente.setReportante(null));
+
+      RepositorioUsuarios.getInstance().eliminar(usuario);
+    });
+
+    response.redirect("/home/usuarios");
+    return null;
+  }
 }

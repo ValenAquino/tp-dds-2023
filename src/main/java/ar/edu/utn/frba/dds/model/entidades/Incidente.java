@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.model.entidades;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -57,6 +58,10 @@ public class Incidente extends PersistentEntity {
 
   public Usuario getReportante() {
     return reportante;
+  }
+
+  public void setReportante(Usuario reportante) {
+    this.reportante = reportante;
   }
 
   public void cerrar(LocalDateTime fecha) {

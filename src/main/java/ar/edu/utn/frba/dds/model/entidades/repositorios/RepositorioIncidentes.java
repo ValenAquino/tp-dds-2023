@@ -53,7 +53,7 @@ public class RepositorioIncidentes implements WithSimplePersistenceUnit {
 
   public List<Incidente> incidentesDelReportante(Usuario usuario) {
     return  entityManager().createQuery("SELECT i FROM Incidente i WHERE i.reportante = :usuario", Incidente.class)
-        .setParameter("usuario", usuario.getId())
+        .setParameter("usuario", usuario)
         .getResultList();
   }
 

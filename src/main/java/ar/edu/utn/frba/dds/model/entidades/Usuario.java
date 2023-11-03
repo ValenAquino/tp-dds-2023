@@ -8,6 +8,8 @@ import ar.edu.utn.frba.dds.model.notificaciones.NotificacionNuevoIncidente;
 import ar.edu.utn.frba.dds.model.notificaciones.NotificacionRevisionIncidente;
 import ar.edu.utn.frba.dds.model.notificaciones.horarios.CalendarioNotificaciones;
 import ar.edu.utn.frba.dds.model.ubicacion.ServicioMapas;
+import javax.persistence.CascadeType;
+import javax.persistence.OneToMany;
 import org.apache.commons.codec.digest.DigestUtils;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,6 +34,12 @@ public class Usuario extends PersistentEntity {
   private boolean esAdmin;
   @Column(name = "correo_electronico")
   private String correoElectronico;
+
+  @OneToMany(
+      cascade = CascadeType.ALL,
+      orphanRemoval = true
+  )
+  private List<Comunidad> comunidades;
 
   @ManyToOne
   @JoinColumn(name = "medio_de_comunicacion_id")
@@ -172,5 +180,9 @@ public class Usuario extends PersistentEntity {
 
   private List<Comunidad> getComunidadesInteresadas(Servicio servicio) {
     return repositorioComunidades.comunidadesInteresadas(this, servicio);
+  }
+
+  public List<Comunidad> getComunidades() {
+    return comunidades;
   }
 }

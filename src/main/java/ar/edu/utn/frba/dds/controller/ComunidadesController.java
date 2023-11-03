@@ -2,6 +2,8 @@ package ar.edu.utn.frba.dds.controller;
 
 import ar.edu.utn.frba.dds.model.entidades.Usuario;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioComunidades;
+import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioIncidentes;
+import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioUsuarios;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,5 +19,16 @@ public class ComunidadesController implements WithSimplePersistenceUnit {
     Map<String, Object> modelo = new HashMap<>();
     modelo.put("comunidades", comunidades);
     return new ModelAndView(modelo, "pages/comunidades.html.hbs");
+  }
+
+  public Void eliminar(Request request, Response response) {
+    withTransaction(() -> {
+      var comunidadId = Integer.parseInt(request.params("id"));
+      var comunidad = RepositorioComunidades.getInstance().porId(comunidadId);
+      RepositorioComunidades.getInstance().eliminar(comunidad);
+    });
+
+    response.redirect("/home/comunidades");
+    return null;
   }
 }

@@ -49,4 +49,8 @@ public class RepositorioComunidades implements WithSimplePersistenceUnit {
   public Comunidad porId(Integer id) {
     return entityManager().find(Comunidad.class, id);
   }
+
+  public void eliminar(Comunidad comunidad) {
+    entityManager().remove(comunidad);
+  }
 }
