@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.model.entidades.repositorios;
 
 import ar.edu.utn.frba.dds.model.entidades.Usuario;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+import org.apache.commons.codec.digest.DigestUtils;
 import java.util.Collection;
 
 public class RepositorioUsuarios implements WithSimplePersistenceUnit {
@@ -26,7 +27,7 @@ public class RepositorioUsuarios implements WithSimplePersistenceUnit {
     return entityManager()
         .createQuery("from Usuario where usuario = :usuario and contrasenia = :contrasenia", Usuario.class)
         .setParameter("usuario", usuario)
-        .setParameter("contrasenia", contrasenia)
+        .setParameter("contrasenia", DigestUtils.sha256Hex(contrasenia))
         .getResultList()
         .get(0);
   }

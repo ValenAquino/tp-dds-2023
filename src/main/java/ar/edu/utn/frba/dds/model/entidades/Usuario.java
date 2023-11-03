@@ -8,6 +8,7 @@ import ar.edu.utn.frba.dds.model.notificaciones.NotificacionNuevoIncidente;
 import ar.edu.utn.frba.dds.model.notificaciones.NotificacionRevisionIncidente;
 import ar.edu.utn.frba.dds.model.notificaciones.horarios.CalendarioNotificaciones;
 import ar.edu.utn.frba.dds.model.ubicacion.ServicioMapas;
+import org.apache.commons.codec.digest.DigestUtils;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -57,7 +58,7 @@ public class Usuario extends PersistentEntity {
   public Usuario(String usuario, String contrasenia, String nombre, String apellido,
                  String correoElectronico) {
     this.usuario = usuario;
-    this.contrasenia = contrasenia;
+    this.contrasenia = DigestUtils.sha256Hex(contrasenia);
     this.nombre = nombre;
     this.apellido = apellido;
     this.correoElectronico = correoElectronico;
