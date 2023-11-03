@@ -20,7 +20,6 @@ import spark.Response;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class IncidentesController implements WithSimplePersistenceUnit {
   public ModelAndView listarPorComunidad(Request request, Response response) {
@@ -91,25 +90,22 @@ public class IncidentesController implements WithSimplePersistenceUnit {
   }
 
   public ModelAndView nuevo(Request request, Response response) {
-//    Usuario usuarioLogueado = SessionController.usuarioLogueado(request);
-//    List<Comunidad> comunidadesDelUsuario = RepositorioComunidades.getInstance().comunidadesDeUsuario(usuarioLogueado);
     Map<String, Object> model = new HashMap<>();
-//    List<Servicio> serviciosDeInteres = comunidadesDelUsuario
-//        .stream()
-//        .flatMap(comunidad -> comunidad.getServiciosDeInteres().stream())
-//        .toList();
     model.put("servicios", RepositorioServicios.getInstance().todos());
     model.put("incidentes", RepositorioIncidentes.getInstance().todos());
     return new ModelAndView(model, "incidentes/reportarIncidente.html.hbs");
   }
 
   public Void reportarIncidente(Request request, Response response) {
-    Servicio servicio = RepositorioServicios.getInstance().porId(Integer.parseInt(request.queryParams("servicio")));
-    Usuario usuario = SessionController.usuarioLogueado(request);
-    usuario.reportarIncidente(servicio,LocalDateTime.now(),request.queryParams("observaciones"));
-    RepositorioUsuarios.getInstance().persistir(usuario);
-    response.redirect("/home");
+    withTransaction(() -> {
+      Servicio servicio = RepositorioServicios.getInstance().porId(Integer.parseInt(request.queryParams("servicio")));
+      Usuario usuario = SessionController.usuarioLogueado(request);
+      usuario.reportarIncidente(servicio, LocalDateTime.now(), request.queryParams("observaciones"));
+      RepositorioUsuarios.getInstance().persistir(usuario);
+      response.redirect("/home");
+
+    });
+    var a = RepositorioIncidentes.getInstance().todos();
     return null;
   }
-
 }

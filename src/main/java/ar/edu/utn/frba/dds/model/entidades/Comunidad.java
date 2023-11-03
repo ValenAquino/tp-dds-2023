@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.model.entidades;
 
 import ar.edu.utn.frba.dds.model.ubicacion.ServicioMapas;
 import ar.edu.utn.frba.dds.model.ubicacion.implementaciones.ServicioGoogleMaps;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -24,7 +25,7 @@ public class Comunidad extends PersistentEntity {
       inverseJoinColumns = @JoinColumn(name = "servicio_id"))
   List<Servicio> serviciosDeInteres;
 
-  @OneToMany
+  @OneToMany(cascade = CascadeType.PERSIST)
   @JoinTable(
       name = "incidentes_por_comunidades",
       joinColumns = @JoinColumn(name = "comunidad_id"),

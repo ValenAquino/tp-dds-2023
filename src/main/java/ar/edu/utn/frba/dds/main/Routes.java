@@ -56,6 +56,10 @@ public class Routes implements WithSimplePersistenceUnit {
       response.redirect("/home");
     });
 
+    before((request, response) ->
+        entityManager().clear()
+    );
+
     before("/login", (request, response) -> {
       if (request.session().attribute("user_id") != null) {
         // TODO: Redirect to previous path
