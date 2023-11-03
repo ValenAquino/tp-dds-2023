@@ -6,6 +6,7 @@ import ar.edu.utn.frba.dds.controller.IncidentesController;
 import ar.edu.utn.frba.dds.controller.SessionController;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import javax.persistence.PersistenceException;
+
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
 import static spark.Spark.before;
@@ -45,6 +46,10 @@ public class Routes implements WithSimplePersistenceUnit {
 
     exception(PersistenceException.class, (e, request, response) -> {
       response.redirect("/500");
+    });
+
+    before((request, response) -> {
+      entityManager().clear();
     });
 
     before("/", (request, response) -> {
