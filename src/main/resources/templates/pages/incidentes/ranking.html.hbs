@@ -1,0 +1,33 @@
+{{#partial "principal" }}
+
+  <div class="container shadow-sm">
+    <div class="row p-3 border-bottom border-1">
+      <div class="col-2">
+        <span class="fs-5 fw-semibold">Posición</span>
+      </div>
+      <div class="col-3">
+        <span class="fs-5 fw-semibold">Entidad</span>
+      </div>
+      <div class="col">
+        <span class="fs-5 fw-semibold">{{criterio}}</span>
+      </div>
+    </div>
+
+    {{#each entidades}}
+      <div class="row p-3 border-bottom border-1">
+        <div class="col-2">
+          <span>{{@index}}</span>
+        </div>
+        <div class="col-3">
+          <span>{{entidad}}</span>
+        </div>
+        <div class="col">
+          <span>{{valor}}</span>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+
+{{/partial}}
+
+{{> layouts/logged.html.hbs }}

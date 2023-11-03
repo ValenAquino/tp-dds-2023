@@ -1,19 +1,12 @@
 package ar.edu.utn.frba.dds.main;
 
-import ar.edu.utn.frba.dds.controller.ComunidadesController;
-import ar.edu.utn.frba.dds.controller.HomeController;
-import ar.edu.utn.frba.dds.controller.IncidentesController;
-import ar.edu.utn.frba.dds.controller.SessionController;
+import ar.edu.utn.frba.dds.controller.*;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-import javax.persistence.PersistenceException;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
-import static spark.Spark.before;
-import static spark.Spark.exception;
-import static spark.Spark.get;
-import static spark.Spark.port;
-import static spark.Spark.post;
-import static spark.Spark.staticFileLocation;
+import javax.persistence.PersistenceException;
+
+import static spark.Spark.*;
 
 public class Routes implements WithSimplePersistenceUnit {
   public static void main(String[] args) {
@@ -30,6 +23,7 @@ public class Routes implements WithSimplePersistenceUnit {
     var sessionController = new SessionController();
     var comunidadesController = new ComunidadesController();
     var incidentesController = new IncidentesController();
+    var rankingsController = new RankingsController();
 
     // Anonymous
     get("/login", sessionController::render, engine);
@@ -42,10 +36,10 @@ public class Routes implements WithSimplePersistenceUnit {
     get("/home/comunidades", comunidadesController::listar, engine);
     get("/home/comunidades/:id/incidentes", incidentesController::listarPorComunidad, engine);
     post("/home/comunidades/:id/incidentes/:incidente_id", incidentesController::cerrar);
+    // --> Rankings
+    get("/home/rankings/cantidad-incidentes", rankingsController::renderCantidadIncidentes, engine);
+    get("/home/rankings/promedio-cierre", rankingsController::renderMayorPromedioCierre, engine);
 
-    exception(PersistenceException.class, (e, request, response) -> {
-      response.redirect("/500");
-    });
 
     before("/", (request, response) -> {
       response.redirect("/home");
