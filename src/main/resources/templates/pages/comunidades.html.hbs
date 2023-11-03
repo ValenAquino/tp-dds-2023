@@ -1,32 +1,44 @@
 {{#partial "principal" }}
-    <div class="d-flex justify-content-between">
-        <h3>Comunidades</h3>
-        <button class="btn btn-primary blue-button"><i class="fa-solid fa-plus"></i> Agregar comunidad</button>
+  <div class="d-flex justify-content-between p-3 mx-5 mb-4">
+    <h1 class="ms-4">Comunidades</h1>
+    <div class="d-flex p-3">
+      <a class="btn btn-primary" href="/home/comunidades" role="button">
+        <i class="fa-solid fa-user-plus"></i>
+        Agregar Comunidad
+      </a>
     </div>
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th scope="col">Nombre</th>
-            <th scope="col">Incidentes</th>
-            <th scope="col">Miembros</th>
-            <th scope="col">Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        {{#each comunidades}}
-            <tr>
-                <th scope="row">{{nombre}}</th>
-                <td>{{incidentesAbiertos.length}}</td>
-                <td>{{miembros.length}}</td>
-                <td>
-                    <a href="/comunidades/{{id}}"><i title="Ver Detalles" class="fa-solid fa-eye"></i></a>
-                    <a href="/comunidades/editar/{{id}}"><i title="Editar" class="fa-solid fa-pencil"></i></a>
-                    <a href="/comunidades/eliminar/{{id}}" onclick="return confirm('¿Está seguro que desea eliminar esta comunidad?');"><i title="Eliminar" class="fa-regular fa-trash-can"></i></a>
-                </td>
-            </tr>
-        {{/each}}
-        </tbody>
-    </table>
+  </div>
+
+  <div class="container shadow-sm">
+    <div class="row p-3 border-bottom border-1">
+      <div class="col-4">
+        <span class="fs-5 fw-semibold">Nombre</span>
+      </div>
+      <div class="col">
+        <span class="fs-5 fw-semibold">Incidentes</span>
+      </div>
+      <div class="col">
+        <span class="fs-5 fw-semibold">Miembros</span>
+      </div>
+      <div class="col">
+        <span class="fs-5 fw-semibold">Acciones</span>
+      </div>
+    </div>
+    {{#each comunidades}}
+      <div class="row p-3 border-bottom border-1">
+        <div class="col-4 fw-semibold">{{nombre}}</div>
+        <div class="col">{{incidentesAbiertos.length}}</div>
+        <div class="col">{{miembros.length}}</div>
+        <div class="col">
+          <a href="/comunidades/{{id}}"><i title="Ver Detalles" class="fa-solid fa-eye mr-1"></i></a>
+          <a href="/comunidades/editar/{{id}}"><i title="Editar" class="fa-solid fa-pencil mr-1"></i></a>
+          <a href="/comunidades/eliminar/{{id}}"
+             onclick="return confirm('¿Está seguro que desea eliminar esta comunidad?');"><i
+            title="Eliminar" class="fa-regular fa-trash-can"></i></a>
+        </div>
+      </div>
+    {{/each}}
+  </div>
 {{/partial}}
 
 {{> layouts/logged.html.hbs }}
