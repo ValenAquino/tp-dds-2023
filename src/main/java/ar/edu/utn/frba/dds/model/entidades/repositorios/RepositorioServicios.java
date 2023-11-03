@@ -29,4 +29,12 @@ public class RepositorioServicios implements WithSimplePersistenceUnit {
   public Servicio porId(Integer id) {
     return entityManager().find(Servicio.class, id);
   }
+  public List<Servicio> porUsuario(Usuario usuario) {
+    return entityManager()
+        .createQuery("SELECT distinct s FROM Comunidad c" +
+            " JOIN c.serviciosDeInteres s" +
+            " WHERE :usuario MEMBER OF c.miembros", Servicio.class)
+        .setParameter("usuario", usuario)
+        .getResultList();
+  }
 }

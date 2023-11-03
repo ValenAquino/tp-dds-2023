@@ -84,7 +84,13 @@ public class IncidentesController implements WithSimplePersistenceUnit {
       Usuario usuario = SessionController.usuarioLogueado(request);
       usuario.reportarIncidente(servicio, LocalDateTime.now(), request.queryParams("observaciones"));
       RepositorioUsuarios.getInstance().persistir(usuario);
-      response.redirect("/home");
+
+      var from = request.queryParams("from");
+
+      if (from != null && from.equals("servicios"))
+        response.redirect("/home/servicios");
+      else
+        response.redirect("/home");
     });
     return null;
   }

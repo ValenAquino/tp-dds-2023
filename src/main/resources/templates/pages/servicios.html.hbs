@@ -1,0 +1,64 @@
+{{#partial "principal" }}
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const closeButton = document.querySelector('[data-bs-target="#reportarIncidenteModal"]');
+    const form = document.querySelector('#reportarIncidenteModal form');
+
+    document.addEventListener('click', function (event) {
+      if (event.target && event.target.getAttribute('data-servicio-id')) {
+        const servicioId = event.target.getAttribute('data-servicio-id');
+
+        form.action = `incidentes/nuevo?servicio=${servicioId}&from=servicios`;
+      }
+    });
+});
+</script>
+
+<div>
+    <h3 class="mb-4 mr-4">Servicios</h3>
+    <div class="d-flex flex-row flex-wrap">
+    {{#servicios}}
+        <div class="card-servicio">
+            <div>
+                <h5>{{descripcion}}</h5>
+            </div>
+            <div>
+                <h6>{{establecimiento.nombre}}</h6>
+            </div>
+            <div class="d-flex flex-row justify-content-end mt-1" style="height: 2.4rem;">
+                <button type="button" class="btn btn-primary card-red-button" data-bs-toggle="modal" data-bs-target="#reportarIncidenteModal" data-servicio-id="{{id}}">
+                    Reportar incidente
+                </button>
+            </div>
+        </div>
+    {{/servicios}}
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="reportarIncidenteModal" tabindex="-1" role="dialog" aria-labelledby="reportarIncidenteModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reportarIncidenteModalLabel">Reportar incidente</h5>
+      </div>
+      <form method="POST" class="m-0">
+      <div class="modal-body">
+        <span>Observaciones</span>
+        <div class="mt-2">
+            <textarea name="observaciones" style="width: 100%; padding: 1em;"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary grey-button" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary card-red-button">Reportar incidente</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{{/partial}}
+
+{{> layouts/logged.html.hbs }}

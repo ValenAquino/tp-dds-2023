@@ -27,6 +27,7 @@ public class Routes implements WithSimplePersistenceUnit {
     var usuariosController = new UsuariosController();
     var incidentesController = new IncidentesController();
     var rankingsController = new RankingsController();
+    var serviciosController = new ServiciosController();
 
     // Anonymous
     get("/login", sessionController::render, engine);
@@ -47,9 +48,12 @@ public class Routes implements WithSimplePersistenceUnit {
     get("/home/comunidades/:id/incidentes", incidentesController::listarPorComunidad, engine);
     post("/home/comunidades/:id/incidentes/:incidente_id", incidentesController::cerrar);
 
+    // --> Servicios
+    get("/home/servicios", serviciosController::listar, engine);
+
     // Incidentes routes
-    Spark.get("/incidentes/nuevo", incidentesController::nuevo, engine);
-    Spark.post("/incidentes/nuevo", incidentesController::reportarIncidente);
+    Spark.get("/home/incidentes/nuevo", incidentesController::nuevo, engine);
+    Spark.post("/home/incidentes/nuevo", incidentesController::reportarIncidente);
 
     exception(PersistenceException.class, (e, request, response) -> {
       response.redirect("/500");
