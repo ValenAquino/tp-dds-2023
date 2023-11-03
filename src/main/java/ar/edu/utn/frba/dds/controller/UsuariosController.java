@@ -47,11 +47,25 @@ public class UsuariosController implements WithSimplePersistenceUnit {
   }
 
   public Void editar(Request request, Response response) {
-    withTransaction(() ->
-        RepositorioUsuarios.getInstance().persistir(new Usuario(
-            // TODO
-        )));
-    response.redirect("/usuarios");
+    withTransaction(() -> {
+
+      var usuario = RepositorioUsuarios.getInstance().porId(
+          Integer.parseInt(request.queryParams("id"))
+      );
+
+      usuario.setUsuario(request.queryParams("usuario"));
+      if (!request.queryParams("contrasenia").isBlank()) {
+        usuario.setContrasenia(request.queryParams("contrasenia"));
+      }
+      usuario.setNombre(request.queryParams("nombre"));
+      usuario.setApellido(request.queryParams("apellido"));
+      usuario.setCorreoElectronico(request.queryParams("correo_electronico"));
+      usuario.setAdmin(request.queryParams("es_admin") != null);
+
+      RepositorioUsuarios.getInstance().persistir(usuario);
+    });
+
+    response.redirect("/home/usuarios");
     return null;
   }
 

@@ -90,6 +90,26 @@ public class Usuario extends PersistentEntity {
     return esAdmin;
   }
 
+  public void setUsuario(String usuario) {
+    this.usuario = usuario;
+  }
+
+  public void setContrasenia(String contrasenia) {
+    this.contrasenia = DigestUtils.sha256Hex(contrasenia);
+  }
+
+  public void setNombre(String nombre) {
+    this.nombre = nombre;
+  }
+
+  public void setApellido(String apellido) {
+    this.apellido = apellido;
+  }
+
+  public void setCorreoElectronico(String correoElectronico) {
+    this.correoElectronico = correoElectronico;
+  }
+
   public void setAdmin(boolean esAdmin) {
     this.esAdmin = esAdmin;
   }
