@@ -98,6 +98,10 @@ public class Usuario extends PersistentEntity {
     this.contrasenia = DigestUtils.sha256Hex(contrasenia);
   }
 
+  public void vaciarContrasenia() {
+    this.contrasenia = "";
+  }
+
   public void setNombre(String nombre) {
     this.nombre = nombre;
   }

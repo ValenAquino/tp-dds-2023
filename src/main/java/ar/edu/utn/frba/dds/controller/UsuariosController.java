@@ -43,6 +43,7 @@ public class UsuariosController implements WithSimplePersistenceUnit {
   public ModelAndView ver(Request request, Response response) {
     Usuario usuario = RepositorioUsuarios.getInstance()
         .porId(Integer.parseInt(request.params("id")));
+    usuario.vaciarContrasenia();
     return new ModelAndView(usuario, "usuarios/usuario.html.hbs");
   }
 
