@@ -8,6 +8,8 @@ import ar.edu.utn.frba.dds.controller.UsuariosController;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import javax.persistence.PersistenceException;
 
+import spark.Request;
+import spark.Response;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
 import static spark.Spark.before;
@@ -68,25 +70,20 @@ public class Routes implements WithSimplePersistenceUnit {
 
     before("/login", (request, response) -> {
       if (request.session().attribute("user_id") != null) {
-        // TODO: Redirect to previous path
         response.redirect("/home");
       }
     });
 
-    // Have to repeat logic since `/home` is not matched by `home/*`
-    before("/home", (request, response) -> {
-      var path = request.pathInfo();
-      if (request.session().attribute("user_id") == null) {
-        response.redirect("/login?origin=" + path);
-      }
-    });
+    before("/home", Routes::evaluarAutenticacion);
 
-    before("/home/*", (request, response) -> {
-      var path = request.pathInfo();
-      if (request.session().attribute("user_id") == null) {
-        response.redirect("/login?origin=" + path);
-      }
-    });
+    before("/home/*", Routes::evaluarAutenticacion);
+  }
+
+  private static void evaluarAutenticacion(Request request, Response response) {
+    var path = request.pathInfo();
+    if (request.session().attribute("user_id") == null) {
+      response.redirect("/login?origin=" + path);
+    }
   }
 
 }
