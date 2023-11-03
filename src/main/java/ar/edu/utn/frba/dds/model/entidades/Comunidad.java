@@ -66,6 +66,10 @@ public class Comunidad extends PersistentEntity {
     return incidentes;
   }
 
+  public List<Usuario> getMiembros() {
+    return miembros;
+  }
+
   public void agregarServicioDeInteres(Servicio servicio) {
     serviciosDeInteres.add(servicio);
   }
@@ -139,4 +143,6 @@ public class Comunidad extends PersistentEntity {
         .filter(m -> incidente.getReportante() != m)
         .toList();
   }
+
+  public int getId() { return id; }
 }

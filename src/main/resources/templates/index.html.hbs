@@ -1,44 +1,68 @@
 {{#partial "principal" }}
 
-    <h1>Mis comunidades</h1>
-    <div class="d-flex flex-row flex-wrap">
+<script src="script.js"></script>
+
+    <h3>Mis comunidades</h3>
+    <div class="d-flex flex-row flex-wrap mt-4">
         {{#each comunidades}}
-            <div class="card">
-                <h4>{{this.nombre}}</h4>
+            <div class="card-comunidad p-2">
+                <h5>{{this.nombre}}</h5>
                 <a href="/home/comunidades/{{this.id}}/incidentes">Ver incidentes</a>
             </div>
         {{/each}}
     </div>
 
-    <h2>Incidentes Pendientes a Revisar</h2>
-    <div class="d-flex flex-row flex-wrap">
+    <h3 class="mt-4">Incidentes Pendientes a Revisar</h3>
+    <div class="d-flex flex-row flex-wrap mt-4">
         {{#each incidentes}}
         <div class="card-incidente">
             <h5>{{servicio.descripcion}}</h5>
             <h6>{{establecimiento.nombre}}</h6>
 
             <div class="d-flex flex-row">
-                {{#if abierto}}
+                {{#unless estaResuelto}}
                     <div class="dot-red"></div>
                     <span>Abierto</span>
                 {{else}}
                     <div class="dot-green"></div>
                     <span>Cerrado</span>
-                {{/if}}
+                {{/unless}}
             </div>
 
-            <span class="mt-2">{{fecha}} - {{reportante}}</span>
+            <span class="mt-2">{{formatearFecha fecha}} - {{formatearUsuario reportante}}</span>
             <div class="text-area mt-1">
                 {{observaciones}}
             </div>
             <div class="d-flex flex-row justify-content-end mt-1" style="height: 2.4rem;">
                 {{#if abierto}}
-                    <button type="button" class="btn btn-primary green-button" data-bs-toggle="modal" data-bs-target="#confirmarCierreModal" data-incident-id="{{id}}">Cerrar</button>
+                    <button type="button" class="btn btn-primary green-button" data-bs-toggle="modal" data-bs-target="#confirmarCierreModal" data-incident-id="{{id}}"
+                    data-comunidad-id="{{comunidad_id}}" data-from="index">Cerrar</button>
                 {{/if}}
             </div>
         </div>
         {{/each}}
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="confirmarCierreModal" tabindex="-1" role="dialog" aria-labelledby="confirmarCierreModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmarCierreModalLabel">Confirmar cierre de incidente</h5>
+          </div>
+          <form method="POST" class="m-0">
+          <div class="modal-body">
+            ¿Desea cerrar el incidente?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary grey-button" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary green-button">Cerrar</button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
 
 {{/partial}}
 

@@ -2,9 +2,9 @@ package ar.edu.utn.frba.dds.main;
 
 import ar.edu.utn.frba.dds.controller.*;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+import spark.Request;
+import spark.Response;
 import spark.template.handlebars.HandlebarsTemplateEngine;
-
-import javax.persistence.PersistenceException;
 
 import static spark.Spark.*;
 
@@ -22,6 +22,7 @@ public class Routes implements WithSimplePersistenceUnit {
     var homeController = new HomeController();
     var sessionController = new SessionController();
     var comunidadesController = new ComunidadesController();
+    var usuariosController = new UsuariosController();
     var incidentesController = new IncidentesController();
     var rankingsController = new RankingsController();
 
@@ -29,6 +30,13 @@ public class Routes implements WithSimplePersistenceUnit {
     get("/login", sessionController::render, engine);
     post("/login", sessionController::login);
     post("/logout", sessionController::logout);
+
+    // Users routes
+    get("/home/usuarios", usuariosController::usuarios, engine);
+    get("/home/usuarios/nuevo", usuariosController::nuevo, engine);
+    post("/home/usuarios", usuariosController::crear);
+    get("/home/usuarios/:id", usuariosController::ver, engine);
+    post("/home/usuarios/editar", usuariosController::editar);
 
     // Protected "home" routes
     get("/home", homeController::render, engine);
@@ -42,31 +50,30 @@ public class Routes implements WithSimplePersistenceUnit {
     post("/home/rankings/cantidad-incidentes", rankingsController::exportarCantidadIncidentes);
     post("/home/rankings/promedio-cierre", rankingsController::exportarMayorPromedioCierre);
 
+    before((request, response) -> {
+      entityManager().clear();
+    });
+
     before("/", (request, response) -> {
       response.redirect("/home");
     });
 
     before("/login", (request, response) -> {
       if (request.session().attribute("user_id") != null) {
-        // TODO: Redirect to previous path
         response.redirect("/home");
       }
     });
 
-    // Have to repeat logic since `/home` is not matched by `home/*`
-    before("/home", (request, response) -> {
-      var path = request.pathInfo();
-      if (request.session().attribute("user_id") == null) {
-        response.redirect("/login?origin=" + path);
-      }
-    });
+    before("/home", Routes::evaluarAutenticacion);
 
-    before("/home/*", (request, response) -> {
-      var path = request.pathInfo();
-      if (request.session().attribute("user_id") == null) {
-        response.redirect("/login?origin=" + path);
-      }
-    });
+    before("/home/*", Routes::evaluarAutenticacion);
+  }
+
+  private static void evaluarAutenticacion(Request request, Response response) {
+    var path = request.pathInfo();
+    if (request.session().attribute("user_id") == null) {
+      response.redirect("/login?origin=" + path);
+    }
   }
 
 }

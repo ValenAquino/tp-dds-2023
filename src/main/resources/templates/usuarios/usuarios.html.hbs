@@ -1,0 +1,41 @@
+{{#partial "principal" }}
+    <div class="d-flex justify-content-between">
+        <h1>Usuarios</h1>
+    </div>
+    <div class="d-flex justify-content-end">
+        <a class="btn btn-primary" href="/home/usuarios/nuevo" role="button">
+            <i class="fa-solid fa-user-plus"></i>
+            Agregar usuario
+        </a>
+    </div>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Usuario</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellido</th>
+            <th scope="col">Correo electrónico</th>
+            <th scope="col">¿Es admin?</th>
+            <th scope="col">Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each usuarios}}
+            <tr>
+                <th scope="row">{{usuario}}</th>
+                <td>{{nombre}}</td>
+                <td>{{apellido}}</td>
+                <td>{{correoElectronico}}</td>
+                <td>{{formatearEsAdmin esAdmin}}</td>
+                <td>
+                    <a class="mr-1" href="/home/usuarios/{{id}}">
+                        <i title="Editar" class="fa-solid fa-pencil"></i>
+                    </a>
+                </td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+{{/partial}}
+
+{{> layouts/logged.html.hbs }}
