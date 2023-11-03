@@ -22,7 +22,7 @@ public class IncidentesController implements WithSimplePersistenceUnit {
     Map<String, Object> modelo = new HashMap<>();
     modelo.put("incidentes",  getIncidentesPorEstado(idComunidad, estado));
     modelo.put("comunidad_id", Integer.valueOf(request.params("id")));
-    return new ModelAndView(modelo, "pages/incidentes/incidentes.html.hbs");
+    return new ModelAndView(modelo, "pages/incidentes.html.hbs");
   }
 
   public ModelAndView cerrar(Request request, Response response) {

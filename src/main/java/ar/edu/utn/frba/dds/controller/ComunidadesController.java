@@ -16,6 +16,6 @@ public class ComunidadesController implements WithSimplePersistenceUnit {
 
     Map<String, Object> modelo = new HashMap<>();
     modelo.put("comunidades", comunidades);
-    return new ModelAndView(modelo, "incidentes/incidentes.html.hbs");
+    return new ModelAndView(modelo, "pages/comunidades.html.hbs");
   }
 }
