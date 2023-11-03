@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class RankingsController implements WithSimplePersistenceUnit {
   public ModelAndView renderRanking(CriterioDeOrdenamiento criterio) {
@@ -33,7 +34,7 @@ public class RankingsController implements WithSimplePersistenceUnit {
 
     Map<String, Object> modelo = new HashMap<>();
     modelo.put("criterio", criterio.getDescripcion());
-    modelo.put("entidades", formatearRanking(ranking.getEntidades(), criterio));
+    modelo.put("entidades", formatearRanking(ranking.getEntidades()));
 
     return new ModelAndView(modelo, "pages/incidentes/ranking.html.hbs");
   }
@@ -46,18 +47,15 @@ public class RankingsController implements WithSimplePersistenceUnit {
     return renderRanking(new MayorPromedioCierre());
   }
 
-  private List<Map<String, Object>> formatearRanking(Map<Entidad, Double> entidades, CriterioDeOrdenamiento criterio) {
+  private List<Map<String, Object>> formatearRanking(Map<Entidad, Double> entidades) {
     List<Map<String, Object>> results = new ArrayList<>();
+    AtomicInteger i = new AtomicInteger(1);
 
     entidades.forEach((entidad, valor) -> {
       Map<String, Object> result = new HashMap<>();
+      result.put("indice", i.getAndIncrement());
       result.put("entidad", entidad.getNombre());
-      result.put(
-          "valor",
-          criterio instanceof MayorPromedioCierre
-              ? valor / 60000.0
-              : valor.intValue() // TODO: Enviar un entero para que no aparezca la parte decimal
-      );
+      result.put("valor", String.format("%.0f", valor));
       results.add(result);
     });
     return results;

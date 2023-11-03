@@ -65,7 +65,7 @@ public class Incidente extends PersistentEntity {
   }
 
   public long tiempoDeCierre() {
-    return Duration.between(fecha, fechaResolucion).toMillis();
+    return Duration.between(fecha, fechaResolucion).toMinutes();
   }
 
   public Entidad getEntidad() {
