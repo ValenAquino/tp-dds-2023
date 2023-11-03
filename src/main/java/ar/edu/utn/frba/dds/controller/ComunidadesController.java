@@ -15,7 +15,7 @@ public class ComunidadesController implements WithSimplePersistenceUnit {
     var comunidades = RepositorioComunidades.getInstance().comunidadesPorUsuario(usuarioLogueado);
 
     Map<String, Object> modelo = new HashMap<>();
-    modelo.put("comunidades", Integer.valueOf(request.params("id")));
+    modelo.put("comunidades", comunidades);
     return new ModelAndView(modelo, "incidentes/incidentes.html.hbs");
   }
 }
