@@ -22,8 +22,8 @@ public class RepositorioServicios implements WithSimplePersistenceUnit {
   public void persistir(Servicio servicio) {
     entityManager().persist(servicio);
   }
-  public List<Entidad> todos() {
-    return entityManager().createQuery("from Servicio", Entidad.class)
+  public List<Servicio> todos() {
+    return entityManager().createQuery("from Servicio", Servicio.class)
         .getResultList();
   }
   public Servicio porId(Integer id) {

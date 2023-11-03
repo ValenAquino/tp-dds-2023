@@ -9,6 +9,7 @@ import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioComunidades;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioEntidades;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioIncidentes;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioServicios;
+import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioUsuarios;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -98,13 +99,15 @@ public class IncidentesController implements WithSimplePersistenceUnit {
 //        .flatMap(comunidad -> comunidad.getServiciosDeInteres().stream())
 //        .toList();
     model.put("servicios", RepositorioServicios.getInstance().todos());
+    model.put("incidentes", RepositorioIncidentes.getInstance().todos());
     return new ModelAndView(model, "incidentes/reportarIncidente.html.hbs");
   }
 
   public Void reportarIncidente(Request request, Response response) {
-    var servicio = RepositorioServicios.getInstance().porId(Integer.parseInt(request.queryParams("servicio")));
-    var incidente = new Incidente(servicio,request.queryParams("observaciones"),LocalDateTime.now(),SessionController.usuarioLogueado(request));
-    RepositorioIncidentes.getInstance().persistir(incidente);
+    Servicio servicio = RepositorioServicios.getInstance().porId(Integer.parseInt(request.queryParams("servicio")));
+    Usuario usuario = SessionController.usuarioLogueado(request);
+    usuario.reportarIncidente(servicio,LocalDateTime.now(),request.queryParams("observaciones"));
+    RepositorioUsuarios.getInstance().persistir(usuario);
     response.redirect("/home");
     return null;
   }

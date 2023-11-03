@@ -17,7 +17,6 @@ import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioUsuarios;
 import ar.edu.utn.frba.dds.model.ubicacion.implementaciones.ServicioGoogleMaps;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class Bootstrap implements WithSimplePersistenceUnit {
   public static void main(String[] args) {
