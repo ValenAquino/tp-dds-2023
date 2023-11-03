@@ -34,6 +34,6 @@ public class MayorPromedioCierre implements CriterioDeOrdenamiento {
 
   @Override
   public String getDescripcion() {
-    return "PromedioTiempoCierreDeIncidentes";
+    return "Tiempo de cierre promedio en minutos";
   }
 }
