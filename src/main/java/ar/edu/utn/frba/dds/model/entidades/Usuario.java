@@ -8,6 +8,7 @@ import ar.edu.utn.frba.dds.model.notificaciones.NotificacionNuevoIncidente;
 import ar.edu.utn.frba.dds.model.notificaciones.NotificacionRevisionIncidente;
 import ar.edu.utn.frba.dds.model.notificaciones.horarios.CalendarioNotificaciones;
 import ar.edu.utn.frba.dds.model.ubicacion.ServicioMapas;
+import org.apache.commons.codec.digest.DigestUtils;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -57,7 +58,7 @@ public class Usuario extends PersistentEntity {
   public Usuario(String usuario, String contrasenia, String nombre, String apellido,
                  String correoElectronico) {
     this.usuario = usuario;
-    this.contrasenia = contrasenia;
+    this.contrasenia = DigestUtils.sha256Hex(contrasenia);
     this.nombre = nombre;
     this.apellido = apellido;
     this.correoElectronico = correoElectronico;
@@ -73,8 +74,44 @@ public class Usuario extends PersistentEntity {
     this.repositorioNotificaciones = repositorioNotificaciones;
   }
 
+  public String getUsuario() {
+    return usuario;
+  }
+
+  public String getNombre() {
+    return nombre;
+  }
+
+  public String getApellido() {
+    return apellido;
+  }
+
   public boolean esAdmin() {
     return esAdmin;
+  }
+
+  public void setUsuario(String usuario) {
+    this.usuario = usuario;
+  }
+
+  public void setContrasenia(String contrasenia) {
+    this.contrasenia = DigestUtils.sha256Hex(contrasenia);
+  }
+
+  public void vaciarContrasenia() {
+    this.contrasenia = "";
+  }
+
+  public void setNombre(String nombre) {
+    this.nombre = nombre;
+  }
+
+  public void setApellido(String apellido) {
+    this.apellido = apellido;
+  }
+
+  public void setCorreoElectronico(String correoElectronico) {
+    this.correoElectronico = correoElectronico;
   }
 
   public void setAdmin(boolean esAdmin) {
@@ -96,8 +133,6 @@ public class Usuario extends PersistentEntity {
   public String getCorreoElectronico() {
     return correoElectronico;
   }
-
-  public String getUsuario() { return usuario; }
 
   public void reportarIncidente(Servicio servicio, LocalDateTime fecha, String observaciones) {
     getComunidadesInteresadas(servicio).forEach(c ->

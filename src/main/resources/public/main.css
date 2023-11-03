@@ -69,6 +69,16 @@ a:hover {
     border-radius: 2%;
 }
 
+.card-comunidad {
+    padding: 2% 2% 1% 2%;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    border: none;
+    margin: 0 2% 2% 2%;
+    width: 20%;
+    border-top: 1px solid rgba(211, 211, 211, 0.5);
+    border-radius: 2%;
+}
+
 .dot-green {
     width: 1em;
     height: 1em;
@@ -91,6 +101,13 @@ a:hover {
     border-radius: 10em;
     border: none;
     background-color: #3aeb34;
+    color: #ffffff;
+}
+
+.blue-button {
+    border-radius: 10em;
+    border: none;
+    background-color: #0d6efd;
     color: #ffffff;
 }
 

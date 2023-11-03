@@ -9,13 +9,8 @@ import spark.Request;
 import spark.Response;
 
 public class SessionController {
-  // TODO GRAN TODO: notar que las responsabildades
-  // de saber si una personas está con sesión inciada,
-  // de saber le usuarie actual, etc, probablmente se vayan a repetir
-  // y convendrá generalizarlas
 
   public ModelAndView render(Request request, Response response) {
-
     Map<String, Object> modelo = new HashMap<>();
     modelo.put("origin", request.queryParams("origin"));
     return new ModelAndView(modelo, "login.html.hbs");
@@ -30,13 +25,14 @@ public class SessionController {
       String origin = request.queryParams("origin");
       request.session().attribute("user_id", usuario.getId());
 
-      if (origin != null && origin != "") {
+      if (origin != null && !origin.isBlank()) {
         response.redirect(origin);
       } else {
         response.redirect("/home");
       }
       return null;
     } catch (Exception e) {
+      // TODO: mostrar mensaje de error
       response.redirect("/login");
       return null;
     }

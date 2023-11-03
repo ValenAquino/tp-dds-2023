@@ -4,10 +4,12 @@ import ar.edu.utn.frba.dds.controller.ComunidadesController;
 import ar.edu.utn.frba.dds.controller.HomeController;
 import ar.edu.utn.frba.dds.controller.IncidentesController;
 import ar.edu.utn.frba.dds.controller.SessionController;
+import ar.edu.utn.frba.dds.controller.UsuariosController;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import javax.persistence.PersistenceException;
 import spark.Spark;
-
+import spark.Request;
+import spark.Response;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
 import static spark.Spark.before;
@@ -15,6 +17,7 @@ import static spark.Spark.exception;
 import static spark.Spark.get;
 import static spark.Spark.port;
 import static spark.Spark.post;
+import static spark.Spark.put;
 import static spark.Spark.staticFileLocation;
 
 public class Routes implements WithSimplePersistenceUnit {
@@ -31,12 +34,20 @@ public class Routes implements WithSimplePersistenceUnit {
     var homeController = new HomeController();
     var sessionController = new SessionController();
     var comunidadesController = new ComunidadesController();
+    var usuariosController = new UsuariosController();
     var incidentesController = new IncidentesController();
 
     // Anonymous
     get("/login", sessionController::render, engine);
     post("/login", sessionController::login);
     post("/logout", sessionController::logout);
+
+    // Users routes
+    get("/home/usuarios", usuariosController::usuarios, engine);
+    get("/home/usuarios/nuevo", usuariosController::nuevo, engine);
+    post("/home/usuarios", usuariosController::crear);
+    get("/home/usuarios/:id", usuariosController::ver, engine);
+    post("/home/usuarios/editar", usuariosController::editar);
 
     // Protected "home" routes
     get("/home", homeController::render, engine);
@@ -46,12 +57,13 @@ public class Routes implements WithSimplePersistenceUnit {
     post("/home/comunidades/:id/incidentes/:incidente_id", incidentesController::cerrar);
 
     // Incidentes routes
-    Spark.get("/incidentes/nuevo", incidentesController::nuevo, engine);  // Devolver el formulario vacío
-    Spark.post("/incidentes/nuevo", incidentesController::reportarIncidente); // Enviar formulario
+    Spark.get("/incidentes/nuevo", incidentesController::nuevo, engine);
+    Spark.post("/incidentes/nuevo", incidentesController::reportarIncidente);
 
     exception(PersistenceException.class, (e, request, response) -> {
       response.redirect("/500");
     });
+
     before("/", (request, response) -> {
       response.redirect("/home");
     });
@@ -62,24 +74,19 @@ public class Routes implements WithSimplePersistenceUnit {
 
     before("/login", (request, response) -> {
       if (request.session().attribute("user_id") != null) {
-        // TODO: Redirect to previous path
         response.redirect("/home");
       }
     });
 
-    // Have to repeat logic since `/home` is not matched by `home/*`
-    before("/home", (request, response) -> {
-      var path = request.pathInfo();
-      if (request.session().attribute("user_id") == null) {
-        response.redirect("/login?origin=" + path);
-      }
-    });
+    before("/home", Routes::evaluarAutenticacion);
 
-    before("/home/*", (request, response) -> {
-      var path = request.pathInfo();
-      if (request.session().attribute("user_id") == null) {
-        response.redirect("/login?origin=" + path);
-      }
-    });
+    before("/home/*", Routes::evaluarAutenticacion);
+  }
+
+  private static void evaluarAutenticacion(Request request, Response response) {
+    var path = request.pathInfo();
+    if (request.session().attribute("user_id") == null) {
+      response.redirect("/login?origin=" + path);
+    }
   }
 }
