@@ -4,9 +4,11 @@ import ar.edu.utn.frba.dds.model.entidades.Entidad;
 import ar.edu.utn.frba.dds.model.entidades.Incidente;
 import ar.edu.utn.frba.dds.model.entidades.Servicio;
 import ar.edu.utn.frba.dds.model.entidades.rankings.CriterioDeOrdenamiento;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -23,11 +25,18 @@ public class CantidadIncidentes implements CriterioDeOrdenamiento {
         .collect(Collectors.groupingBy(Incidente::getEntidad));
 
     return incidentesPorEntidad.entrySet().stream()
+        .sorted(Comparator
+            .comparing((Map.Entry<Entidad, List<Incidente>> entry) -> calcularIncidentes(entry.getValue()))
+            .reversed()) // Ordenar en orden descendente
         .collect(Collectors.toMap(
             Map.Entry::getKey,
-            entry -> calcularIncidentes(entry.getValue())
+            entry -> calcularIncidentes(entry.getValue()),
+            (e1, e2) -> e1,
+            LinkedHashMap::new
         ));
+
   }
+
 
   public double calcularIncidentes(List<Incidente> incidentes) {
     Map<Servicio, List<Incidente>> incidentesPorServicio = incidentes.stream()
