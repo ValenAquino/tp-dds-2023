@@ -16,4 +16,6 @@ public class HandlebarsHelpers {
   };
 
   public static Helper<Usuario> formatearUsuario = (usuario, options) -> usuario.getUsuario();
+
+  public static Helper<Boolean> formatearEsAdmin = ((esAdmin, options) -> esAdmin ? "Sí" : "No");
 }

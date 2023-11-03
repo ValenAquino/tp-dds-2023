@@ -22,13 +22,21 @@ public class UsuariosController implements WithSimplePersistenceUnit {
   }
 
   public Void crear(Request request, Response response) {
-    // request.queryParams("nombre"),
-    // Integer.parseInt(request.queryParams("cantidadEmpleados"))
-    withTransaction(() ->
-        RepositorioUsuarios.getInstance().persistir(new Usuario(
-            // TODO
-        )));
-    response.redirect("/usuarios");
+    withTransaction(() -> {
+
+      var usuarioNuevo = new Usuario(
+          request.queryParams("usuario"),
+          request.queryParams("contrasenia"),
+          request.queryParams("nombre"),
+          request.queryParams("apellido"),
+          request.queryParams("correo_electronico")
+      );
+      usuarioNuevo.setAdmin(request.queryParams("es_admin") != null);
+
+      RepositorioUsuarios.getInstance().persistir(usuarioNuevo);
+    });
+
+    response.redirect("/home/usuarios");
     return null;
   }
 
