@@ -29,7 +29,7 @@ a:hover {
     display: inline-block;
     color: #FFFFFF;
     background-color: #FD4444;
-    border-radius: 10em;
+    border-radius: 0.4em;
     padding: 0.6em;
     text-decoration: none;
 }
@@ -79,33 +79,7 @@ a:hover {
     border-radius: 2%;
 }
 
-.dot-green {
-    width: 1em;
-    height: 1em;
-    background-color: #3aeb34;
-    border-radius: 50%;
-    margin: 1.7% 4% 1% 1%;
-}
-
-.dot-red {
-    width: 1em;
-    height: 1em;
-    background-color: red;
-    border-radius: 50%;
-    margin: 1.7% 4% 1% 1%;
-}
-
-.green-button {
-    width: 6rem;
-    height: 2.4rem;
-    border-radius: 10em;
-    border: none;
-    background-color: #3aeb34;
-    color: #ffffff;
-}
-
 .blue-button {
-    border-radius: 10em;
     border: none;
     background-color: #0d6efd;
     color: #ffffff;
@@ -114,7 +88,6 @@ a:hover {
 .grey-button {
     width: 6rem;
     height: 2.4rem;
-    border-radius: 10em;
     border: none;
     background-color: #9c9695;
     color: #ffffff;
@@ -150,27 +123,10 @@ a:hover {
     font-size: 0.9em;
 }
 
-.green-filter {
-    padding: 0.3em 1em 0.3em 1em;
-    border-radius: 10em;
-    border: none;
-    background-color: rgba(58, 235, 52, 0.8);
-    color: #ffffff;
-}
-
-.red-filter {
-    padding: 0.3em 1em 0.3em 1em;
-    border-radius: 10em;
-    border: none;
-    background-color: red;
-    color: #ffffff;
-}
-
 .card-red-button {
     display: inline-block;
     color: #FFFFFF;
     background-color: #FD4444;
-    border-radius: 10em;
     text-decoration: none;
     border: none;
 }
@@ -183,15 +139,36 @@ a:hover {
     width: 28%;
     border-top: 1px solid rgba(211, 211, 211, 0.5);
     border-radius: 2%;
-
-        display: flex;
-        flex-direction: column;
-        height: 100%; /* Ensure each card takes up the full height of its container */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
-    .card-servicio > div {
-        flex: 1; /* Allow each child div to grow and occupy an equal share of the card's height */
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
+.card-servicio > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.red-status {
+    background-color: #FFAB91;
+    color: red;
+    width: min-content;
+    font-weight: 700;
+    font-size: 0.8em;
+    display: inline-block;
+    padding: 1% 2% 1% 2%;
+    border-radius: 5px;
+}
+
+.blue-status {
+    background-color: #d3dde6;
+    color: #0d6efd;
+    width: min-content;
+    font-weight: 700;
+    font-size: 0.8em;
+    display: inline-block;
+    padding: 1% 2% 1% 2%;
+    border-radius: 5px;
+}
