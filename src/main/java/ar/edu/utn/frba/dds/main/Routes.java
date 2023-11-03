@@ -39,7 +39,8 @@ public class Routes implements WithSimplePersistenceUnit {
     // --> Rankings
     get("/home/rankings/cantidad-incidentes", rankingsController::renderCantidadIncidentes, engine);
     get("/home/rankings/promedio-cierre", rankingsController::renderMayorPromedioCierre, engine);
-
+    post("/home/rankings/cantidad-incidentes", rankingsController::exportarCantidadIncidentes);
+    post("/home/rankings/promedio-cierre", rankingsController::exportarMayorPromedioCierre);
 
     before("/", (request, response) -> {
       response.redirect("/home");
