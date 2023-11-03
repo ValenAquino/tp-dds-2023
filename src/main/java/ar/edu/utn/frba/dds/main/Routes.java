@@ -2,6 +2,8 @@ package ar.edu.utn.frba.dds.main;
 
 import ar.edu.utn.frba.dds.controller.*;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+import javax.persistence.PersistenceException;
+import spark.Spark;
 import spark.Request;
 import spark.Response;
 import spark.template.handlebars.HandlebarsTemplateEngine;
@@ -44,19 +46,27 @@ public class Routes implements WithSimplePersistenceUnit {
     get("/home/comunidades", comunidadesController::listar, engine);
     get("/home/comunidades/:id/incidentes", incidentesController::listarPorComunidad, engine);
     post("/home/comunidades/:id/incidentes/:incidente_id", incidentesController::cerrar);
+
+    // Incidentes routes
+    Spark.get("/incidentes/nuevo", incidentesController::nuevo, engine);
+    Spark.post("/incidentes/nuevo", incidentesController::reportarIncidente);
+
+    exception(PersistenceException.class, (e, request, response) -> {
+      response.redirect("/500");
+    });
     // --> Rankings
     get("/home/rankings/cantidad-incidentes", rankingsController::renderCantidadIncidentes, engine);
     get("/home/rankings/promedio-cierre", rankingsController::renderMayorPromedioCierre, engine);
     post("/home/rankings/cantidad-incidentes", rankingsController::exportarCantidadIncidentes);
     post("/home/rankings/promedio-cierre", rankingsController::exportarMayorPromedioCierre);
 
-    before((request, response) -> {
-      entityManager().clear();
-    });
-
     before("/", (request, response) -> {
       response.redirect("/home");
     });
+
+    before((request, response) ->
+        entityManager().clear()
+    );
 
     before("/login", (request, response) -> {
       if (request.session().attribute("user_id") != null) {
@@ -75,5 +85,4 @@ public class Routes implements WithSimplePersistenceUnit {
       response.redirect("/login?origin=" + path);
     }
   }
-
 }

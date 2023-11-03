@@ -1,0 +1,33 @@
+{{#partial "principal"}}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card my-5">
+                    <div class="card-body">
+                        <h2 class="text-center">Reportar Incidente</h2>
+                        <hr>
+                        <form id="incident-form" method="POST">
+                            <div class="mb-3">
+                                <label for="servicios" class="form-label">Servicios</label>
+                                <select class="form-select" id="servicios" name="servicio">
+                                    {{#each servicios}}
+                                        <option value="{{getId}}">{{getDescripcion}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="observaciones" class="form-label">Observaciones</label>
+                                <textarea class="form-control" id="observaciones" name="observaciones" rows="3" placeholder="Agregar observaciones"></textarea>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Reportar Incidente</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{{/partial}}
+
+{{> layouts/logged.html.hbs }}

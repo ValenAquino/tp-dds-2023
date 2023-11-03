@@ -1,17 +1,25 @@
 package ar.edu.utn.frba.dds.controller;
 
 import ar.edu.utn.frba.dds.model.entidades.Incidente;
+import ar.edu.utn.frba.dds.model.entidades.Servicio;
 import ar.edu.utn.frba.dds.model.entidades.Usuario;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioComunidades;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioIncidentes;
+import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioServicios;
+import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioUsuarios;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class IncidentesController implements WithSimplePersistenceUnit {
   public ModelAndView listarPorComunidad(Request request, Response response) {
@@ -62,5 +70,22 @@ public class IncidentesController implements WithSimplePersistenceUnit {
       return comunidad.getIncidentesAbiertos();
     else
       return comunidad.getIncidentesResueltos();
+  }
+  public ModelAndView nuevo(Request request, Response response) {
+    Map<String, Object> model = new HashMap<>();
+    model.put("servicios", RepositorioServicios.getInstance().todos());
+    model.put("incidentes", RepositorioIncidentes.getInstance().todos());
+    return new ModelAndView(model, "incidentes/reportarIncidente.html.hbs");
+  }
+
+  public Void reportarIncidente(Request request, Response response) {
+    withTransaction(() -> {
+      Servicio servicio = RepositorioServicios.getInstance().porId(Integer.parseInt(request.queryParams("servicio")));
+      Usuario usuario = SessionController.usuarioLogueado(request);
+      usuario.reportarIncidente(servicio, LocalDateTime.now(), request.queryParams("observaciones"));
+      RepositorioUsuarios.getInstance().persistir(usuario);
+      response.redirect("/home");
+    });
+    return null;
   }
 }

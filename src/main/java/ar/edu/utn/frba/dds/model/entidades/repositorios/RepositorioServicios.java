@@ -9,21 +9,24 @@ import ar.edu.utn.frba.dds.model.entidades.Usuario;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.List;
 
-public class RepositorioEntidades implements WithSimplePersistenceUnit {
-  private static RepositorioEntidades instance;
+public class RepositorioServicios implements WithSimplePersistenceUnit {
+  private static RepositorioServicios instance;
 
-  public static RepositorioEntidades getInstance() {
+  public static RepositorioServicios getInstance() {
     if (instance == null) {
-      instance = new RepositorioEntidades();
+      instance = new RepositorioServicios();
     }
     return instance;
   }
 
-  public void persistir(Entidad entidad) {
-    entityManager().persist(entidad);
+  public void persistir(Servicio servicio) {
+    entityManager().persist(servicio);
   }
-  public List<Entidad> todas() {
-    return entityManager().createQuery("from Entidad", Entidad.class)
+  public List<Servicio> todos() {
+    return entityManager().createQuery("from Servicio", Servicio.class)
         .getResultList();
+  }
+  public Servicio porId(Integer id) {
+    return entityManager().find(Servicio.class, id);
   }
 }
