@@ -1,45 +1,49 @@
 {{#partial "principal" }}
-  <div class="d-flex justify-content-between p-3 mx-5 mb-4">
-    <h1 class="ms-4">Comunidades</h1>
-    <div class="d-flex p-3">
-      <a class="btn btn-primary" href="/home/comunidades" role="button">
+    <div class="d-flex justify-content-between p-3 mx-5 mb-4">
+        <h1 class="ms-4">Comunidades</h1>
+        <div class="d-flex p-3">
+            <a class="btn btn-primary" href="/home/comunidades" role="button">
         <i class="fa-solid fa-user-plus"></i>
-        Agregar Comunidad
-      </a>
-    </div>
-  </div>
-
-  <div class="container shadow-sm">
-    <div class="row p-3 border-bottom border-1">
-      <div class="col-4">
-        <span class="fs-5 fw-semibold">Nombre</span>
-      </div>
-      <div class="col">
-        <span class="fs-5 fw-semibold">Incidentes</span>
-      </div>
-      <div class="col">
-        <span class="fs-5 fw-semibold">Miembros</span>
-      </div>
-      <div class="col">
-        <span class="fs-5 fw-semibold">Acciones</span>
-      </div>
-    </div>
-    {{#each comunidades}}
-      <div class="row p-3 border-bottom border-1">
-        <div class="col-4 fw-semibold">{{nombre}}</div>
-        <div class="col">{{incidentesAbiertos.length}}</div>
-        <div class="col">{{miembros.length}}</div>
-        <div class="col">
-          <a href="/home/comunidades/{{id}}/editar"><i title="Editar" class="fa-solid fa-pencil mr-1"></i></a>
-          <form class="d-inline" action="/home/comunidades/{{id}}/eliminar" method="POST" onsubmit="return confirm('¿Está seguro que desea eliminar esta comunidad?');">
-              <button type="submit" style="background:none;border:none;padding:0;">
-                  <i title="Eliminar" class="fa-regular fa-trash-can"></i>
-            </button>
-          </form>
+                Agregar Comunidad
+            </a>
         </div>
-      </div>
-    {{/each}}
-  </div>
+    </div>
+
+    <div class="container shadow-sm">
+        <div class="row p-3 border-bottom border-1">
+            <div class="col-4">
+                <span class="fs-5 fw-semibold">Nombre</span>
+            </div>
+            <div class="col">
+                <span class="fs-5 fw-semibold">Incidentes</span>
+            </div>
+            <div class="col">
+                <span class="fs-5 fw-semibold">Miembros</span>
+            </div>
+            <div class="col">
+                <span class="fs-5 fw-semibold">Acciones</span>
+            </div>
+        </div>
+        {{#each comunidades}}
+            <div class="row p-3 border-bottom border-1">
+                <div class="col-4 fw-semibold">{{nombre}}</div>
+                <div class="col">{{incidentesAbiertos.length}}</div>
+                <div class="col">{{miembros.length}}</div>
+                <div class="col">
+                    <a href="/home/comunidades/{{id}}/editar"><i title="Editar"
+                                                                 class="fa-solid fa-pencil mr-1"></i></a>
+                    <form class="d-inline" action="/home/comunidades/eliminar" method="POST"
+                          onsubmit="return confirm('¿Está seguro que desea eliminar esta comunidad?');">
+                        <input type="hidden" name="id" value="{{id}}">
+
+                        <button type="submit" style="background:none;border:none;padding:0;">
+                            <i title="Eliminar" class="fa-regular fa-trash-can"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        {{/each}}
+    </div>
 {{/partial}}
 
 {{> layouts/logged.html.hbs }}

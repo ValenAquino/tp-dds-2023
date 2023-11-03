@@ -47,7 +47,7 @@ public class Routes implements WithSimplePersistenceUnit {
 
     // Comunidades
     get("/home/comunidades", comunidadesController::listar, engine);
-    post("/home/comunidades/:id/eliminar", comunidadesController::eliminar);
+    post("/home/comunidades/eliminar", comunidadesController::eliminar);
     get("/home/comunidades/:id/incidentes", incidentesController::listarPorComunidad, engine);
     post("/home/comunidades/:id/incidentes/:incidente_id", incidentesController::cerrar);
 

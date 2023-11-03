@@ -23,7 +23,7 @@ public class ComunidadesController implements WithSimplePersistenceUnit {
 
   public Void eliminar(Request request, Response response) {
     withTransaction(() -> {
-      var comunidadId = Integer.parseInt(request.params("id"));
+      var comunidadId = Integer.parseInt(request.queryParams("id"));
       var comunidad = RepositorioComunidades.getInstance().porId(comunidadId);
       RepositorioComunidades.getInstance().eliminar(comunidad);
     });
