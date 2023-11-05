@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ServiceWatch</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #F5F5F5;
+                margin: 0;
+                padding: 0;
+            }
+
+            a {
+                text-decoration: none;
+            }
+
+            .navbar {
+                background-color: #131a26;
+                color: #fff;
+                padding: 10px 0;
+                display: flex;
+                justify-content: space-between;
+                position: fixed;
+                width: 100%;
+                top: 0;
+            }
+
+            .navbar-logo {
+                display: flex;
+                align-items: center;
+            }
+
+            .logo-img {
+                margin-left: 0.2em;
+                width: 40%;
+            }
+
+            .btn-login {
+                background-color: #3bd671;
+                color: #fff;
+                border: none;
+                border-radius: 2em;
+                padding: 10px 20px;
+                font-size: 1em;
+                cursor: pointer;
+                font-weight:700;
+                margin-right: 1em;
+            }
+
+            .container {
+                text-align: center;
+                margin: 70px 20px 20px;
+            }
+
+            h1 {
+                color: #131a26;
+            }
+
+            .footer {
+                background-color: #131a26;
+                color: #fff;
+                text-align: center;
+                padding: 10px 0;
+                position:fixed;
+                bottom:0;
+                width: 100%;
+                font-weight: 700;
+                display:flex;
+                flex-direction:row;
+                justify-content:end;
+            }
+
+            .div-texto {
+                width: 50%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .div-componente {
+                display: flex;
+                padding: 2em;
+                height: 70vh;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="navbar">
+            <div class="navbar-logo">
+                <img class="logo-img" src="logo.png" alt="Logo">
+            </div>
+            <a class="btn-login" href="login">Iniciar Sesión</a>
+        </div>
+
+        <div class="container">
+        <div class="div-componente">
+            <div class="div-texto">
+                <h1>Todos los servicios que te interesan
+                    <span style="color: #3bd671 !important;">monitoreados</span> en un solo lugar<span style="color: #3bd671 !important;">.</span></h1>
+                <a class="btn-login" href="login">Comenzar</a>
+            </div>
+            <div style="width: 50%;">
+                <img src="landing_imagen.svg" style="height: 65vh;"></img>
+            </div>
+        </div>
+    </div>
+        <div class="footer">
+            <div style="margin-right: 0.5em;">ServiceWatch © 2023</div>
+        </div>
+    </body>
+</html>

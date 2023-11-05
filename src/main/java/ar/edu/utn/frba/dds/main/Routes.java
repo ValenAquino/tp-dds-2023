@@ -21,6 +21,7 @@ public class Routes implements WithSimplePersistenceUnit {
     staticFileLocation("/public");
 
     var engine = new HandlebarsTemplateEngine();
+    var landingController = new LandingController();
     var homeController = new HomeController();
     var sessionController = new SessionController();
     var comunidadesController = new ComunidadesController();
@@ -30,6 +31,7 @@ public class Routes implements WithSimplePersistenceUnit {
     var serviciosController = new ServiciosController();
 
     // Anonymous
+    get("/", landingController::render, engine);
     get("/login", sessionController::render, engine);
     post("/login", sessionController::login);
     post("/logout", sessionController::logout);
@@ -65,7 +67,7 @@ public class Routes implements WithSimplePersistenceUnit {
     post("/home/rankings/promedio-cierre", rankingsController::exportarMayorPromedioCierre);
 
     // Filtros
-    before("/", (request, response) -> response.redirect("/home"));
+    //before("/", (request, response) -> response.redirect("/home"));
     before((request, response) -> entityManager().clear());
     before("/home", Routes::evaluarNoAutenticacion);
     before("/home/*", Routes::evaluarNoAutenticacion);
