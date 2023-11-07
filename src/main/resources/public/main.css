@@ -21,6 +21,13 @@ a:hover {
     margin-right: 0.5em !important;
 }
 
+a.nav-link {
+    color: #ffffff !important;
+    //font-size: 18px;
+    //font-weight: 500;
+    //font-family: Arial;
+}
+
 .nav-bar-list {
   list-style-type: none;
 }
@@ -57,6 +64,18 @@ a:hover {
     padding: 2%;
 }
 
+.footer {
+    background-color: #131a26;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    width: 100%;
+    font-weight: 700;
+    display:flex;
+    flex-direction:row;
+    justify-content:end;
+}
+
 /* Incidentes */
 
 .card-incidente {
@@ -86,11 +105,29 @@ a:hover {
 }
 
 .grey-button {
-    width: 6rem;
-    height: 2.4rem;
+    color: #fff;
     border: none;
+    border-radius: 2em;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    margin-right: 1em;
     background-color: #9c9695;
-    color: #ffffff;
+}
+
+.green-button {
+    background-color: #3bd671;
+    color: #fff;
+    border: none;
+    border-radius: 2em;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    margin-right: 1em;
+}
+
+.green-button:hover {
+    background-color: #3bd671;
 }
 
 .mt-1 {
@@ -187,4 +224,9 @@ a:hover {
 
 .btn-login:hover {
     background-color: #3bd671;
+}
+
+.navbar-custom {
+    background-color: #131a26 !important;
+    height: 8%;
 }

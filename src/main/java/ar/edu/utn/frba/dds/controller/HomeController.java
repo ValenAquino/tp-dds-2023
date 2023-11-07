@@ -18,6 +18,8 @@ import spark.Response;
 public class HomeController implements WithSimplePersistenceUnit {
   public ModelAndView render(Request request, Response response) {
     Integer idUsuario = request.session().attribute("user_id");
+    Boolean afterAction = Boolean.valueOf(request.queryParams("after_action"));
+    String message = request.queryParams("message");
 
     Usuario usuarioLogueado = RepositorioUsuarios.getInstance().porId(idUsuario);
 
@@ -28,6 +30,8 @@ public class HomeController implements WithSimplePersistenceUnit {
 
     modelo.put("comunidades", comunidades);
     modelo.put("incidentes", formatearIncidentes(incidentes, comunidades));
+    modelo.put("after_action", afterAction);
+    modelo.put("message", message);
 
     return new ModelAndView(modelo, "index.html.hbs");
   }

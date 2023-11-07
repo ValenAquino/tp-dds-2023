@@ -51,8 +51,9 @@ public class IncidentesController implements WithSimplePersistenceUnit {
 
       var from = request.queryParams("from");
 
-      if (from.equals("index"))
-        response.redirect("/home");
+      if (from.equals("index")) {
+        response.redirect("/home?after_action=true&message=Incidente%20cerrado%20con%20%C3%A9xito");
+      }
       else
         response.redirect("/home/comunidades/" + idComunidad + "/incidentes");
     });
