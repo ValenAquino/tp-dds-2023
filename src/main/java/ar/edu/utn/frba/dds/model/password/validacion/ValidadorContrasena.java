@@ -14,7 +14,7 @@ public class ValidadorContrasena {
   public void validar(String contrasena) {
     var politicasAValidar = politicas.stream().filter(p -> !p.esValida(contrasena)).toList();
 
-    if (politicasAValidar.size() > 0) {
+    if (!politicasAValidar.isEmpty()) {
       throw new ValidacionContrasenaException(politicasAValidar,
           getMensajeError(politicasAValidar));
     }

@@ -4,10 +4,15 @@ import ar.edu.utn.frba.dds.model.entidades.Usuario;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioComunidades;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioIncidentes;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioUsuarios;
+import ar.edu.utn.frba.dds.model.excepciones.ValidacionContrasenaException;
+import ar.edu.utn.frba.dds.model.password.politicas.PoliticaLongitud;
+import ar.edu.utn.frba.dds.model.password.politicas.PoliticaRegex;
+import ar.edu.utn.frba.dds.model.password.validacion.ValidadorContrasena;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -64,27 +69,22 @@ public class UsuariosController implements WithSimplePersistenceUnit {
     return new ModelAndView(modelo, "usuarios/usuario.html.hbs");
   }
 
-  public Void editar(Request request, Response response) {
-    withTransaction(() -> {
+  public ModelAndView editar(Request request, Response response) {
+    var usuarioExistente = getUsuarioDeRequest(request);
 
-      var usuario = RepositorioUsuarios.getInstance().porId(
-          Integer.parseInt(request.queryParams("id"))
-      );
-
-      usuario.setUsuario(request.queryParams("usuario"));
+    try {
+      validarUsuario(usuarioExistente);
       if (!request.queryParams("contrasenia").isBlank()) {
-        usuario.setContrasenia(request.queryParams("contrasenia"));
+        validarContrasenia(usuarioExistente.getContrasenia());
       }
-      usuario.setNombre(request.queryParams("nombre"));
-      usuario.setApellido(request.queryParams("apellido"));
-      usuario.setCorreoElectronico(request.queryParams("correo_electronico"));
-      usuario.setAdmin(request.queryParams("es_admin") != null);
-
-      RepositorioUsuarios.getInstance().persistir(usuario);
-    });
-
-    response.redirect("/usuarios");
-    return null;
+      withTransaction(() -> RepositorioUsuarios.getInstance().persistir(usuarioExistente));
+      response.redirect("/usuarios");
+      return null;
+    } catch (Exception e) {
+      // TODO: devolver usuarioExistente (con contraseña vacía) y llenar campos ya ingresados
+      // TODO: devolver e.getMessage() y mostrar
+      return new ModelAndView(null, "usuarios/usuario.html.hbs");
+    }
   }
 
   public Void eliminar(Request request, Response response) {
@@ -103,5 +103,42 @@ public class UsuariosController implements WithSimplePersistenceUnit {
 
     response.redirect("/usuarios");
     return null;
+  }
+
+  private Usuario getUsuarioDeRequest(Request request) {
+    var usuario = request.queryParams("id").isBlank()
+        ? new Usuario()
+        : RepositorioUsuarios.getInstance().porId(Integer.parseInt(request.queryParams("id")));
+
+    usuario.setUsuario(request.queryParams("usuario"));
+    usuario.setNombre(request.queryParams("nombre"));
+    usuario.setApellido(request.queryParams("apellido"));
+    usuario.setCorreoElectronico(request.queryParams("correo_electronico"));
+    usuario.setAdmin(request.queryParams("es_admin") != null);
+
+    if (!request.queryParams("contrasenia").isBlank()) {
+      usuario.setContrasenia(request.queryParams("contrasenia"));
+    }
+
+    return usuario;
+  }
+
+  private void validarUsuario(Usuario usuario) throws Exception {
+    if (usuario.getUsuario().isBlank() || usuario.getCorreoElectronico().isBlank() ||
+        usuario.getNombre().isBlank() || usuario.getApellido().isBlank()) {
+      throw new Exception("Uno o más campos no fueron completados.");
+    }
+  }
+
+  private void validarContrasenia(String contrasenia) throws ValidacionContrasenaException {
+    var validador = new ValidadorContrasena(Arrays.asList(
+        new PoliticaLongitud(8, 16),
+        new PoliticaRegex(
+            "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[-+_!@#$%^&*.,?]).+$",
+            "La contraseña debe tener al menos una letra minúscula, una mayúscula," +
+                " un número y un caracter especial.")
+    ));
+
+    validador.validar(contrasenia);
   }
 }

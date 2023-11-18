@@ -16,6 +16,7 @@ public class RepositorioUsuarios implements WithSimplePersistenceUnit {
   }
 
   public void persistir(Usuario usuario) {
+    usuario.hashContrasenia();
     entityManager().persist(usuario);
   }
 

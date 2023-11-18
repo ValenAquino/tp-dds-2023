@@ -72,7 +72,7 @@ public class Usuario extends PersistentEntity {
   public Usuario(String usuario, String contrasenia, String nombre, String apellido,
                  String correoElectronico) {
     this.usuario = usuario;
-    this.contrasenia = DigestUtils.sha256Hex(contrasenia);
+    this.contrasenia = contrasenia;
     this.nombre = nombre;
     this.apellido = apellido;
     this.correoElectronico = correoElectronico;
@@ -108,8 +108,18 @@ public class Usuario extends PersistentEntity {
     this.usuario = usuario;
   }
 
+  public String getContrasenia() {
+    return contrasenia;
+  }
+
   public void setContrasenia(String contrasenia) {
-    this.contrasenia = DigestUtils.sha256Hex(contrasenia);
+    this.contrasenia = contrasenia;
+  }
+
+  public void hashContrasenia() {
+    if (!this.contrasenia.isBlank()) {
+      this.contrasenia =  DigestUtils.sha256Hex(this.contrasenia);
+    }
   }
 
   public void vaciarContrasenia() {
