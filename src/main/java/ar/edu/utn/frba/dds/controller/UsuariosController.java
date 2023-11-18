@@ -128,6 +128,14 @@ public class UsuariosController implements WithSimplePersistenceUnit {
         usuario.getNombre().isBlank() || usuario.getApellido().isBlank()) {
       throw new Exception("Uno o más campos no fueron completados.");
     }
+
+    if (RepositorioUsuarios.getInstance().existeCorreoElectronico(usuario)) {
+      throw new Exception("El correo electrónico ingresado ya se encuentra registrado.");
+    }
+
+    if (RepositorioUsuarios.getInstance().existeUsername(usuario)) {
+      throw new Exception("El username ingresado ya se encuentra registrado.");
+    }
   }
 
   private void validarContrasenia(String contrasenia) throws ValidacionContrasenaException {
