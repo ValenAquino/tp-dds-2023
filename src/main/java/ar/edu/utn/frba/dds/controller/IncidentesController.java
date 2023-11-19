@@ -10,7 +10,6 @@ import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioServicios;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioUsuarios;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,9 +17,6 @@ import java.util.Map;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class IncidentesController implements WithSimplePersistenceUnit {
   public ModelAndView listarPorComunidad(Request request, Response response) {
@@ -91,11 +87,10 @@ public class IncidentesController implements WithSimplePersistenceUnit {
       Usuario usuario = SessionController.usuarioLogueado(request);
       usuario.reportarIncidente(servicio, LocalDateTime.now(), request.queryParams("observaciones"));
       RepositorioUsuarios.getInstance().persistir(usuario);
-
       var from = request.queryParams("from");
 
       if (from != null && from.equals("servicios"))
-        response.redirect("/servicios");
+        response.redirect("/servicios?exito=true");
       else
         response.redirect("/home");
     });

@@ -19,7 +19,7 @@ public class ComunidadesController implements WithSimplePersistenceUnit {
     modelo.put("comunidades", comunidades);
 
     modelo.put("es_admin", request.attribute("es_admin"));
-    
+
     if(usuarioLogueado.esAdmin()){
       return new ModelAndView(modelo, "pages/comunidadesDashboard.html.hbs");
     }
