@@ -1,0 +1,36 @@
+{{#partial "principal" }}
+    <div class="d-flex justify-content-between p-3 mx-5 mb-4">
+        <h1 class="ms-4">Comunidades</h1>
+        <div class="d-flex p-3">
+            <a class="btn btn-primary" href="/home/comunidades" role="button">
+                <i class="fa-solid fa-users"></i>
+                Agregar Comunidad
+            </a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {{#each comunidades}}
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title fw-semibold">{{nombre}}</h5>
+                            <p class="card-text">Incidentes: {{incidentesAbiertos.length}}</p>
+                            <p class="card-text">Miembros: {{miembros.length}}</p>
+                            <div class="d-flex justify-content-end">
+                                <a href="/home/comunidades/{{id}}/editar" class="btn btn-link"><i title="Editar" class="fa-solid fa-pencil mr-1"></i></a>
+                                <form class="d-inline" action="/home/comunidades/eliminar" method="POST" onsubmit="return confirm('¿Está seguro que desea eliminar esta comunidad?');">
+                                    <input type="hidden" name="id" value="{{id}}">
+                                    <button type="submit" class="btn btn-link" style="background:none; border:none; padding:0;"><i title="Eliminar" class="fa-regular fa-trash-can"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+{{/partial}}
+
+{{> layouts/logged.html.hbs }}
