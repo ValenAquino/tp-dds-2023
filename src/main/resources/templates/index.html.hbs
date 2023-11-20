@@ -1,22 +1,33 @@
 {{#partial "principal" }}
 
-<script src="iconScript.js"></script>
+<script src="indexScript.js"></script>
 
-    <h3>Mis comunidades</h3>
-    <div class="d-flex flex-row flex-wrap mt-4">
-        {{#each comunidades}}
-            <div class="card-comunidad p-2">
-                <h5>{{this.nombre}}</h5>
-                <a href="/home/comunidades/{{this.id}}/incidentes">Ver incidentes</a>
-            </div>
-        {{/each}}
+    <h3 style="margin-left: 3.5%;">Mis comunidades</h3>
+    <div style="margin-left: 2%;">
+        <div class="d-flex flex-row flex-wrap">
+            {{#each comunidades}}
+                <div class="card-comunidad">
+                    <div class="d-flex flex-row align-items-center">
+                        <h5 style="overflow: hidden; text-overflow:ellipsis; white-space: nowrap;">{{this.nombre}}</h5>
+                        <a href="/home/comunidades/{{this.id}}/incidentes" class="icon-link" style="margin-left: 5%;margin-bottom: 1.5%;">
+                            <i class="fa-regular fa-eye comunidad-display-icon" title="Ver incidentes" style="color: #131a26; margin-left: 5%;"></i>
+                            <i class="fa-solid fa-eye comunidad-hover-icon" style="display: none; color: #131a26; margin-left: 5%;" title="Ver incidentes"></i>
+                        </a>
+                    </div>
+                    <span class="mt-2 d-block">{{cantidad_miembros}} {{#intIsEqual 1 cantidad_miembros}} miembro {{else}} miembros {{/intIsEqual}}</span>
+                    <span class="mt-1 d-block">{{cantidad_incidentes}} {{#intIsEqual 1 cantidad_incidentes}} incidente abierto {{else}} incidentes abiertos {{/intIsEqual}}</span>
+                </div>
+            {{/each}}
+        </div>
+        <div class="d-flex flex-row justify-content-end" style="width: 100%;">
+            <a style="font-weight: 500; color: #131a26;" href="/home/comunidades">Ver todas las comunidades</a>
+        </div>
     </div>
-
-    <h3 class="mt-4">Incidentes pendientes</h3>
+    <h3 class="mt-4" style="margin-left: 3.5%;">Incidentes pendientes</h3>
     {{#if after_action}}
-    <p style="color: green;">{{message}}</p>
+    <p style="color: green; margin-left: 3.5%;">{{message}}</p>
     {{/if}}
-    <div class="d-flex flex-row flex-wrap mt-4">
+    <div class="d-flex flex-row flex-wrap" style="margin-left: 2%;">
         {{#each incidentes}}
         <div class="card-incidente">
             <div class="d-flex flex-row align-items-center">
@@ -38,6 +49,9 @@
             </div>
         </div>
         {{/each}}
+        <div class="d-flex flex-row justify-content-end" style="width: 100%;">
+            <a href="/home/incidentes" style="font-weight: 500; color: #131a26;">Ver todos los incidentes</a>
+        </div>
     </div>
 
     <!-- Modal -->

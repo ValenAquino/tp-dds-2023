@@ -28,7 +28,7 @@ public class HomeController implements WithSimplePersistenceUnit {
     var comunidades = RepositorioComunidades.getInstance().comunidadesDeUsuario(usuarioLogueado);
     var incidentes = RepositorioIncidentes.getInstance().incidentesARevisarPara(usuarioLogueado);
 
-    modelo.put("comunidades", comunidades);
+    modelo.put("comunidades", formatearComunidades(comunidades));
     modelo.put("incidentes", formatearIncidentes(incidentes, comunidades));
     modelo.put("after_action", afterAction);
     modelo.put("message", message);
@@ -55,6 +55,21 @@ public class HomeController implements WithSimplePersistenceUnit {
             put("observaciones", incidente.getObservaciones());
             put("comunidad_id", comunidad.getId());
           }});
+    };
+
+    return results;
+  }
+
+  private List<Map<String, Object>> formatearComunidades(List<Comunidad> comunidades) {
+    List<Map<String, Object>> results = new ArrayList<>();
+
+    for(Comunidad comunidad : comunidades) {
+      results.add(new HashMap<>() {{
+        put("id", comunidad.getId());
+        put("nombre", comunidad.getNombre());
+        put("cantidad_miembros", comunidad.getMiembros().size());
+        put("cantidad_incidentes", comunidad.getIncidentesAbiertos().size());
+      }});
     };
 
     return results;

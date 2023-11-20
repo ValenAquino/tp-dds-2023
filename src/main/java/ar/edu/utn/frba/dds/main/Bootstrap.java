@@ -146,9 +146,13 @@ public class Bootstrap implements WithSimplePersistenceUnit {
 
     RepositorioComunidades.getInstance().persistir(nosMovemosEnSubte);
 
-    var vecinos = new Comunidad("Vecinos de plaza", new ServicioGoogleMaps());
+    var vecinos = new Comunidad("Vecinos de Plaza Houssay", new ServicioGoogleMaps());
     vecinos.agregarMiembro(usuario);
     RepositorioComunidades.getInstance().persistir(vecinos);
+
+    var tren = new Comunidad("Usuarios de Tren Mitre", new ServicioGoogleMaps());
+    tren.agregarMiembro(usuario);
+    RepositorioComunidades.getInstance().persistir(tren);
 
     RepositorioIncidentes.getInstance().persistir(incidente);
 

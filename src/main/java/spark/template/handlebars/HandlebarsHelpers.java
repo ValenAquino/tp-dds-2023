@@ -23,4 +23,9 @@ public class HandlebarsHelpers {
     String str2 = options.param(0);
     return str1.equals(str2) ? options.fn() : options.inverse();
   };
+
+  public static Helper<Integer> intIsEqual = (int1, options) -> {
+    Integer int2 = options.param(0);
+    return int1.equals(int2) ? options.fn() : options.inverse();
+  };
 }
