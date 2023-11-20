@@ -62,6 +62,7 @@ public class HandlebarsTemplateEngine extends TemplateEngine {
     handlebars.registerHelper("formatearFecha", HandlebarsHelpers.formatearFecha);
     handlebars.registerHelper("formatearUsuario", HandlebarsHelpers.formatearUsuario);
     handlebars.registerHelper("formatearEsAdmin", HandlebarsHelpers.formatearEsAdmin);
+    handlebars.registerHelper("stringIsEqual", HandlebarsHelpers.stringIsEqual);
 
     // Set Guava cache.
     Cache<TemplateSource, Template> cache = CacheBuilder.newBuilder().expireAfterWrite(10, TimeUnit.MINUTES)

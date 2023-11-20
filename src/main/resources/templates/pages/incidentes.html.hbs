@@ -3,11 +3,11 @@
 <script src="/iconScript.js"></script>
 
 <div>
-    <h3 class="mb-4 mr-4">Incidentes</h3>
-    <div style="height: 3em;">
-        <a class="mr-1" href="incidentes">Todos</a>
-        <a class="mr-1" href="incidentes?estado=abierto">Abiertos</a>
-        <a class="mr-1" href="incidentes?estado=cerrado">Cerrados</a>
+    <h3 class="mb-4 mr-4 ml-2" style="margin-left: 2%;">Incidentes</h3>
+    <div style="height: 3em; margin-left: 2%;">
+        <a href="incidentes" {{#stringIsEqual "todos" estado}} class="mr-1 selected-filter" {{else}} class="mr-1 filter" {{/stringIsEqual}}>Todos</a>
+        <a {{#stringIsEqual "abierto" estado}} class="mr-1 selected-filter" {{else}} class="mr-1 filter" {{/stringIsEqual}} href="incidentes?estado=abierto">Abiertos</a>
+        <a {{#stringIsEqual "cerrado" estado}} class="mr-1 selected-filter" {{else}} class="mr-1 filter" {{/stringIsEqual}} href="incidentes?estado=cerrado">Cerrados</a>
     </div>
     <div class="d-flex flex-row flex-wrap">
     {{#incidentes}}
@@ -25,12 +25,6 @@
                 {{/unless}}
             </div>
             <h6 class="d-inline-block">{{establecimiento.nombre}}</h6>
-
-            {{#unless estaResuelto}}
-                    <div class="red-status d-inline-block">Abierto</div>
-                {{else}}
-                    <div class="blue-status">Cerrado</div>
-                {{/unless}}
 
             <span class="mt-2 d-block">{{formatearFecha fecha}} - {{formatearUsuario reportante}}</span>
             <div class="text-area mt-1">

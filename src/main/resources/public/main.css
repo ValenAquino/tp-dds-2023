@@ -113,6 +113,7 @@ a.nav-link {
     cursor: pointer;
     margin-right: 1em;
     background-color: #9c9695;
+    font-weight: 500;
 }
 
 .green-button {
@@ -124,6 +125,7 @@ a.nav-link {
     font-size: 1em;
     cursor: pointer;
     margin-right: 1em;
+    font-weight: 500;
 }
 
 .green-button:hover {
@@ -229,4 +231,28 @@ a.nav-link {
 .navbar-custom {
     background-color: #131a26 !important;
     height: 8%;
+}
+
+.selected-filter {
+    padding: 0.7% 2%;
+    background-color: #131a26;
+    border-radius: 2em;
+    color: white;
+    font-weight: 500;
+}
+
+.selected-filter:hover {
+    color: white;
+}
+
+.filter {
+    padding: 0.7% 2%;
+    border: #131a26 1px solid;
+    border-radius: 2em;
+    font-weight: 500;
+    color: #131a26;
+}
+
+.filter:hover {
+    color: #131a26;
 }

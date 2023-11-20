@@ -28,6 +28,7 @@ public class IncidentesController implements WithSimplePersistenceUnit {
     var estado = request.queryParams("estado");
 
     Map<String, Object> modelo = new HashMap<>();
+    modelo.put("estado", estado == null ? "todos" : estado);
     modelo.put("incidentes",  getIncidentesPorEstado(idComunidad, estado));
     modelo.put("comunidad_id", Integer.valueOf(request.params("id")));
     return new ModelAndView(modelo, "pages/incidentes.html.hbs");
