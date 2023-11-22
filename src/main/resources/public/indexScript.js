@@ -34,4 +34,22 @@ document.addEventListener('DOMContentLoaded', function () {
             icon2.style.display = "none";
         });
     });
+
+    const iconLinks = document.querySelectorAll(".icon-link");
+
+        // Iterate over the selected buttons and add event listeners
+        iconLinks.forEach(function(iconButton) {
+            const icon1 = iconButton.querySelector(".comunidad-display-icon");
+            const icon2 = iconButton.querySelector(".comunidad-hover-icon");
+
+            iconButton.addEventListener("mouseover", function() {
+                icon1.style.display = "none";
+                icon2.style.display = "inline";
+            });
+
+            iconButton.addEventListener("mouseout", function() {
+                icon1.style.display = "inline";
+                icon2.style.display = "none";
+            });
+        });
 });

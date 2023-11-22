@@ -26,8 +26,17 @@ public class RepositorioComunidades implements WithSimplePersistenceUnit {
         .getResultList();
   }
 
+  public List<Comunidad> comunidadesDeUsuario(Usuario usuario, int n) {
+    return entityManager()
+            .createQuery("select distinct c from Comunidad c join c.miembros m where m.id = :id " +
+                    "order by c.id", Comunidad.class)
+            .setParameter("id", usuario.getId())
+            .setMaxResults(n)
+            .getResultList();
+  }
+
   public List<Comunidad> todas() {
-    return entityManager().createQuery("SELECT c FROM Comunidad", Comunidad.class)
+    return entityManager().createQuery("SELECT c FROM Comunidad c", Comunidad.class)
         .getResultList();
   }
 

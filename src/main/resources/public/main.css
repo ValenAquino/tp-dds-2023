@@ -9,12 +9,26 @@ a:hover {
     text-decoration: none;
 }
 
+textarea:focus {
+    outline:none;
+}
+
 .nav-container {
     margin: 0;
 }
 
 .nav-item.dropdown:hover .dropdown-menu {
     display: block;
+}
+
+.dropdown-item:hover {
+    background-color: white;
+    color: #131313 !important;
+}
+
+.dropdown-item a:hover {
+    background-color: white;
+    color: #131313 !important;
 }
 
 .navbar-nav > li {
@@ -30,19 +44,6 @@ a.nav-link {
 
 .nav-bar-list {
   list-style-type: none;
-}
-
-.red-button {
-    display: inline-block;
-    color: #FFFFFF;
-    background-color: #FD4444;
-    border-radius: 0.4em;
-    padding: 0.6em;
-    text-decoration: none;
-}
-
-.red-button:hover {
-    color: #FFFFFF;
 }
 
 .logo {
@@ -61,7 +62,10 @@ a.nav-link {
 }
 
 .main-container {
-    padding: 2%;
+    padding-left: 6%;
+    padding-right: 6%;
+    padding-top: 2%;
+    padding-bottom: 2%;
 }
 
 .footer {
@@ -70,7 +74,7 @@ a.nav-link {
     text-align: center;
     padding: 10px 0;
     width: 100%;
-    font-weight: 700;
+    font-weight: 500;
     display:flex;
     flex-direction:row;
     justify-content:end;
@@ -82,18 +86,18 @@ a.nav-link {
     padding: 2% 2% 1% 2%;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     border: none;
-    margin: 0 2% 2% 2%;
+    margin: 1.5% 1.5% 1.5% 1.5%;
     width: 28%;
     border-top: 1px solid rgba(211, 211, 211, 0.5);
     border-radius: 2%;
 }
 
 .card-comunidad {
-    padding: 2% 2% 1% 2%;
+    padding: 2% 2% 2% 2%;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     border: none;
-    margin: 0 2% 2% 2%;
-    width: 20%;
+    margin: 1.5% 1.5% 1.5% 1.5%;
+    width: 25%;
     border-top: 1px solid rgba(211, 211, 211, 0.5);
     border-radius: 2%;
 }
@@ -108,11 +112,11 @@ a.nav-link {
     color: #fff;
     border: none;
     border-radius: 2em;
-    padding: 10px 20px;
     font-size: 1em;
     cursor: pointer;
     margin-right: 1em;
     background-color: #9c9695;
+    padding: 1.3% 3.5%;
 }
 
 .green-button {
@@ -120,10 +124,10 @@ a.nav-link {
     color: #fff;
     border: none;
     border-radius: 2em;
-    padding: 10px 20px;
     font-size: 1em;
     cursor: pointer;
     margin-right: 1em;
+    padding: 1.3% 3.5%;
 }
 
 .green-button:hover {
@@ -166,13 +170,15 @@ a.nav-link {
     background-color: #FD4444;
     text-decoration: none;
     border: none;
+    border-radius: 2em;
+    padding: 1.3% 3.5%;
 }
 
 .card-servicio {
-    padding: 2% 2% 1% 2%;
+    padding: 2% 2% 2% 2%;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     border: none;
-    margin: 0 2% 2% 2%;
+    margin: 1.5% 1.5% 1.5% 1.5%;
     width: 28%;
     border-top: 1px solid rgba(211, 211, 211, 0.5);
     border-radius: 2%;
@@ -186,28 +192,6 @@ a.nav-link {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-}
-
-.red-status {
-    background-color: #FFAB91;
-    color: red;
-    width: min-content;
-    font-weight: 700;
-    font-size: 0.8em;
-    display: inline-block;
-    padding: 1% 2% 1% 2%;
-    border-radius: 5px;
-}
-
-.blue-status {
-    background-color: #d3dde6;
-    color: #0d6efd;
-    width: min-content;
-    font-weight: 700;
-    font-size: 0.8em;
-    display: inline-block;
-    padding: 1% 2% 1% 2%;
-    border-radius: 5px;
 }
 
 .btn-login {
@@ -229,4 +213,36 @@ a.nav-link {
 .navbar-custom {
     background-color: #131a26 !important;
     height: 8%;
+}
+
+.selected-filter {
+    padding: 0.4% 2%;
+    background-color: #131a26;
+    border: #131a26 1px solid;
+    border-radius: 2em;
+    color: white;
+    font-weight: 500;
+    display:inline-block;
+}
+
+.selected-filter:hover {
+    color: white;
+}
+
+.filter {
+    padding: 0.4% 2%;
+    border: #131a26 1px solid;
+    border-radius: 2em;
+    font-weight: 500;
+    color: #131a26;
+    display:inline-block;
+}
+
+.filter:hover {
+    color: #131a26;
+}
+
+.logout-btn:active {
+    border: none;
+    background-color: white;
 }

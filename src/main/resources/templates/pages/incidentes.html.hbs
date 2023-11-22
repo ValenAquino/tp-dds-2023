@@ -1,37 +1,35 @@
 {{#partial "principal" }}
 
-<script src="/iconScript.js"></script>
+<script src="/incidentesScript.js"></script>
 
 <div>
-    <h3 class="mb-4 mr-4">Incidentes</h3>
-    <div style="height: 3em;">
-        <a class="mr-1" href="incidentes">Todos</a>
-        <a class="mr-1" href="incidentes?estado=abierto">Abiertos</a>
-        <a class="mr-1" href="incidentes?estado=cerrado">Cerrados</a>
-    </div>
-    <div class="d-flex flex-row flex-wrap">
+    <h3 {{#stringIsEqual "pendientes" vista}}class="mb-4 mr-4 ml-2"{{else}}class="mr-4 ml-2"{{/stringIsEqual}} style="margin-left: 6%;">{{#stringIsEqual "pendientes" vista}}Incidentes pendientes{{else}}Incidentes{{/stringIsEqual}}</h3>
+        {{#stringIsEqual "pendientes" vista}}
+        {{else}}
+            <h5 class="mb-4" style="margin-left: 6%;">{{comunidad_nombre}}</h5>
+            <a style="margin-left: 6%;" href="incidentes" {{#stringIsEqual "todos" estado}} class="mr-1 selected-filter" {{else}} class="mr-1 filter" {{/stringIsEqual}}>Todos</a>
+            <a {{#stringIsEqual "abierto" estado}} class="mr-1 selected-filter" {{else}} class="mr-1 filter" {{/stringIsEqual}} href="incidentes?estado=abierto">Abiertos</a>
+            <a {{#stringIsEqual "cerrado" estado}} class="mr-1 selected-filter" {{else}} class="mr-1 filter" {{/stringIsEqual}} href="incidentes?estado=cerrado">Cerrados</a>
+        {{/stringIsEqual}}
+    <div class="d-flex flex-row flex-wrap" style="margin-left: 4.5%; margin-top: 1%;">
     {{#incidentes}}
         <div class="card-incidente">
             <div class="d-flex flex-row align-items-center">
-                <h5>{{servicio.descripcion}}</h5>
+                <h5 style="overflow: hidden; text-overflow:ellipsis; white-space: nowrap;">{{servicio.descripcion}}</h5>
                 {{#unless estaResuelto}}
                 <button type="button" style="background-color: transparent; border: none; margin-bottom: 0.3em;" data-bs-toggle="modal" data-bs-target="#confirmarCierreModal" data-incident-id="{{id}}"
-                                    data-comunidad-id="{{comunidad_id}}" data-from="incidentes" class="icon-button">
+                                    {{#stringIsEqual "pendientes" vista}} data-comunidad-id="{{comunidad.id}}"{{else}} data-comunidad-id="{{comunidad_id}}"{{/stringIsEqual}} {{#stringIsEqual "pendientes" vista}} data-from="pendientes"{{else}} data-from="incidentes"{{/stringIsEqual}} class="icon-button">
                                     <i class="lni lni-checkmark-circle display-icon" title="Cerrar incidente" style="color: #3bd671; margin-left: 5%;"></i>
-                                    <i data-incident-id="{{id}}" data-comunidad-id="{{comunidad_id}}"
-                                        data-from="incidentes" class="fa-solid fa-circle-check hover-icon"
+                                    <i data-incident-id="{{id}}" {{#stringIsEqual "pendientes" vista}} data-comunidad-id="{{comunidad.id}}"{{else}} data-comunidad-id="{{comunidad_id}}"{{/stringIsEqual}}
+                                        {{#stringIsEqual "pendientes" vista}} data-from="pendientes"{{else}} data-from="incidentes"{{/stringIsEqual}} class="fa-solid fa-circle-check hover-icon"
                                          style="display: none; color: #3bd671; margin-left: 5%;" title="Cerrar incidente"></i>
                                     </button>
                 {{/unless}}
             </div>
             <h6 class="d-inline-block">{{establecimiento.nombre}}</h6>
-
-            {{#unless estaResuelto}}
-                    <div class="red-status d-inline-block">Abierto</div>
-                {{else}}
-                    <div class="blue-status">Cerrado</div>
-                {{/unless}}
-
+            {{#stringIsEqual "pendientes" vista}}
+                <h6 class="d-inline-block">{{comunidad.nombre}}</h6>
+            {{/stringIsEqual}}
             <span class="mt-2 d-block">{{formatearFecha fecha}} - {{formatearUsuario reportante}}</span>
             <div class="text-area mt-1">
                 {{observaciones}}
@@ -53,8 +51,8 @@
         ¿Desea cerrar el incidente?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary grey-button" data-bs-dismiss="modal">Cancelar</button>
-        <button type="submit" class="btn btn-primary green-button">Cerrar</button>
+        <button type="button" class="grey-button" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="green-button">Cerrar</button>
       </div>
       </form>
     </div>

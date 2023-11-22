@@ -51,6 +51,16 @@ public class RepositorioIncidentes implements WithSimplePersistenceUnit {
         .getResultList();
   }
 
+  public List<Incidente> incidentesARevisarPara(Usuario usuario, int n) {
+    return entityManager().createQuery("SELECT i FROM Incidente i JOIN Notificacion n " +
+                    "ON n.incidente = i.id WHERE TYPE(n) = NotificacionRevisionIncidente AND " +
+                    "n.receptor = :receptor AND i.resuelto = false " +
+                    "order by i.id", Incidente.class)
+            .setParameter("receptor", usuario)
+            .setMaxResults(n)
+            .getResultList();
+  }
+
   public List<Incidente> incidentesDelReportante(Usuario usuario) {
     return  entityManager().createQuery("SELECT i FROM Incidente i WHERE i.reportante = :usuario", Incidente.class)
         .setParameter("usuario", usuario)

@@ -1,5 +1,5 @@
 {{#partial "layout" }}
-<nav class="navbar navbar-expand-lg navbar-light bg-light p-0 navbar-custom">
+<nav class="navbar navbar-expand-lg navbar-light bg-light p-0 navbar-custom" style="font-weight: 500;">
     <div class="container-fluid d-flex flex-row nav-container">
         <div class="d-flex flex-row align-items-center">
             <div class="navbar-logo d-inline-flex flex-row justify-content-center" style="width: 20%;">
@@ -28,14 +28,14 @@
         </div>
         <div class="nav-right-div d-flex flex-row justify-content-end">
         <div class="dropdown dropdown-menu-end">
-              <a style="color: #ffffff" class="btn dropdown-toggle dropdown-menu-end" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a style="color: #ffffff; border: none; font-weight: 500;" class="btn dropdown-toggle dropdown-menu-end" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Mi cuenta
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
                 <li><a class="dropdown-item" href="/perfil">Mi perfil</a></li>
                 <li>
                     <form method="POST" action="/logout" class="m-0">
-                        <button type="submit" class="btn">
+                        <button type="submit" class="btn logout-btn">
                             Salir
                         </button>
                     </form>

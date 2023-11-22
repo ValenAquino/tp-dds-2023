@@ -25,13 +25,15 @@ public class HomeController implements WithSimplePersistenceUnit {
 
     Map<String, Object> modelo = new HashMap<>();
 
-    var comunidades = RepositorioComunidades.getInstance().comunidadesDeUsuario(usuarioLogueado);
-    var incidentes = RepositorioIncidentes.getInstance().incidentesARevisarPara(usuarioLogueado);
+    var comunidades = RepositorioComunidades.getInstance().comunidadesDeUsuario(usuarioLogueado, 3);
+    var incidentes = RepositorioIncidentes.getInstance().incidentesARevisarPara(usuarioLogueado, 3);
 
-    modelo.put("comunidades", comunidades);
+    modelo.put("comunidades", formatearComunidades(comunidades));
     modelo.put("incidentes", formatearIncidentes(incidentes, comunidades));
     modelo.put("after_action", afterAction);
     modelo.put("message", message);
+    modelo.put("total_comunidades", comunidades.size());
+    modelo.put("total_incidentes", incidentes.size());
 
     return new ModelAndView(modelo, "index.html.hbs");
   }
@@ -53,8 +55,23 @@ public class HomeController implements WithSimplePersistenceUnit {
             put("reportante", incidente.getReportante());
             put("abierto", !incidente.estaResuelto());
             put("observaciones", incidente.getObservaciones());
-            put("comunidad_id", comunidad.getId());
+            put("comunidad", comunidad);
           }});
+    };
+
+    return results;
+  }
+
+  private List<Map<String, Object>> formatearComunidades(List<Comunidad> comunidades) {
+    List<Map<String, Object>> results = new ArrayList<>();
+
+    for(Comunidad comunidad : comunidades) {
+      results.add(new HashMap<>() {{
+        put("id", comunidad.getId());
+        put("nombre", comunidad.getNombre());
+        put("cantidad_miembros", comunidad.getMiembros().size());
+        put("cantidad_incidentes", comunidad.getIncidentesAbiertos().size());
+      }});
     };
 
     return results;

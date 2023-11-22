@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.controller;
 
+import ar.edu.utn.frba.dds.model.entidades.Comunidad;
 import ar.edu.utn.frba.dds.model.entidades.Incidente;
 import ar.edu.utn.frba.dds.model.entidades.Servicio;
 import ar.edu.utn.frba.dds.model.entidades.Usuario;
@@ -26,10 +27,22 @@ public class IncidentesController implements WithSimplePersistenceUnit {
     var idComunidad = Integer.valueOf(request.params("id"));
 
     var estado = request.queryParams("estado");
+    var comunidad = RepositorioComunidades.getInstance().porId(idComunidad);
 
     Map<String, Object> modelo = new HashMap<>();
-    modelo.put("incidentes",  getIncidentesPorEstado(idComunidad, estado));
+    modelo.put("estado", estado == null ? "todos" : estado);
+    modelo.put("incidentes",  getIncidentesPorEstado(comunidad, estado));
     modelo.put("comunidad_id", Integer.valueOf(request.params("id")));
+    modelo.put("comunidad_nombre", comunidad.getNombre());
+    return new ModelAndView(modelo, "pages/incidentes.html.hbs");
+  }
+
+  public ModelAndView listarPendientes(Request request, Response response) {
+    Usuario usuarioLogueado = SessionController.usuarioLogueado(request);
+
+    Map<String, Object> modelo = new HashMap<>();
+    modelo.put("incidentes",  formatearIncidentes(RepositorioIncidentes.getInstance().incidentesARevisarPara(usuarioLogueado)));
+    modelo.put("vista", "pendientes");
     return new ModelAndView(modelo, "pages/incidentes.html.hbs");
   }
 
@@ -53,6 +66,8 @@ public class IncidentesController implements WithSimplePersistenceUnit {
 
       if (from.equals("index")) {
         response.redirect("/home?after_action=true&message=Incidente%20cerrado%20con%20%C3%A9xito");
+      } else if (from.equals("pendientes")) {
+        response.redirect("/home/incidentes?after_action=true");
       }
       else
         response.redirect("/home/comunidades/" + idComunidad + "/incidentes");
@@ -61,17 +76,6 @@ public class IncidentesController implements WithSimplePersistenceUnit {
     return null;
   }
 
-  private List<Incidente> getIncidentesPorEstado(Integer idComunidad, String estado) {
-    var comunidad = RepositorioComunidades.getInstance().porId(idComunidad);
-
-    if (estado == null)
-      return comunidad.getIncidentes();
-
-    if (estado.equals("abierto"))
-      return comunidad.getIncidentesAbiertos();
-    else
-      return comunidad.getIncidentesResueltos();
-  }
   public ModelAndView nuevo(Request request, Response response) {
     Map<String, Object> model = new HashMap<>();
     model.put("servicios", RepositorioServicios.getInstance().todos());
@@ -94,5 +98,40 @@ public class IncidentesController implements WithSimplePersistenceUnit {
         response.redirect("/home");
     });
     return null;
+  }
+
+  private List<Incidente> getIncidentesPorEstado(Comunidad comunidad, String estado) {
+    if (estado == null)
+      return comunidad.getIncidentes();
+
+    if (estado.equals("abierto"))
+      return comunidad.getIncidentesAbiertos();
+    else
+      return comunidad.getIncidentesResueltos();
+  }
+
+  private List<Map<String, Object>> formatearIncidentes(List<Incidente> incidentes) {
+    List<Map<String, Object>> results = new ArrayList<>();
+
+    var comunidades = RepositorioComunidades.getInstance().todas();
+
+    for(Incidente incidente : incidentes) {
+      var comunidad = comunidades.stream()
+              .filter(c -> c.getIncidentes().contains(incidente))
+              .findFirst()
+              .orElse(null);
+      results.add(new HashMap<>() {{
+        put("id", incidente.getId());
+        put("servicio", incidente.getServicio());
+        put("establecimiento", incidente.getEstablecimiento());
+        put("fecha", incidente.getFecha());
+        put("reportante", incidente.getReportante());
+        put("abierto", !incidente.estaResuelto());
+        put("observaciones", incidente.getObservaciones());
+        put("comunidad", comunidad);
+      }});
+    };
+
+    return results;
   }
 }

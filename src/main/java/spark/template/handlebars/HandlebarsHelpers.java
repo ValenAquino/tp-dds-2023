@@ -18,4 +18,14 @@ public class HandlebarsHelpers {
   public static Helper<Usuario> formatearUsuario = (usuario, options) -> usuario != null ? usuario.getUsuario() : "Desconocido";
 
   public static Helper<Boolean> formatearEsAdmin = ((esAdmin, options) -> esAdmin ? "Sí" : "No");
+
+  public static Helper<String> stringIsEqual = (str1, options) -> {
+    String str2 = options.param(0);
+    return str1.equals(str2) ? options.fn() : options.inverse();
+  };
+
+  public static Helper<Integer> intIsEqual = (int1, options) -> {
+    Integer int2 = options.param(0);
+    return int1.equals(int2) ? options.fn() : options.inverse();
+  };
 }
