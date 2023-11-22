@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (from == 'index')
             form.action = `home/comunidades/${comunidadId}/incidentes/${incidentId}?from=index`;
+        else if (from == 'pendientes')
+            form.action = `comunidades/${comunidadId}/incidentes/${incidentId}?from=pendientes`;
         else
             form.action = `incidentes/${incidentId}?from=incidentes`;
       }
