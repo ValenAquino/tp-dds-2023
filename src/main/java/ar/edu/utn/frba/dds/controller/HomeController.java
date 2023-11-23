@@ -19,6 +19,7 @@ public class HomeController implements WithSimplePersistenceUnit {
   public ModelAndView render(Request request, Response response) {
     Integer idUsuario = request.session().attribute("user_id");
     Boolean afterAction = Boolean.valueOf(request.queryParams("after_action"));
+    Object isAdmin = request.attribute("es_admin");
     String message = request.queryParams("message");
 
     Usuario usuarioLogueado = RepositorioUsuarios.getInstance().porId(idUsuario);
@@ -31,6 +32,7 @@ public class HomeController implements WithSimplePersistenceUnit {
     modelo.put("comunidades", formatearComunidades(comunidades));
     modelo.put("incidentes", formatearIncidentes(incidentes, comunidades));
     modelo.put("after_action", afterAction);
+    modelo.put("es_admin", isAdmin);
     modelo.put("message", message);
     modelo.put("total_comunidades", comunidades.size());
     modelo.put("total_incidentes", incidentes.size());
