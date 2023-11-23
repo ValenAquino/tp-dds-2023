@@ -48,4 +48,8 @@ public class SessionController {
     var idUsuario = request.session().attribute("user_id");
     return RepositorioUsuarios.getInstance().porId((Integer) idUsuario);
   }
+
+  public static boolean esAdmin(Request request) {
+    return usuarioLogueado(request).esAdmin();
+  }
 }

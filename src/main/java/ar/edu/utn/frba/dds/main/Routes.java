@@ -6,7 +6,10 @@ import javax.persistence.PersistenceException;
 import spark.Spark;
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 import spark.template.handlebars.HandlebarsTemplateEngine;
+
+import javax.persistence.PersistenceException;
 
 import static spark.Spark.*;
 
@@ -72,6 +75,10 @@ public class Routes implements WithSimplePersistenceUnit {
     before("/login", Routes::evaluarAutenticacion);
     before("/*", Routes::evaluarNoAutenticacion);
 
+    before("/usuarios", Routes::confirmarRolAdmin);
+    before("/usuarios/*", Routes::confirmarRolAdmin);
+    before("/rankings/*", Routes::confirmarRolAdmin);
+
     after((request, response) -> {
       response.header("Cache-Control", "no-store, no-cache, must-revalidate");
       response.header("Pragma", "no-cache");
@@ -80,6 +87,12 @@ public class Routes implements WithSimplePersistenceUnit {
 
     // Excepciones
     exception(PersistenceException.class, (e, request, response) -> response.redirect("/500"));
+  }
+
+  private static void confirmarRolAdmin(Request request, Response response) {
+    if (!SessionController.esAdmin(request)) {
+      response.redirect("/home");
+    }
   }
 
   private static void evaluarAutenticacion(Request request, Response response) {
@@ -95,6 +108,8 @@ public class Routes implements WithSimplePersistenceUnit {
         request.pathInfo().matches("/.+")) {
       if (request.session().attribute("user_id") == null) {
         response.redirect("/login?origin=" + request.pathInfo());
+      } else {
+          request.attribute("es_admin", SessionController.esAdmin(request));
       }
     }
   }

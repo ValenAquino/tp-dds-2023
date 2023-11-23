@@ -34,6 +34,7 @@ public class IncidentesController implements WithSimplePersistenceUnit {
     modelo.put("incidentes",  getIncidentesPorEstado(comunidad, estado));
     modelo.put("comunidad_id", Integer.valueOf(request.params("id")));
     modelo.put("comunidad_nombre", comunidad.getNombre());
+    modelo.put("es_admin", request.attribute("es_admin"));
     return new ModelAndView(modelo, "pages/incidentes.html.hbs");
   }
 
@@ -80,6 +81,7 @@ public class IncidentesController implements WithSimplePersistenceUnit {
     Map<String, Object> model = new HashMap<>();
     model.put("servicios", RepositorioServicios.getInstance().todos());
     model.put("incidentes", RepositorioIncidentes.getInstance().todos());
+    model.put("es_admin", request.attribute("es_admin"));
     return new ModelAndView(model, "incidentes/reportarIncidente.html.hbs");
   }
 

@@ -17,6 +17,7 @@ public class ServiciosController implements WithSimplePersistenceUnit {
 
     Map<String, Object> modelo = new HashMap<>();
     modelo.put("servicios", servicios);
+    modelo.put("es_admin", request.attribute("es_admin"));
     return new ModelAndView(modelo, "pages/servicios.html.hbs");
   }
 }
