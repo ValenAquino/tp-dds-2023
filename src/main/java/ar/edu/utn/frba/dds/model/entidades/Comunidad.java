@@ -75,12 +75,20 @@ public class Comunidad extends PersistentEntity {
     serviciosDeInteres.add(servicio);
   }
 
+  public void eliminarServiciosDeInteres() {
+    this.serviciosDeInteres.clear();
+  }
+
   public void agregarMiembro(Usuario usuario) {
     miembros.add(usuario);
   }
 
   public void eliminarMiembro(Usuario usuario) {
     miembros.remove(usuario);
+  }
+
+  public void eliminarMiembros() {
+    this.miembros.clear();
   }
 
   public Incidente reportarIncidente(Servicio servicio, String observaciones,
