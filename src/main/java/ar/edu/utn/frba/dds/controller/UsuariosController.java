@@ -38,7 +38,7 @@ public class UsuariosController implements WithSimplePersistenceUnit {
       RepositorioUsuarios.getInstance().persistir(usuarioNuevo);
     });
 
-    response.redirect("/home/usuarios");
+    response.redirect("/usuarios");
     return null;
   }
 
@@ -68,7 +68,7 @@ public class UsuariosController implements WithSimplePersistenceUnit {
       RepositorioUsuarios.getInstance().persistir(usuario);
     });
 
-    response.redirect("/home/usuarios");
+    response.redirect("/usuarios");
     return null;
   }
 
@@ -86,7 +86,7 @@ public class UsuariosController implements WithSimplePersistenceUnit {
       RepositorioUsuarios.getInstance().eliminar(usuario);
     });
 
-    response.redirect("/home/usuarios");
+    response.redirect("/usuarios");
     return null;
   }
 }

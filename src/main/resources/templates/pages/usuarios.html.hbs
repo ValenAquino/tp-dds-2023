@@ -2,7 +2,7 @@
   <div class="d-flex justify-content-between p-3 mx-5 mb-4">
     <h1 class="ms-4">Usuarios</h1>
     <div class="d-flex p-3">
-      <a class="btn btn-primary" href="/home/usuarios/nuevo" role="button">
+      <a class="btn btn-primary" href="/usuarios/nuevo" role="button">
         <i class="fa-solid fa-user-plus"></i>
         Agregar usuario
       </a>
@@ -49,10 +49,10 @@
           <span>{{formatearEsAdmin esAdmin}}</span>
         </div>
         <div class="col">
-          <a class="mr-1" href="/home/usuarios/{{id}}">
+          <a class="mr-1" href="/usuarios/{{id}}">
             <i title="Editar" class="fa-solid fa-pencil"></i>
           </a>
-          <form class="d-inline" action="/home/usuarios/eliminar" method="POST" onsubmit="return confirm('¿Está seguro que desea eliminar este usuario?');">
+          <form class="d-inline" action="/usuarios/eliminar" method="POST" onsubmit="return confirm('¿Está seguro que desea eliminar este usuario?');">
               <input type="hidden" name="id" value="{{id}}">
               <button type="submit" style="background:none;border:none;padding:0;">
               <i title="Eliminar" class="fa-regular fa-trash-can"></i>

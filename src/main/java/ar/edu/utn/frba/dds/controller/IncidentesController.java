@@ -67,10 +67,10 @@ public class IncidentesController implements WithSimplePersistenceUnit {
       if (from.equals("index")) {
         response.redirect("/home?after_action=true&message=Incidente%20cerrado%20con%20%C3%A9xito");
       } else if (from.equals("pendientes")) {
-        response.redirect("/home/incidentes?after_action=true");
+        response.redirect("/incidentes?after_action=true");
       }
       else
-        response.redirect("/home/comunidades/" + idComunidad + "/incidentes");
+        response.redirect("/comunidades/" + idComunidad + "/incidentes");
     });
 
     return null;
@@ -93,7 +93,7 @@ public class IncidentesController implements WithSimplePersistenceUnit {
       var from = request.queryParams("from");
 
       if (from != null && from.equals("servicios"))
-        response.redirect("/home/servicios");
+        response.redirect("/servicios");
       else
         response.redirect("/home");
     });

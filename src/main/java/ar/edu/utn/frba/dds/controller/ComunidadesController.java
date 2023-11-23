@@ -28,7 +28,7 @@ public class ComunidadesController implements WithSimplePersistenceUnit {
       RepositorioComunidades.getInstance().eliminar(comunidad);
     });
 
-    response.redirect("/home/comunidades");
+    response.redirect("/comunidades");
     return null;
   }
 }

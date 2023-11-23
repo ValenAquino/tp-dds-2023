@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (event.target && event.target.getAttribute('data-servicio-id')) {
               const servicioId = event.target.getAttribute('data-servicio-id');
 
-              form.action = `incidentes/nuevo?servicio=${servicioId}&from=servicios`;
+              form.action = `incidentes?servicio=${servicioId}&from=servicios`;
       }
     });
 

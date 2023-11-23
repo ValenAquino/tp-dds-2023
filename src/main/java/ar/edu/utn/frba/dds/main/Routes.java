@@ -40,39 +40,43 @@ public class Routes implements WithSimplePersistenceUnit {
     get("/home", homeController::render, engine);
 
     // Usuarios
-    get("/home/usuarios", usuariosController::usuarios, engine);
-    get("/home/usuarios/nuevo", usuariosController::nuevo, engine);
-    post("/home/usuarios", usuariosController::crear);
-    get("/home/usuarios/:id", usuariosController::ver, engine);
-    post("/home/usuarios/editar", usuariosController::editar);
-    post("/home/usuarios/eliminar", usuariosController::eliminar);
+    get("/usuarios", usuariosController::usuarios, engine);
+    get("/usuarios/nuevo", usuariosController::nuevo, engine);
+    post("/usuarios", usuariosController::crear);
+    get("/usuarios/:id", usuariosController::ver, engine);
+    post("/usuarios/editar", usuariosController::editar);
+    post("/usuarios/eliminar", usuariosController::eliminar);
 
     // Comunidades
-    get("/home/comunidades", comunidadesController::listar, engine);
-    post("/home/comunidades/eliminar", comunidadesController::eliminar);
-    get("/home/comunidades/:id/incidentes", incidentesController::listarPorComunidad, engine);
-    post("/home/comunidades/:id/incidentes/:incidente_id", incidentesController::cerrar);
+    get("/comunidades", comunidadesController::listar, engine);
+    post("/comunidades/eliminar", comunidadesController::eliminar);
+    get("/comunidades/:id/incidentes", incidentesController::listarPorComunidad, engine);
+    post("/comunidades/:id/incidentes/:incidente_id", incidentesController::cerrar);
 
     // Servicios
-    get("/home/servicios", serviciosController::listar, engine);
+    get("/servicios", serviciosController::listar, engine);
 
     // Incidentes
-    Spark.get("/home/incidentes/nuevo", incidentesController::nuevo, engine);
-    Spark.post("/home/incidentes", incidentesController::reportarIncidente);
-    get("/home/incidentes", incidentesController::listarPendientes, engine);
+    Spark.get("/incidentes/nuevo", incidentesController::nuevo, engine);
+    Spark.post("/incidentes", incidentesController::reportarIncidente);
+    get("/incidentes", incidentesController::listarPendientes, engine);
 
     // Rankings
-    get("/home/rankings/cantidad-incidentes", rankingsController::renderCantidadIncidentes, engine);
-    get("/home/rankings/promedio-cierre", rankingsController::renderMayorPromedioCierre, engine);
-    post("/home/rankings/cantidad-incidentes", rankingsController::exportarCantidadIncidentes);
-    post("/home/rankings/promedio-cierre", rankingsController::exportarMayorPromedioCierre);
+    get("/rankings/cantidad-incidentes", rankingsController::renderCantidadIncidentes, engine);
+    get("/rankings/promedio-cierre", rankingsController::renderMayorPromedioCierre, engine);
+    post("/rankings/cantidad-incidentes", rankingsController::exportarCantidadIncidentes);
+    post("/rankings/promedio-cierre", rankingsController::exportarMayorPromedioCierre);
 
     // Filtros
-    //before("/", (request, response) -> response.redirect("/home"));
     before((request, response) -> entityManager().clear());
-    before("/home", Routes::evaluarNoAutenticacion);
-    before("/home/*", Routes::evaluarNoAutenticacion);
     before("/login", Routes::evaluarAutenticacion);
+    before("/*", Routes::evaluarNoAutenticacion);
+
+    after((request, response) -> {
+      response.header("Cache-Control", "no-store, no-cache, must-revalidate");
+      response.header("Pragma", "no-cache");
+      response.header("Expires", "0");
+    });
 
     // Excepciones
     exception(PersistenceException.class, (e, request, response) -> response.redirect("/500"));
@@ -85,8 +89,13 @@ public class Routes implements WithSimplePersistenceUnit {
   }
 
   private static void evaluarNoAutenticacion(Request request, Response response) {
-    if (request.session().attribute("user_id") == null) {
-      response.redirect("/login?origin=" + request.pathInfo());
+    if (!request.pathInfo().equals("/") && //avoid landing
+        !request.pathInfo().matches("/[^/]+\\.[^/]+") && //avoid static files
+        !request.pathInfo().matches("/login(?:\\\\?.*)?") && //avoid login routes
+        request.pathInfo().matches("/.+")) {
+      if (request.session().attribute("user_id") == null) {
+        response.redirect("/login?origin=" + request.pathInfo());
+      }
     }
   }
 }

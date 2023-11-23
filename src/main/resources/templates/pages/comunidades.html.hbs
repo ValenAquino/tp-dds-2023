@@ -2,7 +2,7 @@
     <div class="d-flex justify-content-between p-3 mx-5 mb-4">
         <h1 class="ms-4">Comunidades</h1>
         <div class="d-flex p-3">
-            <a class="btn btn-primary" href="/home/comunidades" role="button">
+            <a class="btn btn-primary" href="/comunidades" role="button">
                 <i class="fa-solid fa-users"></i>
                 Agregar Comunidad
             </a>
@@ -30,9 +30,9 @@
                 <div class="col">{{incidentesAbiertos.length}}</div>
                 <div class="col">{{miembros.length}}</div>
                 <div class="col">
-                    <a href="/home/comunidades/{{id}}/editar"><i title="Editar"
+                    <a href="/comunidades/{{id}}/editar"><i title="Editar"
                                                                  class="fa-solid fa-pencil mr-1"></i></a>
-                    <form class="d-inline" action="/home/comunidades/eliminar" method="POST"
+                    <form class="d-inline" action="/comunidades/eliminar" method="POST"
                           onsubmit="return confirm('¿Está seguro que desea eliminar esta comunidad?');">
                         <input type="hidden" name="id" value="{{id}}">
 
