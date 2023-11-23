@@ -78,7 +78,7 @@ public class Routes implements WithSimplePersistenceUnit {
     before("/usuarios", Routes::confirmarRolAdmin);
     before("/usuarios/*", Routes::confirmarRolAdmin);
     before("/rankings/*", Routes::confirmarRolAdmin);
-    
+
     after((request, response) -> {
       response.header("Cache-Control", "no-store, no-cache, must-revalidate");
       response.header("Pragma", "no-cache");

@@ -15,6 +15,7 @@ public class UsuariosController implements WithSimplePersistenceUnit {
 
   public ModelAndView usuarios(Request request, Response response) {
     Map<String, Object> modelo = new HashMap<>();
+    modelo.put("es_admin", request.attribute("es_admin"));
     modelo.put("usuarios", RepositorioUsuarios.getInstance().todos());
     return new ModelAndView(modelo, "pages/usuarios.html.hbs");
   }
@@ -46,7 +47,12 @@ public class UsuariosController implements WithSimplePersistenceUnit {
     Usuario usuario = RepositorioUsuarios.getInstance()
         .porId(Integer.parseInt(request.params("id")));
     usuario.vaciarContrasenia();
-    return new ModelAndView(usuario, "usuarios/usuario.html.hbs");
+
+    Map<String, Object> modelo = new HashMap<>();
+    modelo.put("es_admin", request.attribute("es_admin"));
+    modelo.put("usuario", usuario);
+
+    return new ModelAndView(modelo, "usuarios/usuario.html.hbs");
   }
 
   public Void editar(Request request, Response response) {
