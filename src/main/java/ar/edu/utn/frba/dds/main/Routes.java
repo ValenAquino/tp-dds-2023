@@ -29,6 +29,7 @@ public class Routes implements WithSimplePersistenceUnit {
     var incidentesController = new IncidentesController();
     var rankingsController = new RankingsController();
     var serviciosController = new ServiciosController();
+    var apiController = new ApiController();
 
     // Anonymous
     get("/", landingController::render, engine);
@@ -67,6 +68,13 @@ public class Routes implements WithSimplePersistenceUnit {
     post("/rankings/cantidad-incidentes", rankingsController::exportarCantidadIncidentes);
     post("/rankings/promedio-cierre", rankingsController::exportarMayorPromedioCierre);
 
+    // Api
+    get("/api/comunidades", "application/json", apiController::listarComunidades);
+    get("/api/comunidades/:id", "application/json", apiController::detalleComunidad);
+    post("/api/comunidades", "application/json", apiController::crearComunidad);
+    patch("/api/comunidades/:id", "application/json", apiController::editarComunidad);
+    delete("/api/comunidades/:id", "application/json", apiController::eliminarComunidad);
+
     // Filtros
     before((request, response) -> entityManager().clear());
     before("/login", Routes::evaluarAutenticacion);
@@ -92,6 +100,7 @@ public class Routes implements WithSimplePersistenceUnit {
     if (!request.pathInfo().equals("/") && //avoid landing
         !request.pathInfo().matches("/[^/]+\\.[^/]+") && //avoid static files
         !request.pathInfo().matches("/login(?:\\\\?.*)?") && //avoid login routes
+        !request.pathInfo().matches("/api.+") && //avoid api
         request.pathInfo().matches("/.+")) {
       if (request.session().attribute("user_id") == null) {
         response.redirect("/login?origin=" + request.pathInfo());
