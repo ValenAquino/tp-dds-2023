@@ -10,6 +10,7 @@ import spark.Request;
 import spark.Response;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class UsuariosController implements WithSimplePersistenceUnit {
 
@@ -25,8 +26,8 @@ public class UsuariosController implements WithSimplePersistenceUnit {
   }
 
   public Void crear(Request request, Response response) {
+    AtomicBoolean exito = new AtomicBoolean(false);
     withTransaction(() -> {
-
       var usuarioNuevo = new Usuario(
           request.queryParams("usuario"),
           request.queryParams("contrasenia"),
@@ -37,11 +38,12 @@ public class UsuariosController implements WithSimplePersistenceUnit {
       usuarioNuevo.setAdmin(request.queryParams("es_admin") != null);
 
       RepositorioUsuarios.getInstance().persistir(usuarioNuevo);
+      exito.set(true);
     });
-
-    response.redirect("/usuarios");
+    response.redirect("/usuarios?exito=" + exito.get());
     return null;
   }
+
 
   public ModelAndView ver(Request request, Response response) {
     Usuario usuario = RepositorioUsuarios.getInstance()
