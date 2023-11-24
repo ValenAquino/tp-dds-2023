@@ -25,7 +25,7 @@ public class UsuariosController implements WithSimplePersistenceUnit {
     modelo.put("usuarios", RepositorioUsuarios.getInstance().todos());
     modelo.put("mensajeExito", request.session().attribute("mensajeExito"));
 
-    request.session().removeAttribute("creacion_exitosa");
+    request.session().removeAttribute("mensajeExito");
 
     return new ModelAndView(modelo, "pages/usuarios.html.hbs");
   }
