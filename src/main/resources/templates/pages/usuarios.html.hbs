@@ -1,19 +1,13 @@
 {{#partial "principal" }}
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            function obtenerParametroUrl(nombre) {
-                const urlParams = new URLSearchParams(window.location.search);
-                return urlParams.get(nombre);
-            }
-            const exito = obtenerParametroUrl('exito');
 
-            if (exito === 'true') {
-                const mensajeExitoModal = document.getElementById('mensajeExitoModal');
-                const bootstrapModal = new bootstrap.Modal(mensajeExitoModal);
-                bootstrapModal.show();
-            }
+    {{#if creacion_exitosa}}
+        <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var mensajeExitoModal = new bootstrap.Modal(document.getElementById('mensajeExitoModal'));
+            mensajeExitoModal.show();
         });
     </script>
+    {{/if}}
   <div class="d-flex justify-content-between p-3 mx-5 mb-4">
     <h1 class="ms-4">Usuarios</h1>
     <div class="d-flex p-3">

@@ -16,8 +16,13 @@ public class UsuariosController implements WithSimplePersistenceUnit {
 
   public ModelAndView usuarios(Request request, Response response) {
     Map<String, Object> modelo = new HashMap<>();
+    Boolean creacionExitosa = request.session().attribute("creacion_exitosa");
     modelo.put("es_admin", request.attribute("es_admin"));
     modelo.put("usuarios", RepositorioUsuarios.getInstance().todos());
+    if(creacionExitosa!=null){
+      request.session().removeAttribute("creacion_exitosa");
+      modelo.put("creacion_exitosa",creacionExitosa);
+    }
     return new ModelAndView(modelo, "pages/usuarios.html.hbs");
   }
 
@@ -40,7 +45,8 @@ public class UsuariosController implements WithSimplePersistenceUnit {
       RepositorioUsuarios.getInstance().persistir(usuarioNuevo);
       exito.set(true);
     });
-    response.redirect("/usuarios?exito=" + exito.get());
+    request.session().attribute("creacion_exitosa", Boolean.TRUE);
+    response.redirect("/usuarios");
     return null;
   }
 

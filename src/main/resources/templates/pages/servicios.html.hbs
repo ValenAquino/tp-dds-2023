@@ -1,7 +1,14 @@
 {{#partial "principal" }}
 
 <script src="/serviciosScript.js"></script>
-
+{{#if reporte_exitoso}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var mensajeExitoModal = new bootstrap.Modal(document.getElementById('mensajeExitoModal'));
+            mensajeExitoModal.show();
+        });
+    </script>
+{{/if}}
 <div>
     <h3 class="mr-4" style="margin-left: 6.5%">Servicios</h3>
     <div class="d-flex flex-row flex-wrap" style="margin-left: 5%">

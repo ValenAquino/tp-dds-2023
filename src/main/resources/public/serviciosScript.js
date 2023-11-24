@@ -1,10 +1,5 @@
 
 document.addEventListener('DOMContentLoaded', function () {
-    const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has('exito')) {
-            var mensajeExitoModal = new bootstrap.Modal(document.getElementById('mensajeExitoModal'));
-            mensajeExitoModal.show();
-        }
 
     const closeButton = document.querySelector('[data-bs-target="#reportarIncidenteModal"]');
         const form = document.querySelector('#reportarIncidenteModal form');
