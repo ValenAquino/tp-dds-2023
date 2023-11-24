@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const comunidadId = event.target.getAttribute('data-comunidad-id');
 
         //form.method = "DELETE";
-        form.action = `comunidades/${comunidadId}`;
+        form.action = `comunidades/eliminar?id=${comunidadId}`;
       }
     });
 });

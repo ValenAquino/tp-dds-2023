@@ -57,14 +57,18 @@
                     <span>{{formatearEsAdmin esAdmin}}</span>
                 </div>
                 <div class="col text-center">
+
+                {{#intIsEqual logged_user_id id}}
+                {{else}}
                     <a class="mr-1" href="/usuarios/{{id}}">
                         <i title="Editar" class="fa-solid fa-pencil"></i>
                     </a>
-                    <button type="button" style="background-color: transparent; border: none;"
+                    <button title="Eliminar" type="button" style="background-color: transparent; border: none;"
                             data-bs-toggle="modal" data-bs-target="#confirmarEliminarModal"
                             data-usuario-id="{{id}}"
-                        <i data-usuario-id="{{id}}" class="fa-regular fa-trash-can red-icon"></i>
+                        <i title="Eliminar" data-usuario-id="{{id}}" class="fa-regular fa-trash-can red-icon"></i>
                     </button>
+                {{/intIsEqual}}
                 </div>
             </div>
         {{/each}}

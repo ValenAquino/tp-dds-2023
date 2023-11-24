@@ -76,7 +76,7 @@ public class Bootstrap implements WithSimplePersistenceUnit {
         RepositorioNotificaciones.getInstance()
     );
 
-    usuario.setAdmin(false);
+    usuario.setAdmin(true);
 
     var mati = new Usuario(
         "mati",

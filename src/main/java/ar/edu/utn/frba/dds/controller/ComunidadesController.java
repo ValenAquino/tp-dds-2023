@@ -18,6 +18,9 @@ public class ComunidadesController implements WithSimplePersistenceUnit {
     var comunidades = RepositorioComunidades.getInstance().comunidadesPorUsuario(usuarioLogueado);
     Map<String, Object> modelo = new CustomModel("Comunidades", request);
     modelo.put("comunidades", comunidades);
+    modelo.put("mensajeExito", request.session().attribute("mensajeExito"));
+
+    request.session().removeAttribute("mensajeExito");
 
     if(usuarioLogueado.esAdmin()){
       return new ModelAndView(modelo, "pages/comunidadesDashboard.html.hbs");
@@ -31,6 +34,10 @@ public class ComunidadesController implements WithSimplePersistenceUnit {
       var comunidad = RepositorioComunidades.getInstance().porId(comunidadId);
       RepositorioComunidades.getInstance().eliminar(comunidad);
     });
+
+    request.session().attribute(
+            "mensajeExito",
+            "La comunidad ha sido eliminada con éxito.");
 
     response.redirect("/comunidades");
     return null;

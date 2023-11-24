@@ -294,3 +294,11 @@ a.nav-link {
 .red-icon {
     color: var(--rojo);
 }
+
+.fa-pencil:hover {
+    color: var(--azul-oscuro);
+}
+
+.fa-pencil {
+    color: var(--azul-oscuro);
+}

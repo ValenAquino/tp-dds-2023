@@ -24,6 +24,7 @@ public class UsuariosController implements WithSimplePersistenceUnit {
     Map<String, Object> modelo = new CustomModel("Usuarios", request);
     modelo.put("usuarios", RepositorioUsuarios.getInstance().todos());
     modelo.put("mensajeExito", request.session().attribute("mensajeExito"));
+    modelo.put("logged_user_id", request.session().attribute("user_id"));
 
     request.session().removeAttribute("mensajeExito");
 

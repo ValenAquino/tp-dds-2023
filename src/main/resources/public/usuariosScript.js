@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const usuarioId = event.target.getAttribute('data-usuario-id');
 
         //form.method = "DELETE";
-        form.action = `usuarios/${usuarioId}`;
+        form.action = `usuarios/eliminar?id=${usuarioId}`;
       }
     });
 });
