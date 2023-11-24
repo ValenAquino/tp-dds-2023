@@ -34,26 +34,36 @@ public class UsuariosController implements WithSimplePersistenceUnit {
   }
 
   public ModelAndView nuevo(Request request, Response response) {
-    return new ModelAndView(null, "usuarios/nuevo.html.hbs");
+    Map<String, Object> modelo = new HashMap<>();
+    modelo.put("es_admin", request.attribute("es_admin"));
+    modelo.put("mensajeError", request.session().attribute("mensajeError"));
+    modelo.put("usuario", request.session().attribute("usuario"));
+
+    request.session().removeAttribute("mensajeError");
+    request.session().removeAttribute("usuario");
+
+    return new ModelAndView(modelo, "usuarios/nuevo.html.hbs");
   }
 
-  public Void crear(Request request, Response response) {
+  public ModelAndView crear(Request request, Response response) {
     AtomicBoolean exito = new AtomicBoolean(false);
-    withTransaction(() -> {
-      var usuarioNuevo = new Usuario(
-          request.queryParams("usuario"),
-          request.queryParams("contrasenia"),
-          request.queryParams("nombre"),
-          request.queryParams("apellido"),
-          request.queryParams("correo_electronico")
-      );
-      usuarioNuevo.setAdmin(request.queryParams("es_admin") != null);
+    var usuarioNuevo = getUsuarioDeRequest(request);
 
-      RepositorioUsuarios.getInstance().persistir(usuarioNuevo);
+    try {
+      validarUsuario(usuarioNuevo);
+      validarContrasenia(usuarioNuevo.getContrasenia());
+      withTransaction(() -> RepositorioUsuarios.getInstance().persistir(usuarioNuevo));
       exito.set(true);
-    });
-    request.session().attribute("creacion_exitosa", Boolean.TRUE);
-    response.redirect("/usuarios");
+      request.session().attribute("creacion_exitosa", Boolean.TRUE);
+      response.redirect("/usuarios");
+    } catch (Exception e) {
+      // TODO: llenar campos ya ingresados de usuarioNuevo
+      usuarioNuevo.vaciarContrasenia();
+      request.session().attribute("mensajeError", e.getMessage());
+      request.session().attribute("usuario", usuarioNuevo);
+      response.redirect("/usuarios/nuevo");
+    }
+
     return null;
   }
 
@@ -106,7 +116,7 @@ public class UsuariosController implements WithSimplePersistenceUnit {
   }
 
   private Usuario getUsuarioDeRequest(Request request) {
-    var usuario = request.queryParams("id").isBlank()
+    var usuario = request.queryParams("id") == null
         ? new Usuario()
         : RepositorioUsuarios.getInstance().porId(Integer.parseInt(request.queryParams("id")));
 
