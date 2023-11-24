@@ -104,7 +104,9 @@ public class Routes implements WithSimplePersistenceUnit {
   }
 
   private static void confirmarRolAdmin(Request request, Response response) {
-    if (!SessionController.esAdmin(request)) {
+    String is_admin = request.session().attribute("is_admin").toString();
+
+    if (!Boolean.parseBoolean(is_admin)) {
       response.redirect("/home");
     }
   }
@@ -140,8 +142,6 @@ public class Routes implements WithSimplePersistenceUnit {
         request.pathInfo().matches("/.+")) {
       if (request.session().attribute("user_id") == null) {
         response.redirect("/login?origin=" + request.pathInfo());
-      } else {
-          request.attribute("es_admin", SessionController.esAdmin(request));
       }
     }
   }

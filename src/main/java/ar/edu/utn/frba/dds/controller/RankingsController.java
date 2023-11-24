@@ -35,7 +35,7 @@ public class RankingsController implements WithSimplePersistenceUnit {
     Map<String, Object> modelo = new HashMap<>();
     modelo.put("criterio", criterio.getDescripcion());
     modelo.put("entidades", formatearRanking(ranking.getEntidades()));
-    modelo.put("es_admin", request.attribute("es_admin"));
+    modelo.put("es_admin", request.session().attribute("is_admin"));
 
     return new ModelAndView(modelo, "pages/ranking.html.hbs");
   }

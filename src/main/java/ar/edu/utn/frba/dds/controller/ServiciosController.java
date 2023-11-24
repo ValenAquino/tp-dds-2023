@@ -18,7 +18,8 @@ public class ServiciosController implements WithSimplePersistenceUnit {
 
     Map<String, Object> modelo = new HashMap<>();
     modelo.put("servicios", servicios);
-    modelo.put("es_admin", request.attribute("es_admin"));
+    modelo.put("es_admin", request.session().attribute("is_admin"));
+
     if(reporteExitoso!=null){
       request.session().removeAttribute("reporte_exitoso");
       modelo.put("reporte_exitoso",reporteExitoso);

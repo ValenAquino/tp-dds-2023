@@ -29,6 +29,7 @@ public class SessionController {
 
       String origin = request.queryParams("origin");
       request.session().attribute("user_id", usuario.getId());
+      request.session().attribute("is_admin", usuario.esAdmin());
 
       if (origin != null && !origin.isBlank()) {
         response.redirect(origin);
@@ -45,6 +46,7 @@ public class SessionController {
 
   public Void logout(Request request, Response response) {
     request.session().removeAttribute("user_id");
+    request.session().removeAttribute("is_admin");
     response.redirect("/login");
     return null;
   }
@@ -52,9 +54,5 @@ public class SessionController {
   public static Usuario usuarioLogueado(Request request) {
     var idUsuario = request.session().attribute("user_id");
     return RepositorioUsuarios.getInstance().porId((Integer) idUsuario);
-  }
-
-  public static boolean esAdmin(Request request) {
-    return usuarioLogueado(request).esAdmin();
   }
 }
