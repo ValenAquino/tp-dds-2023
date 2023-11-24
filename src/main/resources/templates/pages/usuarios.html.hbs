@@ -3,16 +3,14 @@
     {{#if creacion_exitosa}}
         <script>
         document.addEventListener('DOMContentLoaded', function () {
-            var mensajeExitoModal = new bootstrap.Modal(document.getElementById('mensajeExitoModal'));
-            mensajeExitoModal.show();
+            new bootstrap.Modal(document.getElementById('mensajeExitoModal')).show();
         });
     </script>
     {{/if}}
-  <div class="d-flex justify-content-between p-3 mx-5 mb-4">
-    <h1 class="ms-4">Usuarios</h1>
+  <div class="d-flex justify-content-between">
+    <h1>Usuarios</h1>
     <div class="d-flex p-3">
       <a class="btn btn-primary" href="/usuarios/nuevo" role="button">
-        <i class="fa-solid fa-user-plus"></i>
         Agregar usuario
       </a>
     </div>

@@ -17,7 +17,8 @@
 
                     <div class="form-floating">
                         <input type="text" class="form-control"
-                               id="usuario" name="usuario" placeholder="Username" required>
+                               id="usuario" name="usuario" placeholder="Username"
+                               value="{{usuario.usuario}}" required>
                         <label for="usuario">Username</label>
                     </div>
                 </div>
@@ -35,14 +36,16 @@
                 <div class="col-md-6">
                     <div class="form-floating">
                         <input type="text" class="form-control"
-                               id="nombre" name="nombre" placeholder="Nombre" required>
+                               id="nombre" name="nombre" placeholder="Nombre"
+                               value="{{usuario.nombre}}" required>
                         <label for="nombre">Nombre</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
                         <input type="text" class="form-control"
-                               id="apellido" name="apellido" placeholder="Apellido" required>
+                               id="apellido" name="apellido" placeholder="Apellido"
+                               value="{{usuario.apellido}}" required>
                         <label for="apellido">Apellido</label>
                     </div>
                 </div>
@@ -53,7 +56,8 @@
                     <div class="form-floating">
                         <input type="email" class="form-control"
                                id="correo_electronico" name="correo_electronico"
-                               placeholder="Correo electrónico" required>
+                               placeholder="Correo electrónico"
+                               value="{{usuario.correoElectronico}}" required>
                         <label for="correo_electronico">Correo electrónico</label>
                     </div>
                 </div>
@@ -62,8 +66,13 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <div class="form-check form-switch mb-3">
-                        <input class="form-check-input" type="checkbox" role="switch"
-                               id="es_admin" name="es_admin">
+                        {{#if usuario.esAdmin}}
+                            <input class="form-check-input" type="checkbox" role="switch"
+                                   id="es_admin" name="es_admin" checked>
+                        {{else}}
+                            <input class="form-check-input" type="checkbox" role="switch"
+                                   id="es_admin" name="es_admin">
+                        {{/if}}
                         <label class="form-check-label" for="es_admin">Admin</label>
                     </div>
                 </div>

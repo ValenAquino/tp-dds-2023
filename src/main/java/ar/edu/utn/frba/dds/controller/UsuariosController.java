@@ -21,21 +21,18 @@ public class UsuariosController implements WithSimplePersistenceUnit {
 
   public ModelAndView usuarios(Request request, Response response) {
     Map<String, Object> modelo = new HashMap<>();
-    Boolean creacionExitosa = request.session().attribute("creacion_exitosa");
     modelo.put("es_admin", request.session().attribute("is_admin"));
     modelo.put("usuarios", RepositorioUsuarios.getInstance().todos());
+    modelo.put("creacion_exitosa", request.session().attribute("creacion_exitosa"));
 
-    if(creacionExitosa!=null){
-      request.session().removeAttribute("creacion_exitosa");
-      modelo.put("creacion_exitosa",creacionExitosa);
-    }
+    request.session().removeAttribute("creacion_exitosa");
 
     return new ModelAndView(modelo, "pages/usuarios.html.hbs");
   }
 
   public ModelAndView nuevo(Request request, Response response) {
     Map<String, Object> modelo = new HashMap<>();
-    modelo.put("es_admin", request.attribute("es_admin"));
+    modelo.put("es_admin", request.session().attribute("is_admin"));
     modelo.put("mensajeError", request.session().attribute("mensajeError"));
     modelo.put("usuario", request.session().attribute("usuario"));
 
@@ -46,18 +43,15 @@ public class UsuariosController implements WithSimplePersistenceUnit {
   }
 
   public ModelAndView crear(Request request, Response response) {
-    AtomicBoolean exito = new AtomicBoolean(false);
     var usuarioNuevo = getUsuarioDeRequest(request);
 
     try {
       validarUsuario(usuarioNuevo);
       validarContrasenia(usuarioNuevo.getContrasenia());
       withTransaction(() -> RepositorioUsuarios.getInstance().persistir(usuarioNuevo));
-      exito.set(true);
       request.session().attribute("creacion_exitosa", Boolean.TRUE);
       response.redirect("/usuarios");
     } catch (Exception e) {
-      // TODO: llenar campos ya ingresados de usuarioNuevo
       usuarioNuevo.vaciarContrasenia();
       request.session().attribute("mensajeError", e.getMessage());
       request.session().attribute("usuario", usuarioNuevo);
