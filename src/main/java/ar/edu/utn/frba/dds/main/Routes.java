@@ -1,6 +1,10 @@
 package ar.edu.utn.frba.dds.main;
 
 import ar.edu.utn.frba.dds.controller.*;
+import ar.edu.utn.frba.dds.controller.response.ApiResponse;
+import ar.edu.utn.frba.dds.model.entidades.Usuario;
+import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioUsuarios;
+import com.google.gson.Gson;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import javax.persistence.PersistenceException;
 import spark.Spark;
@@ -79,6 +83,7 @@ public class Routes implements WithSimplePersistenceUnit {
     before((request, response) -> entityManager().clear());
     before("/login", Routes::evaluarAutenticacion);
     before("/*", Routes::evaluarNoAutenticacion);
+    before("/api/*", Routes::evaluarBasicAuth);
 
     after((request, response) -> {
       response.header("Cache-Control", "no-store, no-cache, must-revalidate");
@@ -88,6 +93,23 @@ public class Routes implements WithSimplePersistenceUnit {
 
     // Excepciones
     exception(PersistenceException.class, (e, request, response) -> response.redirect("/500"));
+  }
+
+  private static void evaluarBasicAuth(Request request, Response response) {
+    response.type("application/json");
+    String authHeader = request.headers("Authorization");
+    var gson = new Gson();
+
+    if (authHeader == null || !authHeader.startsWith("Basic ")) {
+      halt(401, gson.toJson(new ApiResponse(false, "No tiene permiso para acceder al recurso", null)));
+    }
+
+    String credentials = new String(java.util.Base64.getDecoder().decode(authHeader.substring(6)));
+    String[] parts = credentials.split(":");
+
+    if (parts.length != 2 || !credencialesSonValidas(parts[0], parts[1])) {
+      halt(401, gson.toJson(new ApiResponse(false, "No tiene permiso para acceder al recurso", null)));
+    }
   }
 
   private static void evaluarAutenticacion(Request request, Response response) {
@@ -106,5 +128,11 @@ public class Routes implements WithSimplePersistenceUnit {
         response.redirect("/login?origin=" + request.pathInfo());
       }
     }
+  }
+
+  private static boolean credencialesSonValidas(String username, String contraseña) {
+    Usuario usuario = RepositorioUsuarios.getInstance().porUsuarioYContrasenia(username, contraseña);
+
+    return usuario != null && usuario.esAdmin();
   }
 }
