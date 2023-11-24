@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.controller;
 
+import ar.edu.utn.frba.dds.model.entidades.CustomModel;
 import ar.edu.utn.frba.dds.model.entidades.Usuario;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioComunidades;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioIncidentes;
@@ -15,9 +16,8 @@ public class ComunidadesController implements WithSimplePersistenceUnit {
   public ModelAndView listar(Request request, Response response) {
     Usuario usuarioLogueado = SessionController.usuarioLogueado(request);
     var comunidades = RepositorioComunidades.getInstance().comunidadesPorUsuario(usuarioLogueado);
-    Map<String, Object> modelo = new HashMap<>();
+    Map<String, Object> modelo = new CustomModel("Comunidades", request);
     modelo.put("comunidades", comunidades);
-    modelo.put("es_admin", request.session().attribute("is_admin"));
 
     if(usuarioLogueado.esAdmin()){
       return new ModelAndView(modelo, "pages/comunidadesDashboard.html.hbs");

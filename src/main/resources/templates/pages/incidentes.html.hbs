@@ -11,7 +11,10 @@
             <a {{#stringIsEqual "abierto" estado}} class="mr-1 selected-filter" {{else}} class="mr-1 filter" {{/stringIsEqual}} href="incidentes?estado=abierto">Abiertos</a>
             <a {{#stringIsEqual "cerrado" estado}} class="mr-1 selected-filter" {{else}} class="mr-1 filter" {{/stringIsEqual}} href="incidentes?estado=cerrado">Cerrados</a>
         {{/stringIsEqual}}
-    <div class="d-flex flex-row flex-wrap" style="margin-left: 4.5%; margin-top: 1%;">
+        {{#if after_action}}
+            <p style="color: rgb(59, 214, 113);font-weight:500;margin-left: 6%;margin-top:1%;margin-bottom:0;">{{message}}</p>
+        {{/if}}
+    <div class="d-flex flex-row flex-wrap" style="margin-left: 4.5%;">
     {{#incidentes}}
         <div class="card-incidente">
             <div class="d-flex flex-row align-items-center">

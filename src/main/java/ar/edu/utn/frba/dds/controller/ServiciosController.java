@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.controller;
 
+import ar.edu.utn.frba.dds.model.entidades.CustomModel;
 import ar.edu.utn.frba.dds.model.entidades.Usuario;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioComunidades;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioServicios;
@@ -16,9 +17,8 @@ public class ServiciosController implements WithSimplePersistenceUnit {
     Boolean reporteExitoso = request.session().attribute("reporte_exitoso");
     var servicios = RepositorioServicios.getInstance().porUsuario(usuarioLogueado);
 
-    Map<String, Object> modelo = new HashMap<>();
+    Map<String, Object> modelo = new CustomModel("Servicios", request);
     modelo.put("servicios", servicios);
-    modelo.put("es_admin", request.session().attribute("is_admin"));
 
     if(reporteExitoso!=null){
       request.session().removeAttribute("reporte_exitoso");
