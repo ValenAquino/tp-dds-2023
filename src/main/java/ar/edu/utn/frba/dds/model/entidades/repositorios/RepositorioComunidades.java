@@ -60,6 +60,12 @@ public class RepositorioComunidades implements WithSimplePersistenceUnit {
   }
 
   public void eliminar(Comunidad comunidad) {
+    var repoNotificaciones = RepositorioNotificaciones.getInstance();
+
+    repoNotificaciones
+        .deIncidentes(comunidad.getIncidentes())
+        .forEach(repoNotificaciones::eliminar);
+
     entityManager().remove(comunidad);
   }
 }
