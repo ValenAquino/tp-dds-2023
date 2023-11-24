@@ -3,7 +3,6 @@ package ar.edu.utn.frba.dds.controller;
 import ar.edu.utn.frba.dds.model.entidades.CustomModel;
 import ar.edu.utn.frba.dds.model.entidades.Usuario;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioUsuarios;
-import java.util.HashMap;
 import java.util.Map;
 import spark.ModelAndView;
 import spark.Request;
@@ -31,6 +30,7 @@ public class SessionController {
       String origin = request.queryParams("origin");
       request.session().attribute("user_id", usuario.getId());
       request.session().attribute("is_admin", usuario.esAdmin());
+      request.session().attribute("usuario_logueado", usuario);
       request.session().attribute("nombre_usuario", usuario.getUsuario());
 
       if (origin != null && !origin.isBlank()) {

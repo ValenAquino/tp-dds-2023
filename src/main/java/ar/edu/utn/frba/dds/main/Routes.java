@@ -48,19 +48,24 @@ public class Routes implements WithSimplePersistenceUnit {
     // Protected "home" routes
     get("/home", homeController::render, engine);
 
+    // Perfil
+    get("/perfil", usuariosController::perfil, engine);
+    put("/perfil", usuariosController::editarPerfil, engine);
+
     // Usuarios
     get("/usuarios", usuariosController::usuarios, engine);
     get("/usuarios/nuevo", usuariosController::nuevo, engine);
     post("/usuarios", usuariosController::crear);
     get("/usuarios/:id", usuariosController::ver, engine);
-    post("/usuarios/editar", usuariosController::editar);
-    post("/usuarios/eliminar", usuariosController::eliminar);
+    put("/usuarios/editar", usuariosController::editar);
+    delete("/usuarios/:id", usuariosController::eliminar);
 
     // Comunidades
     get("/comunidades", comunidadesController::listar, engine);
-    post("/comunidades/eliminar", comunidadesController::eliminar);
+    delete("/comunidades/:id", comunidadesController::eliminar);
+    // get("/comunidades/:editar", comunidadesController::editar);
     get("/comunidades/:id/incidentes", incidentesController::listarPorComunidad, engine);
-    post("/comunidades/:id/incidentes/:incidente_id", incidentesController::cerrar);
+    delete("/comunidades/:id/incidentes/:incidente_id", incidentesController::cerrar);
 
     // Servicios
     get("/servicios", serviciosController::listar, engine);
@@ -69,7 +74,6 @@ public class Routes implements WithSimplePersistenceUnit {
     get("/incidentes/nuevo", incidentesController::nuevo, engine);
     post("/incidentes", incidentesController::reportarIncidente);
     get("/incidentes", incidentesController::listarPendientes, engine);
-
 
     // Rankings
     get("/rankings/cantidad-incidentes", rankingsController::renderCantidadIncidentes, engine);
@@ -147,9 +151,8 @@ public class Routes implements WithSimplePersistenceUnit {
     }
   }
 
-  private static boolean credencialesSonValidas(String username, String contraseña) {
-    Usuario usuario = RepositorioUsuarios.getInstance().porUsuarioYContrasenia(username, contraseña);
-
+  private static boolean credencialesSonValidas(String username, String contrasenia) {
+    Usuario usuario = RepositorioUsuarios.getInstance().porUsuarioYContrasenia(username, contrasenia);
     return usuario != null && usuario.esAdmin();
   }
 }

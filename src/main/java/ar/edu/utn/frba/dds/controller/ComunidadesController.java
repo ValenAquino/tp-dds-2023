@@ -3,10 +3,7 @@ package ar.edu.utn.frba.dds.controller;
 import ar.edu.utn.frba.dds.model.entidades.CustomModel;
 import ar.edu.utn.frba.dds.model.entidades.Usuario;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioComunidades;
-import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioIncidentes;
-import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioUsuarios;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-import java.util.HashMap;
 import java.util.Map;
 import spark.ModelAndView;
 import spark.Request;
@@ -22,15 +19,18 @@ public class ComunidadesController implements WithSimplePersistenceUnit {
 
     request.session().removeAttribute("mensajeExito");
 
-    if(usuarioLogueado.esAdmin()){
-      return new ModelAndView(modelo, "pages/comunidadesDashboard.html.hbs");
-    }
+    /*
+     TODO: ABM Comunidades Web
+     if (usuarioLogueado.esAdmin()) {
+       return new ModelAndView(modelo, "pages/comunidadesDashboard.html.hbs");
+     }
+    */
     return new ModelAndView(modelo, "pages/comunidadesCards.html.hbs");
   }
 
   public Void eliminar(Request request, Response response) {
     withTransaction(() -> {
-      var comunidadId = Integer.parseInt(request.queryParams("id"));
+      var comunidadId = Integer.parseInt(request.params("id"));
       var comunidad = RepositorioComunidades.getInstance().porId(comunidadId);
       RepositorioComunidades.getInstance().eliminar(comunidad);
     });

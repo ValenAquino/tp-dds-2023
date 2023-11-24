@@ -1,8 +1,7 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    const closeButton = document.querySelector('[data-bs-target="#reportarIncidenteModal"]');
-        const form = document.querySelector('#reportarIncidenteModal form');
+    const form = document.querySelector('#reportarIncidenteModal form');
 
     document.addEventListener('click', function (event) {
       if (event.target && event.target.getAttribute('data-servicio-id')) {

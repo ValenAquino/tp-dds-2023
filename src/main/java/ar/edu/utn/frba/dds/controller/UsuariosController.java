@@ -10,15 +10,44 @@ import ar.edu.utn.frba.dds.model.password.politicas.PoliticaLongitud;
 import ar.edu.utn.frba.dds.model.password.politicas.PoliticaRegex;
 import ar.edu.utn.frba.dds.model.password.validacion.ValidadorContrasena;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+import java.util.Arrays;
+import java.util.Map;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class UsuariosController implements WithSimplePersistenceUnit {
+  public ModelAndView perfil(Request request, Response response) {
+    Map<String, Object> modelo = new CustomModel("Usuarios", request);
+    Usuario usuario = request.session().attribute("usuario_logueado");
+    modelo.put("usuario", usuario);
+    return new ModelAndView(modelo, "pages/perfil.html.hbs");
+  }
+
+  public ModelAndView editarPerfil(Request request, Response response) {
+    var usuarioExistente = getUsuarioDeRequest(request);
+
+    try {
+      validarUsuario(usuarioExistente);
+      if (!request.queryParams("contrasenia").isBlank()) {
+        validarContrasenia(usuarioExistente.getContrasenia());
+      }
+      withTransaction(() -> {
+        RepositorioUsuarios.getInstance().persistir(usuarioExistente);
+        request.session().attribute(
+            "mensajeExito",
+            "El usuario ha sido editado con éxito.");
+      });
+      response.redirect("/usuarios");
+    } catch (Exception e) {
+      usuarioExistente.vaciarContrasenia();
+      request.session().attribute("mensajeError", e.getMessage());
+      request.session().attribute("usuario", usuarioExistente);
+      response.redirect("/perfil");
+    }
+
+    return null;
+  }
 
   public ModelAndView usuarios(Request request, Response response) {
     Map<String, Object> modelo = new CustomModel("Usuarios", request);
@@ -110,7 +139,7 @@ public class UsuariosController implements WithSimplePersistenceUnit {
 
   public Void eliminar(Request request, Response response) {
     withTransaction(() -> {
-      var usuarioId = Integer.parseInt(request.queryParams("id"));
+      var usuarioId = Integer.parseInt(request.params("id"));
       var usuario = RepositorioUsuarios.getInstance().porId(usuarioId);
 
       RepositorioComunidades.getInstance().comunidadesDeUsuario(usuario)
