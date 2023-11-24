@@ -59,9 +59,8 @@
                     <a class="mr-1" href="/usuarios/{{id}}">
                         <i title="Editar" class="fa-solid fa-pencil"></i>
                     </a>
-                    <form class="d-inline" action="/usuarios/eliminar" method="POST"
+                    <form class="d-inline" action="/usuarios/{{id}}" method="DELETE"
                           onsubmit="return confirm('¿Está seguro que desea eliminar este usuario?');">
-                        <input type="hidden" name="id" value="{{id}}">
                         <button type="submit" style="background:none;border:none;padding:0;">
                             <i title="Eliminar" class="fa-regular fa-trash-can red-icon"></i>
                         </button>

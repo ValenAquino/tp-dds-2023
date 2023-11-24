@@ -31,10 +31,8 @@
                 <div class="col">
                     <a href="/comunidades/{{id}}/editar"><i title="Editar"
                                                                  class="fa-solid fa-pencil mr-1"></i></a>
-                    <form class="d-inline" action="/comunidades/eliminar" method="POST"
+                    <form class="d-inline" action="/comunidades/{{id}}" method="DELETE"
                           onsubmit="return confirm('¿Está seguro que desea eliminar esta comunidad?');">
-                        <input type="hidden" name="id" value="{{id}}">
-
                         <button type="submit" style="background:none;border:none;padding:0;">
                             <i title="Eliminar" class="fa-regular fa-trash-can red-icon"></i>
                         </button>

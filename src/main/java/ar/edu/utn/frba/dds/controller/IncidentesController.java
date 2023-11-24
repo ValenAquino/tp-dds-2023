@@ -22,36 +22,36 @@ public class IncidentesController implements WithSimplePersistenceUnit {
     var estado = request.queryParams("estado");
     var comunidad = RepositorioComunidades.getInstance().porId(idComunidad);
 
-    Boolean afterAction = request.session().attribute("after_action");
-    String message = request.session().attribute("message");
+    // Boolean afterAction = request.session().attribute("after_action");
+    // String message = request.session().attribute("message");
 
-    request.session().removeAttribute("after_action");
-    request.session().removeAttribute("message");
+    // request.session().removeAttribute("after_action");
+    // request.session().removeAttribute("message");
 
     Map<String, Object> modelo = new CustomModel("Incidentes", request);
     modelo.put("estado", estado == null ? "todos" : estado);
     modelo.put("incidentes",  getIncidentesPorEstado(comunidad, estado));
     modelo.put("comunidad_id", Integer.valueOf(request.params("id")));
     modelo.put("comunidad_nombre", comunidad.getNombre());
-    modelo.put("after_action", afterAction);
-    modelo.put("message", message);
+    // modelo.put("after_action", afterAction);
+    // modelo.put("message", message);
     return new ModelAndView(modelo, "pages/incidentes.html.hbs");
   }
 
   public ModelAndView listarPendientes(Request request, Response response) {
     Usuario usuarioLogueado = SessionController.usuarioLogueado(request);
 
-    Boolean afterAction = request.session().attribute("after_action");
-    String message = request.session().attribute("message");
+    // Boolean afterAction = request.session().attribute("after_action");
+    // String message = request.session().attribute("message");
 
-    request.session().removeAttribute("after_action");
-    request.session().removeAttribute("message");
+    // request.session().removeAttribute("after_action");
+    // request.session().removeAttribute("message");
 
     Map<String, Object> modelo = new CustomModel("Incidentes pendientes", request);
     modelo.put("incidentes",  formatearIncidentes(RepositorioIncidentes.getInstance().incidentesARevisarPara(usuarioLogueado)));
     modelo.put("vista", "pendientes");
-    modelo.put("after_action", afterAction);
-    modelo.put("message", message);
+    // modelo.put("after_action", afterAction);
+    // modelo.put("message", message);
     return new ModelAndView(modelo, "pages/incidentes.html.hbs");
   }
 
@@ -73,8 +73,8 @@ public class IncidentesController implements WithSimplePersistenceUnit {
 
       var from = request.queryParams("from");
 
-      request.session().attribute("after_action", true);
-      request.session().attribute("message", "Incidente cerrado con éxito");
+      // request.session().attribute("after_action", true);
+      // request.session().attribute("message", "Incidente cerrado con éxito");
 
       if (from.equals("index")) {
         response.redirect("/home");
