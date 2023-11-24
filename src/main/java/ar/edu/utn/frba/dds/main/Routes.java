@@ -7,13 +7,9 @@ import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioUsuarios;
 import com.google.gson.Gson;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import javax.persistence.PersistenceException;
-import spark.Spark;
 import spark.Request;
 import spark.Response;
-import spark.Spark;
 import spark.template.handlebars.HandlebarsTemplateEngine;
-
-import javax.persistence.PersistenceException;
 
 import static spark.Spark.*;
 
@@ -70,8 +66,8 @@ public class Routes implements WithSimplePersistenceUnit {
     get("/servicios", serviciosController::listar, engine);
 
     // Incidentes
-    Spark.get("/incidentes/nuevo", incidentesController::nuevo, engine);
-    Spark.post("/incidentes", incidentesController::reportarIncidente);
+    get("/incidentes/nuevo", incidentesController::nuevo, engine);
+    post("/incidentes", incidentesController::reportarIncidente);
     get("/incidentes", incidentesController::listarPendientes, engine);
 
 
