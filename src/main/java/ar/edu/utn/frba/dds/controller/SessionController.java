@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.controller;
 
+import ar.edu.utn.frba.dds.model.entidades.CustomModel;
 import ar.edu.utn.frba.dds.model.entidades.Usuario;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioUsuarios;
 import java.util.HashMap;
@@ -12,7 +13,7 @@ public class SessionController {
 
   public ModelAndView render(Request request, Response response) {
     String mensajeError = request.session().attribute("mensaje_error");
-    Map<String, Object> modelo = new HashMap<>();
+    Map<String, Object> modelo = new CustomModel("Login", request);
     modelo.put("origin", request.queryParams("origin"));
     if (mensajeError != null) {
       request.session().removeAttribute("mensaje_error");
@@ -30,6 +31,7 @@ public class SessionController {
       String origin = request.queryParams("origin");
       request.session().attribute("user_id", usuario.getId());
       request.session().attribute("is_admin", usuario.esAdmin());
+      request.session().attribute("nombre_usuario", usuario.getUsuario());
 
       if (origin != null && !origin.isBlank()) {
         response.redirect(origin);

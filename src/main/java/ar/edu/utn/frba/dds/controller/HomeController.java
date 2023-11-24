@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.controller;
 
 import ar.edu.utn.frba.dds.model.entidades.Comunidad;
+import ar.edu.utn.frba.dds.model.entidades.CustomModel;
 import ar.edu.utn.frba.dds.model.entidades.Incidente;
 import ar.edu.utn.frba.dds.model.entidades.Usuario;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioComunidades;
@@ -18,12 +19,15 @@ import spark.Response;
 public class HomeController implements WithSimplePersistenceUnit {
   public ModelAndView render(Request request, Response response) {
     Integer idUsuario = request.session().attribute("user_id");
-    Boolean afterAction = Boolean.valueOf(request.queryParams("after_action"));
-    String message = request.queryParams("message");
+    Boolean afterAction = request.session().attribute("after_action");
+    String message = request.session().attribute("message");
+
+    request.session().removeAttribute("after_action");
+    request.session().removeAttribute("message");
 
     Usuario usuarioLogueado = RepositorioUsuarios.getInstance().porId(idUsuario);
 
-    Map<String, Object> modelo = new HashMap<>();
+    Map<String, Object> modelo = new CustomModel("Home", request);
 
     var comunidades = RepositorioComunidades.getInstance().comunidadesDeUsuario(usuarioLogueado, 3);
     var incidentes = RepositorioIncidentes.getInstance().incidentesARevisarPara(usuarioLogueado, 3);
@@ -31,7 +35,6 @@ public class HomeController implements WithSimplePersistenceUnit {
     modelo.put("comunidades", formatearComunidades(comunidades));
     modelo.put("incidentes", formatearIncidentes(incidentes, comunidades));
     modelo.put("after_action", afterAction);
-    modelo.put("es_admin", request.session().attribute("is_admin"));
     modelo.put("message", message);
     modelo.put("total_comunidades", comunidades.size());
     modelo.put("total_incidentes", incidentes.size());

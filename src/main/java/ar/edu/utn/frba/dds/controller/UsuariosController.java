@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.controller;
 
+import ar.edu.utn.frba.dds.model.entidades.CustomModel;
 import ar.edu.utn.frba.dds.model.entidades.Usuario;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioComunidades;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioIncidentes;
@@ -20,8 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class UsuariosController implements WithSimplePersistenceUnit {
 
   public ModelAndView usuarios(Request request, Response response) {
-    Map<String, Object> modelo = new HashMap<>();
-    modelo.put("es_admin", request.session().attribute("is_admin"));
+    Map<String, Object> modelo = new CustomModel("Usuarios", request);
     modelo.put("usuarios", RepositorioUsuarios.getInstance().todos());
     modelo.put("mensajeExito", request.session().attribute("mensajeExito"));
 
@@ -31,8 +31,7 @@ public class UsuariosController implements WithSimplePersistenceUnit {
   }
 
   public ModelAndView nuevo(Request request, Response response) {
-    Map<String, Object> modelo = new HashMap<>();
-    modelo.put("es_admin", request.session().attribute("is_admin"));
+    Map<String, Object> modelo = new CustomModel("Crear usuario", request);
     modelo.put("mensajeError", request.session().attribute("mensajeError"));
     modelo.put("usuario", request.session().attribute("usuario"));
 
@@ -72,7 +71,7 @@ public class UsuariosController implements WithSimplePersistenceUnit {
 
     usuario.vaciarContrasenia();
 
-    Map<String, Object> modelo = new HashMap<>();
+    Map<String, Object> modelo = new CustomModel("Editar usuario", request);
     modelo.put("es_admin", request.session().attribute("is_admin"));
     modelo.put("mensajeError", request.session().attribute("mensajeError"));
     modelo.put("usuario", usuario);

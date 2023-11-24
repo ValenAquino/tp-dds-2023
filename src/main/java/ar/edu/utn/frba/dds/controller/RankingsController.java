@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.controller;
 
+import ar.edu.utn.frba.dds.model.entidades.CustomModel;
 import ar.edu.utn.frba.dds.model.entidades.Entidad;
 import ar.edu.utn.frba.dds.model.entidades.rankings.CriterioDeOrdenamiento;
 import ar.edu.utn.frba.dds.model.entidades.rankings.Ranking;
@@ -32,10 +33,9 @@ public class RankingsController implements WithSimplePersistenceUnit {
         System.out.println(entidad.getNombre() + " - " + valor)
     );
 
-    Map<String, Object> modelo = new HashMap<>();
+    Map<String, Object> modelo = new CustomModel("Ranking de " + criterio.getDescripcion().toLowerCase(), request);
     modelo.put("criterio", criterio.getDescripcion());
     modelo.put("entidades", formatearRanking(ranking.getEntidades()));
-    modelo.put("es_admin", request.session().attribute("is_admin"));
 
     return new ModelAndView(modelo, "pages/ranking.html.hbs");
   }

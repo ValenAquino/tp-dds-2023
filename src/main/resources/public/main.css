@@ -212,7 +212,7 @@ a.nav-link {
   padding: 10px 20px;
   font-size: 1em;
   cursor: pointer;
-  font-weight: 700;
+  font-weight: 500;
   margin-right: 1em;
 }
 
@@ -260,4 +260,36 @@ a.nav-link {
 .mensaje-error {
   color: var(--rojo);
   font-weight: 500;
+}
+
+.btn-agregar {
+    border-radius: 2em;
+    background-color: var(--azul-oscuro);
+    color: var(--blanco);
+    padding: 8px 20px;
+    font-weight: 500;
+    border: none;
+}
+
+.btn-agregar:hover {
+    background-color: var(--azul-oscuro);
+    color: var(--blanco);
+}
+
+.btn-cancelar {
+    border-radius: 2em;
+    background-color: var(--gris);
+    color: var(--blanco);
+    padding: 8px 20px;
+    font-weight: 500;
+    border: none;
+}
+
+.btn-cancelar:hover {
+    background-color: var(--gris);
+    color: var(--blanco);
+}
+
+.red-icon {
+    color: var(--rojo);
 }
