@@ -23,7 +23,7 @@ public class UsuariosController implements WithSimplePersistenceUnit {
     Map<String, Object> modelo = new HashMap<>();
     modelo.put("es_admin", request.session().attribute("is_admin"));
     modelo.put("usuarios", RepositorioUsuarios.getInstance().todos());
-    modelo.put("creacion_exitosa", request.session().attribute("creacion_exitosa"));
+    modelo.put("mensajeExito", request.session().attribute("mensajeExito"));
 
     request.session().removeAttribute("creacion_exitosa");
 
@@ -50,7 +50,9 @@ public class UsuariosController implements WithSimplePersistenceUnit {
       validarContrasenia(usuarioNuevo.getContrasenia());
       withTransaction(() -> {
         RepositorioUsuarios.getInstance().persistir(usuarioNuevo);
-        request.session().attribute("creacion_exitosa", Boolean.TRUE);
+        request.session().attribute(
+            "mensajeExito",
+            "El usuario ha sido creado con éxito.");
       });
       response.redirect("/usuarios");
     } catch (Exception e) {
@@ -91,7 +93,9 @@ public class UsuariosController implements WithSimplePersistenceUnit {
       }
       withTransaction(() -> {
         RepositorioUsuarios.getInstance().persistir(usuarioExistente);
-        request.session().attribute("edicion_exitosa", Boolean.TRUE);
+        request.session().attribute(
+            "mensajeExito",
+            "El usuario ha sido editado con éxito.");
       });
       response.redirect("/usuarios");
     } catch (Exception e) {
@@ -116,6 +120,10 @@ public class UsuariosController implements WithSimplePersistenceUnit {
           .forEach(incidente -> incidente.setReportante(null));
 
       RepositorioUsuarios.getInstance().eliminar(usuario);
+
+      request.session().attribute(
+          "mensajeExito",
+          "El usuario ha sido eliminado con éxito.");
     });
 
     response.redirect("/usuarios");
