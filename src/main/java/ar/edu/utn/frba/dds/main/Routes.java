@@ -147,9 +147,8 @@ public class Routes implements WithSimplePersistenceUnit {
     }
   }
 
-  private static boolean credencialesSonValidas(String username, String contraseña) {
-    Usuario usuario = RepositorioUsuarios.getInstance().porUsuarioYContrasenia(username, contraseña);
-
+  private static boolean credencialesSonValidas(String username, String contrasenia) {
+    Usuario usuario = RepositorioUsuarios.getInstance().porUsuarioYContrasenia(username, contrasenia);
     return usuario != null && usuario.esAdmin();
   }
 }

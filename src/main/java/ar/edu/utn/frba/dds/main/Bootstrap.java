@@ -114,11 +114,11 @@ public class Bootstrap implements WithSimplePersistenceUnit {
         TipoDeServicio.ASCENSORES
     );
     Servicio escalera = new Servicio(
-        "Escalera mecanica - acceso a estación",
+        "Escalera mecanica - ascenso a estación",
         TipoDeServicio.ESCALERAS_MECANICAS
     );
     Servicio escalera2 = new Servicio(
-        "Escalera mecanica - acceso a estación",
+        "Escalera mecanica - descenso a andén",
         TipoDeServicio.ESCALERAS_MECANICAS
     );
 
@@ -155,6 +155,7 @@ public class Bootstrap implements WithSimplePersistenceUnit {
 
     var tren = new Comunidad("Usuarios de Tren Mitre", new ServicioGoogleMaps());
     tren.agregarMiembro(usuario);
+    tren.agregarServicioDeInteres(escalera2);
     RepositorioComunidades.getInstance().persistir(tren);
 
     RepositorioIncidentes.getInstance().persistir(incidente);
