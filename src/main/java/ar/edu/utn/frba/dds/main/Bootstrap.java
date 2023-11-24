@@ -75,6 +75,9 @@ public class Bootstrap implements WithSimplePersistenceUnit {
         RepositorioComunidades.getInstance(),
         RepositorioNotificaciones.getInstance()
     );
+
+    usuario.setAdmin(true);
+
     var mati = new Usuario(
         "mati",
         "12345",
@@ -84,10 +87,11 @@ public class Bootstrap implements WithSimplePersistenceUnit {
         RepositorioComunidades.getInstance(),
         RepositorioNotificaciones.getInstance()
     );
+    mati.setAdmin(true);
+    usuario.setAdmin(true);
 
     RepositorioUsuarios.getInstance().persistir(usuario);
     RepositorioUsuarios.getInstance().persistir(mati);
-
     var entidad = new Entidad("Subte A", TipoDeEntidad.SUBTERRANEO);
 
     var medrano = new Ubicacion(-34.6033341, -58.4206027);

@@ -24,6 +24,11 @@ body {
                     <input type="password" class="form-control" id="contrasenia" name="contrasenia" placeholder="Contraseña">
                     <label for="contrasenia">Contraseña</label>
                 </div>
+                {{#if mensaje_error}}
+                    <div class="alert alert-danger" role="alert">
+                        {{mensaje_error}}
+                    </div>
+                {{/if}}
                 <div class="d-flex flex-row justify-content-center">
                     <button class="btn-login m-0" type="submit" style="width: 50%;">Ingresar</button>
                 </div>

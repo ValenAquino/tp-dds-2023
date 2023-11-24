@@ -1,0 +1,56 @@
+{{#partial "principal"}}
+
+    <div class="d-flex justify-content-between p-3 mx-5 mb-4">
+        <h1 class="ms-4">Comunidades</h1>
+    </div>
+
+    <div class="container">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {{#each comunidades}}
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="card-title d-flex justify-content-between fw-semibold">
+                                <div>
+                                    <h5>{{nombre}}</h5>
+                                </div>
+                                <div>
+                                    <h5><i class="fa-solid fa-users"></i> {{miembros.length}}</h5>
+                                </div>
+                            </div>
+                            <p class="card-text">Esta comunidad tiene {{incidentesAbiertos.length}} incidentes abiertos.</p>
+                            <div class="d-flex justify-content-end">
+                                <button type="button" class="btn btn-primary card-green-button ver-miembros-btn" data-bs-toggle="modal" data-bs-target="#miembrosModal{{@index}}">
+                                    Ver miembros
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="miembrosModal{{@index}}" tabindex="-1" role="dialog" aria-labelledby="miembrosModalLabel{{@index}}" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="miembrosModalLabel{{@index}}">{{nombre}}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <ul>
+                                    {{#each miembros}}
+                                        <li>{{this.nombre}} {{this.apellido}} ({{this.correoElectronico}})</li>
+                                    {{/each}}
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+{{/partial}}
+
+{{> layouts/logged.html.hbs }}

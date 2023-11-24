@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class RankingsController implements WithSimplePersistenceUnit {
-  public ModelAndView renderRanking(CriterioDeOrdenamiento criterio) {
+  public ModelAndView renderRanking(CriterioDeOrdenamiento criterio, Request request) {
     Ranking ranking = new Ranking(RepositorioIncidentes.getInstance(), criterio);
     ranking.generarRanking();
 
@@ -35,16 +35,17 @@ public class RankingsController implements WithSimplePersistenceUnit {
     Map<String, Object> modelo = new HashMap<>();
     modelo.put("criterio", criterio.getDescripcion());
     modelo.put("entidades", formatearRanking(ranking.getEntidades()));
+    modelo.put("es_admin", request.session().attribute("is_admin"));
 
     return new ModelAndView(modelo, "pages/ranking.html.hbs");
   }
 
   public ModelAndView renderCantidadIncidentes(Request request, Response response) {
-    return renderRanking(new CantidadIncidentes());
+    return renderRanking(new CantidadIncidentes(), request);
   }
 
   public ModelAndView renderMayorPromedioCierre(Request request, Response response) {
-    return renderRanking(new MayorPromedioCierre());
+    return renderRanking(new MayorPromedioCierre(), request);
   }
 
   private List<Map<String, Object>> formatearRanking(Map<Entidad, Double> entidades) {

@@ -10,7 +10,6 @@ import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioServicios;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioUsuarios;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,9 +17,6 @@ import java.util.Map;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class IncidentesController implements WithSimplePersistenceUnit {
   public ModelAndView listarPorComunidad(Request request, Response response) {
@@ -34,6 +30,7 @@ public class IncidentesController implements WithSimplePersistenceUnit {
     modelo.put("incidentes",  getIncidentesPorEstado(comunidad, estado));
     modelo.put("comunidad_id", Integer.valueOf(request.params("id")));
     modelo.put("comunidad_nombre", comunidad.getNombre());
+    modelo.put("es_admin", request.session().attribute("is_admin"));
     return new ModelAndView(modelo, "pages/incidentes.html.hbs");
   }
 
@@ -67,10 +64,10 @@ public class IncidentesController implements WithSimplePersistenceUnit {
       if (from.equals("index")) {
         response.redirect("/home?after_action=true&message=Incidente%20cerrado%20con%20%C3%A9xito");
       } else if (from.equals("pendientes")) {
-        response.redirect("/home/incidentes?after_action=true");
+        response.redirect("/incidentes?after_action=true");
       }
       else
-        response.redirect("/home/comunidades/" + idComunidad + "/incidentes");
+        response.redirect("/comunidades/" + idComunidad + "/incidentes");
     });
 
     return null;
@@ -80,6 +77,7 @@ public class IncidentesController implements WithSimplePersistenceUnit {
     Map<String, Object> model = new HashMap<>();
     model.put("servicios", RepositorioServicios.getInstance().todos());
     model.put("incidentes", RepositorioIncidentes.getInstance().todos());
+    model.put("es_admin", request.session().attribute("is_admin"));
     return new ModelAndView(model, "incidentes/reportarIncidente.html.hbs");
   }
 
@@ -89,11 +87,12 @@ public class IncidentesController implements WithSimplePersistenceUnit {
       Usuario usuario = SessionController.usuarioLogueado(request);
       usuario.reportarIncidente(servicio, LocalDateTime.now(), request.queryParams("observaciones"));
       RepositorioUsuarios.getInstance().persistir(usuario);
-
       var from = request.queryParams("from");
 
-      if (from != null && from.equals("servicios"))
-        response.redirect("/home/servicios");
+      if (from != null && from.equals("servicios")){
+        request.session().attribute("reporte_exitoso", Boolean.TRUE);
+        response.redirect("/servicios");
+      }
       else
         response.redirect("/home");
     });

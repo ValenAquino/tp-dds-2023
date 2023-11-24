@@ -13,10 +13,17 @@ import spark.Response;
 public class ServiciosController implements WithSimplePersistenceUnit {
   public ModelAndView listar(Request request, Response response) {
     Usuario usuarioLogueado = SessionController.usuarioLogueado(request);
+    Boolean reporteExitoso = request.session().attribute("reporte_exitoso");
     var servicios = RepositorioServicios.getInstance().porUsuario(usuarioLogueado);
 
     Map<String, Object> modelo = new HashMap<>();
     modelo.put("servicios", servicios);
+    modelo.put("es_admin", request.session().attribute("is_admin"));
+
+    if(reporteExitoso!=null){
+      request.session().removeAttribute("reporte_exitoso");
+      modelo.put("reporte_exitoso",reporteExitoso);
+    }
     return new ModelAndView(modelo, "pages/servicios.html.hbs");
   }
 }

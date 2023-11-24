@@ -1,22 +1,14 @@
 {{#partial "principal" }}
 
 <script src="/serviciosScript.js"></script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const closeButton = document.querySelector('[data-bs-target="#reportarIncidenteModal"]');
-    const form = document.querySelector('#reportarIncidenteModal form');
-
-    document.addEventListener('click', function (event) {
-      if (event.target && event.target.getAttribute('data-servicio-id')) {
-        const servicioId = event.target.getAttribute('data-servicio-id');
-
-        form.action = `incidentes/nuevo?servicio=${servicioId}&from=servicios`;
-      }
-    });
-});
-</script>
-
+{{#if reporte_exitoso}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var mensajeExitoModal = new bootstrap.Modal(document.getElementById('mensajeExitoModal'));
+            mensajeExitoModal.show();
+        });
+    </script>
+{{/if}}
 <div>
     <h3 class="mr-4" style="margin-left: 6.5%">Servicios</h3>
     <div class="d-flex flex-row flex-wrap" style="margin-left: 5%">
@@ -26,13 +18,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 <h5 style="overflow: hidden; text-overflow:ellipsis; white-space: nowrap;">{{descripcion}}</h5>
                 <button type="button" style="background-color: transparent; border: none; margin-bottom: 0.3em; margin-left: 5%;" data-bs-toggle="modal" data-bs-target="#reportarIncidenteModal" data-servicio-id="{{id}}"
                     class="icon-button">
-                    <i class="fa-solid fa-circle-exclamation display-icon"
+                    <i class="fa-solid fa-circle-exclamation display-icon" data-servicio-id="{{id}}"
                                         style="color: white;
                                         text-shadow: #f33b3b 0px 0px 1px, #f33b3b 0px 0px 1px, #f33b3b 0px 0px 1px,
                                                      #f33b3b 0px 0px 1px, #f33b3b 0px 0px 1px, #f33b3b 0px 0px 1px,
                                                      #f33b3b 0px 0px 1px, #f33b3b 0px 0px 1px, #f33b3b 0px 0px 1px,
                                                      #f33b3b 0px 0px 1px;" title="Reportar incidente"></i>
-                    <i class="fa-solid fa-circle-exclamation hover-icon"
+                    <i class="fa-solid fa-circle-exclamation hover-icon" data-servicio-id="{{id}}"
                     style="display: none; color: #f33b3b;" title="Reportar incidente"></i>
                 </button>
             </div>
@@ -44,7 +36,6 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
 </div>
 
-<!-- Modal -->
 <div class="modal fade" id="reportarIncidenteModal" tabindex="-1" role="dialog" aria-labelledby="reportarIncidenteModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -61,12 +52,28 @@ document.addEventListener('DOMContentLoaded', function () {
       <div class="modal-footer">
         <button type="button" class="grey-button" data-bs-dismiss="modal">Cancelar</button>
         <button type="submit" class="card-red-button">Reportar</button>
+
       </div>
       </form>
     </div>
   </div>
 </div>
 
+<div class="modal fade" id="mensajeExitoModal" tabindex="-1" role="dialog" aria-labelledby="mensajeExitoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mensajeExitoModalLabel">¡Genial!</h5>
+            </div>
+            <div class="modal-body">
+                <p>Se reportó el incidente correctamente.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
 {{/partial}}
 
 {{> layouts/logged.html.hbs }}

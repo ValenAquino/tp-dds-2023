@@ -11,8 +11,13 @@ import spark.Response;
 public class SessionController {
 
   public ModelAndView render(Request request, Response response) {
+    String mensajeError = request.session().attribute("mensaje_error");
     Map<String, Object> modelo = new HashMap<>();
     modelo.put("origin", request.queryParams("origin"));
+    if (mensajeError != null) {
+      request.session().removeAttribute("mensaje_error");
+      modelo.put("mensaje_error", mensajeError);
+    }
     return new ModelAndView(modelo, "login.html.hbs");
   }
 
@@ -24,6 +29,7 @@ public class SessionController {
 
       String origin = request.queryParams("origin");
       request.session().attribute("user_id", usuario.getId());
+      request.session().attribute("is_admin", usuario.esAdmin());
 
       if (origin != null && !origin.isBlank()) {
         response.redirect(origin);
@@ -32,7 +38,7 @@ public class SessionController {
       }
       return null;
     } catch (Exception e) {
-      // TODO: mostrar mensaje de error
+      request.session().attribute("mensaje_error", "Usuario o contraseña incorrectos");
       response.redirect("/login");
       return null;
     }
@@ -40,6 +46,7 @@ public class SessionController {
 
   public Void logout(Request request, Response response) {
     request.session().removeAttribute("user_id");
+    request.session().removeAttribute("is_admin");
     response.redirect("/login");
     return null;
   }

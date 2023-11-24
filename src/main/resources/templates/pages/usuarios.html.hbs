@@ -1,8 +1,17 @@
 {{#partial "principal" }}
+
+    {{#if creacion_exitosa}}
+        <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var mensajeExitoModal = new bootstrap.Modal(document.getElementById('mensajeExitoModal'));
+            mensajeExitoModal.show();
+        });
+    </script>
+    {{/if}}
   <div class="d-flex justify-content-between p-3 mx-5 mb-4">
     <h1 class="ms-4">Usuarios</h1>
     <div class="d-flex p-3">
-      <a class="btn btn-primary" href="/home/usuarios/nuevo" role="button">
+      <a class="btn btn-primary" href="/usuarios/nuevo" role="button">
         <i class="fa-solid fa-user-plus"></i>
         Agregar usuario
       </a>
@@ -49,10 +58,10 @@
           <span>{{formatearEsAdmin esAdmin}}</span>
         </div>
         <div class="col">
-          <a class="mr-1" href="/home/usuarios/{{id}}">
+          <a class="mr-1" href="/usuarios/{{id}}">
             <i title="Editar" class="fa-solid fa-pencil"></i>
           </a>
-          <form class="d-inline" action="/home/usuarios/eliminar" method="POST" onsubmit="return confirm('¿Está seguro que desea eliminar este usuario?');">
+          <form class="d-inline" action="/usuarios/eliminar" method="POST" onsubmit="return confirm('¿Está seguro que desea eliminar este usuario?');">
               <input type="hidden" name="id" value="{{id}}">
               <button type="submit" style="background:none;border:none;padding:0;">
               <i title="Eliminar" class="fa-regular fa-trash-can"></i>
@@ -62,6 +71,22 @@
       </div>
     {{/each}}
   </div>
+  <div class="modal fade" id="mensajeExitoModal" tabindex="-1" role="dialog" aria-labelledby="mensajeExitoModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="mensajeExitoModalLabel">¡Genial!</h5>
+              </div>
+              <div class="modal-body">
+                  <p>Se creó el usuario correctamente.</p>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              </div>
+          </div>
+      </div>
+  </div>
+
 {{/partial}}
 
 {{> layouts/logged.html.hbs }}

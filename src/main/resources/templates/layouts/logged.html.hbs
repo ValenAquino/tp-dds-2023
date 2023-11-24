@@ -7,23 +7,25 @@
             </div>
             <ul class="navbar-nav d-inline-flex flex-row" style="color: #ffffff; margin-left: 2%;">
                 <li class="nav-item">
-                    <a class="nav-link" href="/home/comunidades">Comunidades</a>
+                    <a class="nav-link" href="/comunidades">Comunidades</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/home/servicios">Servicios</a>
+                    <a class="nav-link" href="/servicios">Servicios</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{#if es_admin}}
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Rankings
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li class="dropdown-item"><a href="/home/rankings/cantidad-incidentes">Cantidad de incidentes</a></li>
-                        <li class="dropdown-item"><a href="/home/rankings/promedio-cierre">Promedio de cierre</a></li>
+                        <li class="dropdown-item"><a href="/rankings/cantidad-incidentes">Cantidad de incidentes</a></li>
+                        <li class="dropdown-item"><a href="/rankings/promedio-cierre">Promedio de cierre</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/home/usuarios">Usuarios</a>
+                    <a class="nav-link" href="/usuarios">Usuarios</a>
                 </li>
+                {{/if}}
             </ul>
         </div>
         <div class="nav-right-div d-flex flex-row justify-content-end">

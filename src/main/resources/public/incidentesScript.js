@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const comunidadId = event.target.getAttribute('data-comunidad-id');
 
         if (from == 'index')
-            form.action = `home/comunidades/${comunidadId}/incidentes/${incidentId}?from=index`;
+            form.action = `comunidades/${comunidadId}/incidentes/${incidentId}?from=index`;
         else if (from == 'pendientes')
             form.action = `comunidades/${comunidadId}/incidentes/${incidentId}?from=pendientes`;
         else

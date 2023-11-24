@@ -15,10 +15,14 @@ public class ComunidadesController implements WithSimplePersistenceUnit {
   public ModelAndView listar(Request request, Response response) {
     Usuario usuarioLogueado = SessionController.usuarioLogueado(request);
     var comunidades = RepositorioComunidades.getInstance().comunidadesPorUsuario(usuarioLogueado);
-
     Map<String, Object> modelo = new HashMap<>();
     modelo.put("comunidades", comunidades);
-    return new ModelAndView(modelo, "pages/comunidades.html.hbs");
+    modelo.put("es_admin", request.session().attribute("is_admin"));
+
+    if(usuarioLogueado.esAdmin()){
+      return new ModelAndView(modelo, "pages/comunidadesDashboard.html.hbs");
+    }
+    return new ModelAndView(modelo, "pages/comunidadesCards.html.hbs");
   }
 
   public Void eliminar(Request request, Response response) {
@@ -28,7 +32,7 @@ public class ComunidadesController implements WithSimplePersistenceUnit {
       RepositorioComunidades.getInstance().eliminar(comunidad);
     });
 
-    response.redirect("/home/comunidades");
+    response.redirect("/comunidades");
     return null;
   }
 }
