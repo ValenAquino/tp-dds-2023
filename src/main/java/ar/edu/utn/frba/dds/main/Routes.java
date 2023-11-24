@@ -17,7 +17,12 @@ public class Routes implements WithSimplePersistenceUnit {
   }
 
   public void start() {
-    port(8555);
+    try {
+      port(Integer.parseInt(System.getenv("PORT")));
+    } catch (NumberFormatException e) {
+      port(8555);
+    }
+
     staticFileLocation("/public");
 
     var engine = new HandlebarsTemplateEngine();
