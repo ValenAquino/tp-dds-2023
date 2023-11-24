@@ -32,8 +32,8 @@ public class MailSender extends MedioDeComunicacion {
   private void cargarPropiedades() {
     propiedades.put("mail.smtp.auth", "true");
     propiedades.put("mail.smtp.starttls.enable", "true");
-    propiedades.put("mail.smtp.host", "smtp.gmail.com");
-    propiedades.put("mail.smtp.port", "587");
+    propiedades.put("mail.smtp.host", System.getenv("MAIL_SMTP_HOST"));
+    propiedades.put("mail.smtp.port", System.getenv("MAIL_SMTP_PORT"));
     propiedades.put("mail.username", System.getenv("MAIL_USERNAME"));
     propiedades.put("mail.password", System.getenv("MAIL_PASSWORD"));
   }
