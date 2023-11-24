@@ -1,33 +1,25 @@
 {{#partial "principal"}}
-
-    <div class="d-flex justify-content-between p-3 mx-5 mb-4">
-        <h1 class="ms-4">Comunidades</h1>
-    </div>
-
-    <div class="container">
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <script src="indexScript.js"></script>
+    <h3 style="margin-left: 3.5%;">Comunidades</h3>
+    <div style="margin-left: 2.3%;">
+    <div class="d-flex flex-row flex-wrap">
             {{#each comunidades}}
-                <div class="col">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <div class="card-title d-flex justify-content-between fw-semibold">
-                                <div>
-                                    <h5>{{nombre}}</h5>
-                                </div>
-                                <div>
-                                    <h5><i class="fa-solid fa-users"></i> {{miembros.length}}</h5>
-                                </div>
-                            </div>
-                            <p class="card-text">Esta comunidad tiene {{incidentesAbiertos.length}} incidentes abiertos.</p>
-                            <div class="d-flex justify-content-end">
-                                <button type="button" class="btn btn-primary card-green-button ver-miembros-btn" data-bs-toggle="modal" data-bs-target="#miembrosModal{{@index}}">
-                                    Ver miembros
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="card-comunidad">
+                    <div class="d-flex flex-row align-items-center">
+                        <h5 style="overflow: hidden; text-overflow:ellipsis; white-space: nowrap;">{{this.nombre}}</h5>
+                        <a href="/comunidades/{{this.id}}/incidentes" class="icon-link" style="margin-left: 5%;margin-bottom: 1.5%;">
+                            <i class="fa-regular fa-eye comunidad-display-icon" title="Ver incidentes" style="color: #131a26; margin-left: 5%;"></i>
+                            <i class="fa-solid fa-eye comunidad-hover-icon" style="display: none; color: #131a26; margin-left: 5%;" title="Ver incidentes"></i>
+                        </a>
+                        <a href="#" class="icon-link" style="margin-left: 5%; margin-bottom: 1.5%;" data-bs-toggle="modal" data-bs-target="#miembrosModal{{@index}}">
+                            <i class="fa-regular fa-users comunidad-display-icon" title="Ver miembros" style="color: #131a26; margin-left: 5%;"></i>
+                            <i class="fa-solid fa-users comunidad-hover-icon" style="display: none; color: #131a26; margin-left: 5%;" title="Ver miembros"></i>
+                        </a>
 
+                    </div>
+                    <span class="mt-2 d-block">{{miembros.length}} {{#intIsEqual 1 miembros.length}} miembro {{else}} miembros {{/intIsEqual}}</span>
+                    <span class="mt-1 d-block">{{incidentesAbiertos.length}} {{#intIsEqual 1 incidentesAbiertos.length}} incidente abierto {{else}} incidentes abiertos {{/intIsEqual}}</span>
+                </div>
                 <div class="modal fade" id="miembrosModal{{@index}}" tabindex="-1" role="dialog" aria-labelledby="miembrosModalLabel{{@index}}" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -51,6 +43,7 @@
             {{/each}}
         </div>
     </div>
+
 {{/partial}}
 
 {{> layouts/logged.html.hbs }}
