@@ -1,5 +1,6 @@
 {{#partial "principal" }}
 
+<script src="/usuariosScript.js"></script>
     {{#if mensajeExito}}
         <script>
             document.addEventListener('DOMContentLoaded', function () {
@@ -18,58 +19,76 @@
 
     <div class="container shadow-sm">
         <div class="row p-3 border-bottom border-1">
-            <div class="col">
+            <div class="col text-center">
                 <span class="fs-5 fw-semibold">Username</span>
             </div>
-            <div class="col">
+            <div class="col text-center">
                 <span class="fs-5 fw-semibold">Nombre</span>
             </div>
-            <div class="col">
+            <div class="col text-center">
                 <span class="fs-5 fw-semibold">Apellido</span>
             </div>
-            <div class="col-3">
+            <div class="col-3 text-center">
                 <span class="fs-5 fw-semibold">Correo electrónico</span>
             </div>
-            <div class="col">
+            <div class="col text-center">
                 <span class="fs-5 fw-semibold">Admin</span>
             </div>
-            <div class="col">
+            <div class="col text-center">
                 <span class="fs-5 fw-semibold">Acciones</span>
             </div>
         </div>
 
         {{#each usuarios}}
             <div class="row p-3 border-bottom border-1">
-                <div class="col">
+                <div class="col text-center">
                     <span>{{usuario}}</span>
                 </div>
-                <div class="col">
+                <div class="col text-center">
                     <span>{{nombre}}</span>
                 </div>
-                <div class="col">
+                <div class="col text-center">
                     <span>{{apellido}}</span>
                 </div>
-                <div class="col-3">
+                <div class="col-3 text-center">
                     <span>{{correoElectronico}}</span>
                 </div>
-                <div class="col">
+                <div class="col text-center">
                     <span>{{formatearEsAdmin esAdmin}}</span>
                 </div>
-                <div class="col">
+                <div class="col text-center">
                     <a class="mr-1" href="/usuarios/{{id}}">
                         <i title="Editar" class="fa-solid fa-pencil"></i>
                     </a>
-                    <form class="d-inline" action="/usuarios/eliminar" method="POST"
-                          onsubmit="return confirm('¿Está seguro que desea eliminar este usuario?');">
-                        <input type="hidden" name="id" value="{{id}}">
-                        <button type="submit" style="background:none;border:none;padding:0;">
-                            <i title="Eliminar" class="fa-regular fa-trash-can red-icon"></i>
-                        </button>
-                    </form>
+                    <button type="button" style="background-color: transparent; border: none;"
+                            data-bs-toggle="modal" data-bs-target="#confirmarEliminarModal"
+                            data-usuario-id="{{id}}"
+                        <i data-usuario-id="{{id}}" class="fa-regular fa-trash-can red-icon"></i>
+                    </button>
                 </div>
             </div>
         {{/each}}
     </div>
+
+    <div class="modal fade" id="confirmarEliminarModal" tabindex="-1" role="dialog" aria-labelledby="confirmarEliminarModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmarEliminarModalLabel">Eliminar usuario</h5>
+          </div>
+          <form method="POST" class="m-0">
+          <div class="modal-body">
+            ¿Desea eliminar el usuario?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="grey-button" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="card-red-button">Eliminar</button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <div class="modal fade" id="mensajeExitoModal" tabindex="-1" role="dialog"
          aria-labelledby="mensajeExitoModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
