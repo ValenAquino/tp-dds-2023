@@ -75,6 +75,7 @@ public class HomeController implements WithSimplePersistenceUnit {
         put("nombre", comunidad.getNombre());
         put("cantidad_miembros", comunidad.getMiembros().size());
         put("cantidad_incidentes", comunidad.getIncidentesAbiertos().size());
+        put("miembros_de_comunidad", comunidad.getMiembros());
       }});
     };
 
