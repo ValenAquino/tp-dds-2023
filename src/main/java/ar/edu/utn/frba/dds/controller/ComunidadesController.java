@@ -19,9 +19,12 @@ public class ComunidadesController implements WithSimplePersistenceUnit {
 
     request.session().removeAttribute("mensajeExito");
 
-    if(usuarioLogueado.esAdmin()){
-      return new ModelAndView(modelo, "pages/comunidadesDashboard.html.hbs");
-    }
+    /*
+     TODO: ABM Comunidades Web
+     if (usuarioLogueado.esAdmin()) {
+       return new ModelAndView(modelo, "pages/comunidadesDashboard.html.hbs");
+     }
+    */
     return new ModelAndView(modelo, "pages/comunidadesCards.html.hbs");
   }
 

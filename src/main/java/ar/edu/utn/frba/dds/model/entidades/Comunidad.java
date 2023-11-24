@@ -25,7 +25,7 @@ public class Comunidad extends PersistentEntity {
       inverseJoinColumns = @JoinColumn(name = "servicio_id"))
   List<Servicio> serviciosDeInteres;
 
-  @OneToMany(cascade = CascadeType.PERSIST)
+  @OneToMany(cascade = CascadeType.ALL)
   @JoinTable(
       name = "incidentes_por_comunidades",
       joinColumns = @JoinColumn(name = "comunidad_id"),
