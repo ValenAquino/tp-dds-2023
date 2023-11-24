@@ -2,6 +2,8 @@ package ar.edu.utn.frba.dds.controller;
 
 import ar.edu.utn.frba.dds.controller.response.ApiResponse;
 import ar.edu.utn.frba.dds.model.entidades.Comunidad;
+import ar.edu.utn.frba.dds.model.entidades.Servicio;
+import ar.edu.utn.frba.dds.model.entidades.Usuario;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioComunidades;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioServicios;
 import ar.edu.utn.frba.dds.model.entidades.repositorios.RepositorioUsuarios;
@@ -113,8 +115,33 @@ public class ApiController implements WithSimplePersistenceUnit {
       Map<String, Object> comunidadMap = new HashMap<>();
       comunidadMap.put("id", comunidad.getId());
       comunidadMap.put("nombre", comunidad.getNombre());
-      comunidadMap.put("cantidad_miembros", comunidad.getMiembros().size());
-      comunidadMap.put("cantidad_incidentes", comunidad.getIncidentesAbiertos().size());
+
+      var usuarios = new ArrayList<>();
+
+      for (Usuario miembro : comunidad.getMiembros()) {
+        var usuario = new HashMap<>();
+        usuario.put("id", miembro.getId());
+        usuario.put("nombre", miembro.getNombre());
+        usuario.put("apellido", miembro.getApellido());
+        usuario.put("username", miembro.getUsuario());
+
+        usuarios.add(usuario);
+      }
+
+      comunidadMap.put("miembros", usuarios);
+
+      var servicios = new ArrayList<>();
+
+      for (Servicio servicioDeInteres : comunidad.getServiciosDeInteres()) {
+        var servicio = new HashMap<>();
+        servicio.put("id", servicioDeInteres.getId());
+        servicio.put("descripcion", servicioDeInteres.getDescripcion());
+        servicio.put("establecimiento", servicioDeInteres.getEstablecimiento().getNombre());
+
+        servicios.add(servicio);
+      }
+
+      comunidadMap.put("servicios", servicios);
 
       results.add(comunidadMap);
     }

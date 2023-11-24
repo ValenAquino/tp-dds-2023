@@ -71,6 +71,10 @@ public class Comunidad extends PersistentEntity {
     return miembros;
   }
 
+  public List<Servicio> getServiciosDeInteres() {
+    return serviciosDeInteres;
+  }
+
   public void agregarServicioDeInteres(Servicio servicio) {
     serviciosDeInteres.add(servicio);
   }
