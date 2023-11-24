@@ -15,11 +15,15 @@ public class ComunidadesController implements WithSimplePersistenceUnit {
   public ModelAndView listar(Request request, Response response) {
     Usuario usuarioLogueado = SessionController.usuarioLogueado(request);
     var comunidades = RepositorioComunidades.getInstance().comunidadesPorUsuario(usuarioLogueado);
-
     Map<String, Object> modelo = new HashMap<>();
     modelo.put("comunidades", comunidades);
+
     modelo.put("es_admin", request.attribute("es_admin"));
-    return new ModelAndView(modelo, "pages/comunidades.html.hbs");
+
+    if(usuarioLogueado.esAdmin()){
+      return new ModelAndView(modelo, "pages/comunidadesDashboard.html.hbs");
+    }
+    return new ModelAndView(modelo, "pages/comunidadesCards.html.hbs");
   }
 
   public Void eliminar(Request request, Response response) {

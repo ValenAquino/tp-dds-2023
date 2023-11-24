@@ -1,7 +1,14 @@
 {{#partial "principal" }}
 
 <script src="/serviciosScript.js"></script>
-
+{{#if reporte_exitoso}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var mensajeExitoModal = new bootstrap.Modal(document.getElementById('mensajeExitoModal'));
+            mensajeExitoModal.show();
+        });
+    </script>
+{{/if}}
 <div>
     <h3 class="mr-4" style="margin-left: 6.5%">Servicios</h3>
     <div class="d-flex flex-row flex-wrap" style="margin-left: 5%">
@@ -29,7 +36,6 @@
     </div>
 </div>
 
-<!-- Modal -->
 <div class="modal fade" id="reportarIncidenteModal" tabindex="-1" role="dialog" aria-labelledby="reportarIncidenteModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -46,12 +52,28 @@
       <div class="modal-footer">
         <button type="button" class="grey-button" data-bs-dismiss="modal">Cancelar</button>
         <button type="submit" class="card-red-button">Reportar</button>
+
       </div>
       </form>
     </div>
   </div>
 </div>
 
+<div class="modal fade" id="mensajeExitoModal" tabindex="-1" role="dialog" aria-labelledby="mensajeExitoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mensajeExitoModalLabel">¡Genial!</h5>
+            </div>
+            <div class="modal-body">
+                <p>Se reportó el incidente correctamente.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
 {{/partial}}
 
 {{> layouts/logged.html.hbs }}

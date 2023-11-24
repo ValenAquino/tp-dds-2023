@@ -84,7 +84,7 @@ public class Bootstrap implements WithSimplePersistenceUnit {
         RepositorioComunidades.getInstance(),
         RepositorioNotificaciones.getInstance()
     );
-
+    mati.setAdmin(true);
     usuario.setAdmin(true);
 
     RepositorioUsuarios.getInstance().persistir(usuario);

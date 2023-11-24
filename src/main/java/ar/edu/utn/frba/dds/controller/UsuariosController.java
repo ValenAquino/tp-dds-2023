@@ -10,13 +10,19 @@ import spark.Request;
 import spark.Response;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class UsuariosController implements WithSimplePersistenceUnit {
 
   public ModelAndView usuarios(Request request, Response response) {
     Map<String, Object> modelo = new HashMap<>();
+    Boolean creacionExitosa = request.session().attribute("creacion_exitosa");
     modelo.put("es_admin", request.attribute("es_admin"));
     modelo.put("usuarios", RepositorioUsuarios.getInstance().todos());
+    if(creacionExitosa!=null){
+      request.session().removeAttribute("creacion_exitosa");
+      modelo.put("creacion_exitosa",creacionExitosa);
+    }
     return new ModelAndView(modelo, "pages/usuarios.html.hbs");
   }
 
@@ -25,8 +31,8 @@ public class UsuariosController implements WithSimplePersistenceUnit {
   }
 
   public Void crear(Request request, Response response) {
+    AtomicBoolean exito = new AtomicBoolean(false);
     withTransaction(() -> {
-
       var usuarioNuevo = new Usuario(
           request.queryParams("usuario"),
           request.queryParams("contrasenia"),
@@ -37,11 +43,13 @@ public class UsuariosController implements WithSimplePersistenceUnit {
       usuarioNuevo.setAdmin(request.queryParams("es_admin") != null);
 
       RepositorioUsuarios.getInstance().persistir(usuarioNuevo);
+      exito.set(true);
     });
-
+    request.session().attribute("creacion_exitosa", Boolean.TRUE);
     response.redirect("/usuarios");
     return null;
   }
+
 
   public ModelAndView ver(Request request, Response response) {
     Usuario usuario = RepositorioUsuarios.getInstance()
