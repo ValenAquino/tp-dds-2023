@@ -71,15 +71,16 @@ a.nav-link {
 }
 
 .main-container {
+  height: 100%;
   padding: 2% 6%;
 }
 
 .footer {
+  width: 100%;
   background-color: var(--azul-oscuro);
   color: var(--blanco);
   text-align: center;
   padding: 10px 0;
-  width: 100%;
   font-weight: 500;
   display: flex;
   flex-direction: row;
