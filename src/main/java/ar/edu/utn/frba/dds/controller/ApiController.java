@@ -20,7 +20,6 @@ import spark.Response;
 public class ApiController implements WithSimplePersistenceUnit {
   public Response listarComunidades(Request request, Response response) {
     var gson = new Gson();
-    response.type("application/json");
 
     try {
       var comunidades = RepositorioComunidades.getInstance().todas();
@@ -38,8 +37,6 @@ public class ApiController implements WithSimplePersistenceUnit {
     var gson = new Gson();
     var comunidadId = Integer.parseInt(request.params("id"));
 
-    response.type("application/json");
-
     try {
       var comunidad = RepositorioComunidades.getInstance().porId(comunidadId);
       response.status(200);
@@ -55,8 +52,6 @@ public class ApiController implements WithSimplePersistenceUnit {
   //{"nombre": "Hinchas de Racing", "usuarios": [{"id": 1}], "servicios": [{"id": 2}]}
   public Response crearComunidad(Request request, Response response) {
     var gson = new Gson();
-
-    response.type("application/json");
 
     try {
       withTransaction(() -> {
@@ -76,7 +71,6 @@ public class ApiController implements WithSimplePersistenceUnit {
   //{"nombre": "Hinchas de Racing", "usuarios": [{"id": 1}], "servicios": [{"id": 2}]}
   public Response editarComunidad(Request request, Response response) {
     var gson = new Gson();
-    response.type("application/json");
 
     try {
       withTransaction(() -> {
@@ -93,8 +87,7 @@ public class ApiController implements WithSimplePersistenceUnit {
     return response;
   }
 
-  public String eliminarComunidad(Request request, Response response) {
-    response.type("application/json");
+  public Response eliminarComunidad(Request request, Response response) {
     Gson gson = new Gson();
 
     try {
@@ -104,11 +97,13 @@ public class ApiController implements WithSimplePersistenceUnit {
         RepositorioComunidades.getInstance().eliminar(comunidad);
       });
       response.status(200);
-      return gson.toJson(new ApiResponse(true, "Comunidad eliminada con éxito", null));
+      response.body(gson.toJson(new ApiResponse(true, "Comunidad eliminada con éxito", null)));
     } catch (RuntimeException e) {
       response.status(500);
-      return gson.toJson(new ApiResponse(false, "Ocurrió un error al intentar eliminar la comunidad", null));
+      response.body(gson.toJson(new ApiResponse(false, "Ocurrió un error al intentar eliminar la comunidad", null)));
     }
+
+    return response;
   }
 
   private List<Map<String, Object>> formatearComunidades(List<Comunidad> comunidades) {
