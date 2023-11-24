@@ -1,52 +1,82 @@
 {{#partial "principal" }}
-    <h2>Editar usuario</h2>
-    <form method="POST" action="/usuarios/editar">
-        <input type="hidden" id="id" name="id" value={{usuario.id}}>
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control"
-                   id="usuario" name="usuario"
-                   placeholder="Username" value="{{usuario.usuario}}" required>
-            <label for="usuario">Username</label>
+    <div class="d-flex justify-content-between">
+        <h1>Editar usuario</h1>
+        <div class="d-flex p-3">
+            <a class="btn btn-secondary" href="/usuarios" role="button">
+                Cancelar
+            </a>
         </div>
-        <div class="form-floating mb-3">
-            <input type="password" class="form-control"
-                   id="contrasenia" name="contrasenia"
-                   placeholder="Contraseña">
-            <label for="contrasenia">Contraseña</label>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control"
-                   id="nombre" name="nombre"
-                   placeholder="Nombre" value="{{usuario.nombre}}" required>
-            <label for="nombre">Nombre</label>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control"
-                   id="apellido" name="apellido"
-                   placeholder="Apellido" value="{{usuario.apellido}}" required>
-            <label for="apellido">Apellido</label>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="email" class="form-control"
-                   id="correo_electronico" name="correo_electronico"
-                   placeholder="Correo electrónico" value="{{usuario.correoElectronico}}" required>
-            <label for="correo_electronico">Correo electrónico</label>
-        </div>
-        <div class="form-check form-switch mb-3">
-            {{#if esAdmin}}
-                <input type="checkbox" class="form-check-input" role="switch"
-                       id="es_admin" name="es_admin" checked>
-            {{else}}
-                <input type="checkbox" class="form-check-input" role="switch"
-                       id="es_admin" name="es_admin">
-            {{/if}}
-            <label class="form-check-label" for="es_admin">Admin</label>
-        </div>
+    </div>
 
-        <div class="d-grid">
-            <button class="btn btn-primary fw-bold" type="submit">Editar</button>
-        </div>
-    </form>
+    <div class="container shadow-sm p-3">
+        <form method="POST" action="/usuarios/editar">
+            <input type="hidden" id="id" name="id" value={{usuario.id}}>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="text" class="form-control"
+                               id="usuario" name="usuario"
+                               placeholder="Username" value="{{usuario.usuario}}" required>
+                        <label for="usuario">Username</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="password" class="form-control"
+                               id="contrasenia" name="contrasenia" placeholder="Contraseña">
+                        <label for="contrasenia">Contraseña</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="text" class="form-control"
+                               id="nombre" name="nombre" placeholder="Nombre"
+                               value="{{usuario.nombre}}" required>
+                        <label for="nombre">Nombre</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="text" class="form-control"
+                               id="apellido" name="apellido" placeholder="Apellido"
+                               value="{{usuario.apellido}}" required>
+                        <label for="apellido">Apellido</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="email" class="form-control"
+                               id="correo_electronico" name="correo_electronico"
+                               placeholder="Correo electrónico"
+                               value="{{usuario.correoElectronico}}" required>
+                        <label for="correo_electronico">Correo electrónico</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="form-check form-switch mb-3">
+                        {{#if usuario.esAdmin}}
+                            <input class="form-check-input" type="checkbox" role="switch"
+                                   id="es_admin" name="es_admin" checked>
+                        {{else}}
+                            <input class="form-check-input" type="checkbox" role="switch"
+                                   id="es_admin" name="es_admin">
+                        {{/if}}
+                        <label class="form-check-label" for="es_admin">Admin</label>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end align-items-center">
+                <span class="mensaje-error mr-2">{{mensajeError}}</span>
+                <input class="btn btn-primary" type="submit" value="Editar">
+            </div>
+        </form>
+    </div>
 {{/partial}}
 
 {{> layouts/logged.html.hbs }}

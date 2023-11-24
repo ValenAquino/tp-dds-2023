@@ -48,8 +48,10 @@ public class UsuariosController implements WithSimplePersistenceUnit {
     try {
       validarUsuario(usuarioNuevo);
       validarContrasenia(usuarioNuevo.getContrasenia());
-      withTransaction(() -> RepositorioUsuarios.getInstance().persistir(usuarioNuevo));
-      request.session().attribute("creacion_exitosa", Boolean.TRUE);
+      withTransaction(() -> {
+        RepositorioUsuarios.getInstance().persistir(usuarioNuevo);
+        request.session().attribute("creacion_exitosa", Boolean.TRUE);
+      });
       response.redirect("/usuarios");
     } catch (Exception e) {
       usuarioNuevo.vaciarContrasenia();
@@ -62,13 +64,19 @@ public class UsuariosController implements WithSimplePersistenceUnit {
   }
 
   public ModelAndView ver(Request request, Response response) {
-    Usuario usuario = RepositorioUsuarios.getInstance()
-        .porId(Integer.parseInt(request.params("id")));
+    Usuario usuario = request.session().attribute("usuario") != null
+        ? request.session().attribute("usuario")
+        : RepositorioUsuarios.getInstance().porId(Integer.parseInt(request.params("id")));
+
     usuario.vaciarContrasenia();
 
     Map<String, Object> modelo = new HashMap<>();
     modelo.put("es_admin", request.session().attribute("is_admin"));
+    modelo.put("mensajeError", request.session().attribute("mensajeError"));
     modelo.put("usuario", usuario);
+
+    request.session().removeAttribute("mensajeError");
+    request.session().removeAttribute("usuario");
 
     return new ModelAndView(modelo, "usuarios/usuario.html.hbs");
   }
@@ -81,14 +89,19 @@ public class UsuariosController implements WithSimplePersistenceUnit {
       if (!request.queryParams("contrasenia").isBlank()) {
         validarContrasenia(usuarioExistente.getContrasenia());
       }
-      withTransaction(() -> RepositorioUsuarios.getInstance().persistir(usuarioExistente));
+      withTransaction(() -> {
+        RepositorioUsuarios.getInstance().persistir(usuarioExistente);
+        request.session().attribute("edicion_exitosa", Boolean.TRUE);
+      });
       response.redirect("/usuarios");
-      return null;
     } catch (Exception e) {
-      // TODO: devolver usuarioExistente (con contraseña vacía) y llenar campos ya ingresados
-      // TODO: devolver e.getMessage() y mostrar
-      return new ModelAndView(null, "usuarios/usuario.html.hbs");
+      usuarioExistente.vaciarContrasenia();
+      request.session().attribute("mensajeError", e.getMessage());
+      request.session().attribute("usuario", usuarioExistente);
+      response.redirect("/usuarios/" + usuarioExistente.getId());
     }
+
+    return null;
   }
 
   public Void eliminar(Request request, Response response) {
