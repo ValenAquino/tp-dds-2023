@@ -62,6 +62,9 @@ public class Comunidad extends PersistentEntity {
   public String getNombre() {
     return nombre;
   }
+  public void setNombre(String nombre) {
+    this.nombre = nombre;
+  }
 
   public List<Incidente> getIncidentes() {
     return incidentes;

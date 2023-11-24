@@ -181,6 +181,8 @@ public class ApiController implements WithSimplePersistenceUnit {
       comunidad.agregarServicioDeInteres(servicio);
     }
 
+    comunidad.setNombre(nombre);
+
     return comunidad;
   }
 }
