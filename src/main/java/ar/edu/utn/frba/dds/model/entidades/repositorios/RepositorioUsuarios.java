@@ -16,6 +16,7 @@ public class RepositorioUsuarios implements WithSimplePersistenceUnit {
   }
 
   public void persistir(Usuario usuario) {
+    usuario.hashContrasenia();
     entityManager().persist(usuario);
   }
 
@@ -34,6 +35,26 @@ public class RepositorioUsuarios implements WithSimplePersistenceUnit {
 
   public Usuario porId(Integer id) {
     return entityManager().find(Usuario.class, id);
+  }
+
+  public boolean existeCorreoElectronico(Usuario usuario) {
+    return !entityManager()
+        .createQuery(
+            "from Usuario where correoElectronico = :correoElectronico and (:id is null or id <> :id)",
+            Usuario.class)
+        .setParameter("correoElectronico", usuario.getCorreoElectronico())
+        .setParameter("id", usuario.getId())
+        .getResultList().isEmpty();
+  }
+
+  public boolean existeUsername(Usuario usuario) {
+    return !entityManager()
+        .createQuery(
+            "from Usuario where usuario = :usuario and (:id is null or id <> :id)",
+            Usuario.class)
+        .setParameter("usuario", usuario.getUsuario())
+        .setParameter("id", usuario.getId())
+        .getResultList().isEmpty();
   }
 
   public void eliminar(Usuario usuario) {

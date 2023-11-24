@@ -26,13 +26,18 @@ import java.util.List;
 @Entity
 @Table(name = "usuarios")
 public class Usuario extends PersistentEntity {
+
+  @Column(nullable = false, unique = true)
   private String usuario;
+  @Column(nullable = false)
   private String contrasenia;
+  @Column(nullable = false)
   private String nombre;
+  @Column(nullable = false)
   private String apellido;
-  @Column(name = "es_admin")
+  @Column(name = "es_admin", nullable = false)
   private boolean esAdmin;
-  @Column(name = "correo_electronico")
+  @Column(name = "correo_electronico", nullable = false, unique = true)
   private String correoElectronico;
 
   @OneToMany(
@@ -55,7 +60,8 @@ public class Usuario extends PersistentEntity {
   @Transient
   private RepositorioNotificaciones repositorioNotificaciones;
 
-  public Usuario() { }
+  public Usuario() {
+  }
 
   @PostLoad
   public void postLoad() {
@@ -66,7 +72,7 @@ public class Usuario extends PersistentEntity {
   public Usuario(String usuario, String contrasenia, String nombre, String apellido,
                  String correoElectronico) {
     this.usuario = usuario;
-    this.contrasenia = DigestUtils.sha256Hex(contrasenia);
+    this.contrasenia = contrasenia;
     this.nombre = nombre;
     this.apellido = apellido;
     this.correoElectronico = correoElectronico;
@@ -102,8 +108,18 @@ public class Usuario extends PersistentEntity {
     this.usuario = usuario;
   }
 
+  public String getContrasenia() {
+    return contrasenia;
+  }
+
   public void setContrasenia(String contrasenia) {
-    this.contrasenia = DigestUtils.sha256Hex(contrasenia);
+    this.contrasenia = contrasenia;
+  }
+
+  public void hashContrasenia() {
+    if (!this.contrasenia.isBlank()) {
+      this.contrasenia =  DigestUtils.sha256Hex(this.contrasenia);
+    }
   }
 
   public void vaciarContrasenia() {
@@ -168,7 +184,7 @@ public class Usuario extends PersistentEntity {
 
   public void notificar(Notificacion notificacion) {
     repositorioNotificaciones.persistir(notificacion);
-    if (puedeRecibirNotificacion()&&medioDeComunicacion!=null) {
+    if (puedeRecibirNotificacion() && medioDeComunicacion != null) {
       medioDeComunicacion.notificar(notificacion);
     }
   }
