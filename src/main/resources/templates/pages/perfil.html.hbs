@@ -1,4 +1,5 @@
 {{#partial "principal" }}
+
     <div class="d-flex" style="margin-left: 2.7%;margin-bottom: 1%;">
         <h1>Mi perfil</h1>
     </div>
@@ -6,7 +7,7 @@
     <div class="d-flex justify-content-between align-items-center" style="margin-left: 2.3%;margin-right: 1.2%;margin-bottom: 1%;">
 
         <div class="container shadow-sm p-3">
-            <form method="PUT" action="/perfil">
+            <form method="POST" action="/perfil" id="formularioPerfil">
                 <input type="hidden" id="id" name="id" value={{usuario.id}}>
                 <div class="row mb-3">
                     <div class="col-md-6">
@@ -56,12 +57,13 @@
                 </div>
                 <div class="d-flex justify-content-end align-items-center">
                     <span class="mensaje-error mr-1">{{mensajeError}}</span>
-                    <input class="btn-agregar mr-1" type="submit" value="Editar">
-                    <a class="btn-cancelar" href="/perfil" role="button">Cancelar</a>
+                    <input class="btn-agregar mr-1" type="submit" id="editarBoton">
+                    <a class="btn-cancelar" href="/perfil" role="button" id="cancelarBoton">Cancelar</a>
                 </div>
             </form>
         </div>
     </div>
+    <script src="/perfilScript.js"></script>
 {{/partial}}
 
 {{> layouts/logged.html.hbs }}

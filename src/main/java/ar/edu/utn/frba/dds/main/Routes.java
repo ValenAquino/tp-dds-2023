@@ -50,7 +50,7 @@ public class Routes implements WithSimplePersistenceUnit {
 
     // Perfil
     get("/perfil", usuariosController::perfil, engine);
-    put("/perfil", usuariosController::editarPerfil, engine);
+    post("/perfil", usuariosController::editarPerfil, engine);
 
     // Usuarios
     get("/usuarios", usuariosController::usuarios, engine);

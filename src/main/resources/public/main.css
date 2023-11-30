@@ -302,3 +302,13 @@ a.nav-link {
 .fa-pencil {
     color: var(--azul-oscuro);
 }
+
+.btn-cancelar.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-agregar.confirmar {
+    background-color: var(--verde);
+    color: var(--blanco);
+}

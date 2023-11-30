@@ -20,7 +20,10 @@ public class UsuariosController implements WithSimplePersistenceUnit {
   public ModelAndView perfil(Request request, Response response) {
     Map<String, Object> modelo = new CustomModel("Usuarios", request);
     Usuario usuario = request.session().attribute("usuario_logueado");
+    var mensajeError = request.session().attribute("mensajeError");
+    request.session().removeAttribute("mensajeError");
     modelo.put("usuario", usuario);
+    modelo.put("mensajeError", mensajeError);
     return new ModelAndView(modelo, "pages/perfil.html.hbs");
   }
 
