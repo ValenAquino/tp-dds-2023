@@ -15,7 +15,6 @@ import static spark.Spark.*;
 
 public class Routes implements WithSimplePersistenceUnit {
   public static void main(String[] args) {
-    Bootstrap.main(args);
     new Routes().start();
   }
 
